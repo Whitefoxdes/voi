@@ -1,29 +1,19 @@
 from .models import User
 from rest_framework import serializers
+from django.contrib.auth.hashers import check_password
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
         fields = [
-            'id',
-            'username',
-            'email',
-            'password'
+            "username",
+            "email",
+            "password",
+            "date_of_birth"
         ]
-    def validate_registrate_field(self, data):
-        username = data.get("username")
-        email = data.get("email")
-        password = data.get("password")
 
-        if not username or not email or not password:
-            raise serializers.ValidationError({"error": "Request fields empty"})
-        
-        return data
-    
-    def validate_login_field(self, data):
-        email = data.get("email")
-        password = data.get("password")
-        if not email or not password:
-            raise serializers.ValidationError({"error": "Request fields empty"})
-        
-        return data
+    username = serializers.CharField()
+    email = serializers.CharField()
+    password = serializers.CharField()
+    date_of_birth = serializers.DateTimeField()

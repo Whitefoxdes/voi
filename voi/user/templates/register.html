@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+      
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    
+    <title>Document</title>
+</head>
+<body>
+
+    
+    <div class="navbar-brand"><a href="/">VOI</a></div>
+
+    <div class="register-form">
+        
+        <div class="email-field">
+            Email <br>
+            <input type="email" id="email" maxlength="100"><br>
+        </div>
+        
+        <p class="error" id="emailExist">Email exist</p>
+
+        <div class="password-field">
+            Password <br>
+            <input type="password" id="password" maxlength="16"><br>
+        </div>
+        
+        <div class="password-field">
+            Confirm password <br>
+            <input type="password" id="confirmPassword" maxlength="16"><br>
+        </div>
+        <p class="error" id="wrongPasswordConfirm">Wrong confirm password</p>
+
+        <div class="username-field">
+            Username <br>
+            <input type="text" id="username" maxlength="25"><br>
+        </div>
+
+        <div class="date-of-birth-field">
+            Date of birth <br>
+            <input type="date" id="dateOfBirth" value="2000-01-01">
+        </div>
+        <p class="error" id="fieldEmpy">Request field empty</p>
+        <input type="button" id="registrateButton" value="Registrate">
+        <p style="text-align: center;">Alredy have an account? <a href="{% url 'user:login' %}" style="color: rgb(0, 191, 255);">Log in</a></p>
+    </div>
+</body>
+<script>
+$("#registrateButton").click(function(){
+    email = $("#email").val();
+    password = $("#password").val();
+    confirmPassword = $("#confirmPassword").val()
+    username = $("#username").val();
+    dateOfBirth = $("#dateOfBirth").val()
+    
+    if (confirmPassword !== password){
+        $("#wrongPasswordConfirm").css("display", "flex")
+    }
+
+    $.ajax({
+        method: "POST",
+        url: "{% url 'user_api:register' %}",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            "email": email,
+            "password": password,
+            "username": username,
+            "date_of_birth": dateOfBirth
+        }),
+        success: function(result){
+            top.location.href = "{% url 'user:login' %}"
+        },
+        error: function(request, status, error){
+            if(request.responseJSON.error_field_empty){
+                $("#fieldEmpy").css("display", "flex")
+            }
+            if(request.responseJSON.error_email_exist){
+                $("#emailExist").css("display", "flex")
+            }
+        }
+    })
+})
+</script>
+</html>
