@@ -29,7 +29,7 @@
             <input type="email" id="email" maxlength="100"><br>
         </div>
         
-        <p class="error" id="emailExist">Email exist</p>
+        <p class="error" id="emailExist">Email already exist</p>
 
         <div class="password-field">
             Password <br>
@@ -58,14 +58,14 @@
 </body>
 <script>
 $("#registrateButton").click(function(){
-    email = $("#email").val();
-    password = $("#password").val();
-    confirmPassword = $("#confirmPassword").val()
-    username = $("#username").val();
-    dateOfBirth = $("#dateOfBirth").val()
+    let email = $("#email").val();
+    let password = $("#password").val();
+    let confirmPassword = $("#confirmPassword").val();
+    let username = $("#username").val();
+    let dateOfBirth = $("#dateOfBirth").val();
     
     if (confirmPassword !== password){
-        $("#wrongPasswordConfirm").css("display", "flex")
+        $("#wrongPasswordConfirm").css("display", "flex");
     }
 
     $.ajax({
@@ -80,17 +80,17 @@ $("#registrateButton").click(function(){
             "date_of_birth": dateOfBirth
         }),
         success: function(result){
-            top.location.href = "{% url 'user:login' %}"
+            top.location.href = "{% url 'user:login' %}";
         },
         error: function(request, status, error){
             if(request.responseJSON.error_field_empty){
-                $("#fieldEmpy").css("display", "flex")
+                $("#fieldEmpy").css("display", "flex");
             }
             if(request.responseJSON.error_email_exist){
-                $("#emailExist").css("display", "flex")
+                $("#emailExist").css("display", "flex");
             }
         }
-    })
-})
+    });
+});
 </script>
 </html>

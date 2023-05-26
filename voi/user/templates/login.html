@@ -42,8 +42,8 @@
 </body>
 <script>
     $("#loginButton").click(function(){
-        email = $("#email").val()
-        password = $("#password").val()
+        let email = $("#email").val();
+        let password = $("#password").val();
 
         $.ajax({
             method: "POST",
@@ -55,18 +55,19 @@
                 "password": password
             }),
             success: function(result){
-               localStorage.setItem("token", result.access)
-               top.location.href = "/"
+               localStorage.setItem("token", result.access);
+               localStorage.setItem("refresh_token", result.refresh);
+               top.location.href = "/";
             },
             error: function(request){
                 if (request.responseJSON.email || request.responseJSON.password){
-                    $("#fieldEmpy").css("display", "flex")
+                    $("#fieldEmpy").css("display", "flex");
                 }
                 if (request.status == 401 || request.responseJSON.detail){
-                    $("#wrongEmailOrPassword").css("display", "flex")             
+                    $("#wrongEmailOrPassword").css("display", "flex");             
                 }
             }
-        })        
-    })
+        });        
+    });
 </script>
 </html>

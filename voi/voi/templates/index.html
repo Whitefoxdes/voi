@@ -36,10 +36,13 @@
         <div class="navbar-links">
             <ul>
                 <li>
-                    <a class="login" href="{% url 'user:login' %}">Log in</a>
+                    <a class="login" id="login" href="{% url 'user:login' %}">Log in</a>
                 </li>
                 <li>
-                    <a class="register" href="{% url 'user:register' %}">Register</a>
+                    <a class="register" id="register" href="{% url 'user:register' %}">Register</a>
+                </li>
+                <li>
+                    <a class="profile" id="profile" href="{% url 'user:profile' %}">Profile</a>
                 </li>
             </ul>            
         </div>
@@ -69,8 +72,14 @@
 </body>
 <script>
     $(".toggle-button").click(function(){
-        $(".navbar-links").toggleClass('active')
-        $(".navbar-search").toggleClass('active')
-    })
+        $(".navbar-links").toggleClass('active');
+        $(".navbar-search").toggleClass('active');
+    });
+    let token = localStorage.getItem("token")
+    if (token){
+            console.log(1)
+            $("#login").css("display", "none")
+            $("#register").css("display", "none")
+    }
 </script>
 </html>
