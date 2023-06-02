@@ -105,6 +105,10 @@ body, head{
 @media(max-width: 1300px){
     .toggle-button{
         display: flex;
+        background-color: rgba(0,0,0,0);
+        border: none;
+        outline: none;
+        cursor: pointer;
     }
 
     .navbar{
@@ -151,7 +155,6 @@ a:active, a:hover{
 }
 
 .info{
-    /* top: auto; */
     margin-top: 3%;
     border-radius: 5px;
     left: 50%;
@@ -167,22 +170,14 @@ a:active, a:hover{
 
 }
 #username{
-    /* top: 3%;
-    border-radius: 5px;
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%); */
     font-size: 32px;
 }
 .edit-field{
     margin-top: 1rem;
     text-align: center;
     font-size: 1.5rem;
-    /* top: 12%; */
     border-radius: 5px;
-    /* left: 50%;
-    position: absolute;
-    transform: translate(-50%); */
+    
 }
 
 .username-field{
@@ -217,9 +212,21 @@ a:active, a:hover{
     display: block;
 }
 
+.password{
+    margin-top: .5rem;
+    width: 55%;
+    height: 28px;
+    padding: 0px 5px;
+    outline: none;
+    border: none;
+    color: azure;
+    font-size: 18px;
+    background-color: rgb(85, 108, 129);
+}
+
 #editEmail{
     margin-top: .5rem;
-    width: 15rem;
+    width: 55%;
     height: 28px;
     padding: 0px 5px;
     outline: none;
@@ -231,7 +238,7 @@ a:active, a:hover{
 
 #editUsername{
     margin-top: .5rem;
-    width: 15rem;
+    width: 55%;
     height: 28px;
     padding: 0px 5px;
     outline: none;
@@ -249,11 +256,12 @@ a:active, a:hover{
     width: 7rem;
     height: 28px;
     outline: none;
+    cursor: pointer;
 }
 
 #changePassword{
     margin-top: .5rem;
-    width: 15rem;
+    width: 55%;
     height: 28px;
     padding: 0px 5px;
     outline: none;
@@ -272,6 +280,7 @@ a:active, a:hover{
     color: azure;
     background-color: rgb(65, 88, 109);
     display: none;
+    cursor: pointer;
 }
 
 .save-button:hover{
@@ -285,10 +294,30 @@ a:active, a:hover{
     border: none;
     background-color: rgb(85, 107, 129);
     color: azure;
+    cursor: pointer;
+}
+
+.edit-top:hover{
+    background-color: rgb(65, 87, 109);
 }
 
 .error{
     margin-top: .5rem;
     color: rgb(201, 42, 42);
     display: none;
+}
+
+#logOut{
+    margin-top: 3%;
+    width: 7rem;
+    height: 24px;
+    background-color: rgb(105, 127, 149);
+    border: none;
+    outline: none;
+    color: azure;
+    cursor: pointer;
+}
+
+#logOut:hover{
+    background-color: rgb(85, 107, 129);
 }

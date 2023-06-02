@@ -38,9 +38,15 @@ body, head{
     background-color: rgb(36, 61, 81);
     font-size: 1rem;
     color: azure;
+    
 }
 #registrateButton:hover{
     background-color: rgb(56, 81, 101);
+}
+
+#registrateButton:disabled{
+    background-color: rgb(31, 55, 5);
+    cursor: wait;
 }
 
 a:visited, a:link {
@@ -67,4 +73,14 @@ a:active, a:hover{
     display: none;
     font-size: 16px;
     color: rgb(201, 42, 42);
+}
+
+.activate-text{
+    display: none;
+    top: 20%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%);
+    color: azure;
+    font-size: 20px;
 }

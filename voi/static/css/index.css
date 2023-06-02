@@ -65,6 +65,7 @@ body, head{
     border-top-right-radius: 1px;
     border-bottom-right-radius: 1px;
     padding: 8px;
+    cursor: pointer;
 }
 .navbar-search-button:hover{
     background-color: rgb(66, 96, 121);
@@ -107,6 +108,10 @@ body, head{
 @media(max-width: 1300px){
     .toggle-button{
         display: flex;
+        background-color: rgba(0,0,0,0);
+        border: none;
+        outline: none;
+        cursor: pointer;
     }
 
     .navbar{
@@ -139,6 +144,7 @@ body, head{
     .navbar-links li a {
         padding: .5rem 1rem;
     }
+
     .navbar-links.active{
         display: flex;
     }
@@ -162,7 +168,7 @@ body, head{
     border-radius: 0%;
     border-color: rgb(39, 67, 80);
     border-style: solid;
-    font-size: 25px; 
+    font-size: 25px;
 }
 
 .register:hover{
@@ -201,6 +207,7 @@ a:active, a:hover{
     border-radius: .3em;
     background-color: rgb(50, 72, 101);
     height: 20rem;
+    cursor: pointer;
 }
 
 .cardGame:hover{

@@ -35,9 +35,10 @@
         </div>
 
         <p class="error" id="fieldEmpy">Request field empty</p>
-        <p class="error" id="wrongEmailOrPassword">Wrong email or password</p>
+        <p class="error" id="wrongEmailOrPassword">Wrong email or password or account hasn't activate </p>
         <input type="button" id="loginButton" value="Login">
         <p style="text-align: center;">Don't have an account? <a href="{% url 'user:register' %}" style="color: rgb(0, 191, 255);">Register</a></p>
+        <p style="text-align: center;">Forgot password? <a href="{% url 'user:send_reset_password_letter' %}" style="color: rgb(0, 191, 255);">Reset password</a></p>
     </div>
 </body>
 <script>

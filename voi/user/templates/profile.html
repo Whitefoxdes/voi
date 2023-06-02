@@ -31,17 +31,18 @@
             <input type="button" value="Search" class="navbar-search-button">
         </div>
 
-        <a href="#" class="toggle-button">
+        <button class="toggle-button">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
-        </a>
+        </button>
         <div class="navbar-links">
             <ul>
             </ul>
         </div>
     </nav>
     <div class="info">
+        <img src="/media/user_avatar/test2-a5da9e5c-0718-4ac4-89f4-4ccbaa8c49b2.png" id="userAvatar" width="100" height="100" style="border: none; border-radius: 3rem;">
         <p id="username"></p>
         <input type="button" class="edit-top" id="usernameTop" value="Edit username">
         <input type="button" class="edit-top" id="dateOfBirthTop" value="Edit date of birth">
@@ -64,20 +65,30 @@
             </div>
 
             <div class="email-field">
+                Сonfirm identity <br>
+                <input type="password" class="password" id="confirmIdentityPassword"><br>
                 Email <br>
                 <input type="email" id="editEmail" value=""><br>
                 <p id="errorEmail" class="error">Email field empty</p>
                 <p id="errorEmailExist" class="error">Email exist</p>
+                <p id="errorWrongConfirmIdentityPassword" class="error">Wrong confirm identity password</p>
                 <input type="button" class="save-button" id="saveEmail" value="Save">
             </div>
 
             <div class="password-field">
+                Old password <br>
+                <input type="password" class="password" id="oldPassword"> <br>
                 Password <br>
-                <input type="password" id="changePassword"><br>
+                <input type="password" class="password" id="changePassword"><br>
+                Confirm password <br>
+                <input type="password" class="password" id="confirmPassword"><br>
                 <p id="errorPassword" class="error">Password field empty</p>
+                <p id="errorOldPassword" class="error">Wrong old password</p>
+                <p id="errorWrongConfirmPassword" class="error">Wrong confirm password</p>
                 <input type="button" class="save-button" id="savePassword" value="Save">
             </div>
         </div>
+        <button id="logOut">Log out</button>
     </div>
 </body>
 <script>
@@ -150,38 +161,60 @@
     let prefix = "Bearer";
     let token;
     $.ajax({
-        method: "POST",
-        url: "{% url 'user_api:token_refresh'%}",
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify({
-            "refresh": refresh_token
-        }),
-        success: function (result) {
-            token = result.access;
-            $.ajax({
-                method: "GET",
-                url: "{% url 'user_api:user_profile' %}",
-                headers: { 'Authorization': `${prefix} ${token}` },
-                success: function (result) {
-                    oldUsername = result.data["username"];
-                    oldEmail = result.data["email"];
-                    oldDateOfBirth = result.data["date_of_birth"].split('T')[0];
-                    $("#username").append(`${result.data["username"]}`);
-                    $("#editEmail").val(result.data["email"]);
-                    $("#editUsername").val(result.data["username"]);
-                    $("#editDateOfBirth").val(result.data["date_of_birth"].split('T')[0]);
-                },
-            });
-        },
-        error: function(){
-            top.location.href = "{% url 'user:login' %}"
-        }
+            method: "POST",
+            url: "{% url 'user_api:token_refresh'%}",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({
+                "refresh": refresh_token
+            }),
+            success: function (result) {
+                token = result.access;
+                $.ajax({
+                        method: "GET",
+                        url: "{% url 'user_api:user_profile' %}",
+                        headers: { 'Authorization': `${prefix} ${token}` },
+                        success: function (result) {
+                            oldUsername = result.data["username"];
+                            oldEmail = result.data["email"];
+                            oldDateOfBirth = result.data["date_of_birth"].split('T')[0];
+                            $("#username").append(`${result.data["username"]}`);
+                            $("#editEmail").val(result.data["email"]);
+                            $("#editUsername").val(result.data["username"]);
+                            $("#editDateOfBirth").val(result.data["date_of_birth"].split('T')[0]);
+                            test = result.data["user_avatar"]
+                            console.log(test)
+                            $("#userAvatar").attr("src", `/${test}`)
+                        },
+                });
+            },
+            error: function(){
+                top.location.href = "{% url 'user:login' %}";
+            }
     });
+
+    // setInterval(
+    //     function(){$.ajax({
+    //         method: "POST",
+    //         url: "{% url 'user_api:token_refresh'%}",
+    //         dataType: "json",
+    //         contentType: "application/json; charset=utf-8",
+    //         data: JSON.stringify({
+    //             "refresh": refresh_token
+    //         }),
+    //         success: function (result) {
+    //             token = result.access;
+    //         },
+    //         error: function(){
+    //             top.location.href = "{% url 'user:login' %}";
+    //         }
+    //     })},
+    // (29 * 1000));
+
     $("#saveUsername").click(function(){
         newUsername = $("#editUsername").val();
         $.ajax({
-            method: "POST",
+            method: "PUT",
             url: "{% url 'user_api:edit_username'%}",
             headers: { 'Authorization': `${prefix} ${token}` },
             dataType: "json",
@@ -200,16 +233,19 @@
             }
         });
     });
+
     $("#saveEmail").click(function(){
         newEmail = $("#editEmail").val();
+        confirmIdentityPassword = $("#confirmIdentityPassword").val()
         $.ajax({
-            method: "POST",
+            method: "PUT",
             url: "{% url 'user_api:edit_email'%}",
             headers: { 'Authorization': `${prefix} ${token}` },
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify({
-                "email": newEmail
+                "email": newEmail,
+                "password": confirmIdentityPassword
             }),
             success: function(){
                 location.reload();
@@ -225,13 +261,19 @@
                     $("#errorEmailExist").css("display", "block");
                     return
                 }
+
+                if(request.responseJSON.error_confirm_identity_password){
+                    $("#errorWrongConfirmIdentityPassword").css("display", "block");
+                    return
+                }
             }
         });
     });
+
     $("#saveDateOfBirth").click(function(){
         newDateOfBirth = $("#editDateOfBirth").val();
         $.ajax({
-            method: "POST",
+            method: "PUT",
             url: "{% url 'user_api:edit_date_of_birth'%}",
             headers: { 'Authorization': `${prefix} ${token}` },
             dataType: "json",
@@ -251,16 +293,26 @@
             }
         });
     });
+
     $("#savePassword").click(function(){
+        oldPassword = $("#oldPassword").val()
         newPassword = $("#changePassword").val();
+        confirmPassword = $("#confirmPassword").val()
+
+        if(confirmPassword !== newPassword){
+            $("#errorWrongConfirmPassword").css("display", "block")
+            return 
+        }
+
         $.ajax({
-            method: "POST",
+            method: "PUT",
             url: "{% url 'user_api:change_password'%}",
             headers: { 'Authorization': `${prefix} ${token}` },
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify({
-                "password": newPassword
+                "password": newPassword,
+                "old_password": oldPassword
             }),
             success: function(){
                 location.reload();
@@ -271,9 +323,19 @@
                     $("#errorPassword").css("display", "block");
                     return;
                 }
+                if(request.responseJSON.error_old_password){
+                    $("#errorOldPassword").css("display", "block");
+                    return;
+                }
             }
         });
     });
+
+    $("#logOut").click(function(){
+        localStorage.clear()
+        top.location.href = "/"
+    })
+
 </script>
 
 </html>
