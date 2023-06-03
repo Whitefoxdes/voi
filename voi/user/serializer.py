@@ -16,6 +16,14 @@ class UserSerializer(serializers.ModelSerializer):
 
     email = serializers.CharField()
     password = serializers.CharField()
+
+    def check_old_password(self, data):
+        old_password = data.get("old_password")
+        user_id = data.get("user_id")
+        user = User.objects.filter(pk=user_id).first()
+
+        if not check_password(old_password, user.password):
+            raise serializers.ValidationError({"error_old_password": "Wrong old password"})
         
 class ProfileSerializer(serializers.ModelSerializer):
     
@@ -28,19 +36,8 @@ class ProfileSerializer(serializers.ModelSerializer):
         ]
 
     username = serializers.CharField()
-    date_of_birth = serializers.DateTimeField()
+    date_of_birth = serializers.DateField()
     user_avatar = serializers.CharField(source="user_avatar.file_url", required=False)
-
-    def check_old_password(self, data):
-        old_password = data.get("old_password")
-        user_id = data.get("user_id")
-
-        user = User.objects.filter(pk=user_id).first()
-
-        if not check_password(old_password, user.password):
-            raise serializers.ValidationError({"error_old_password": "Wrong old password"})
-        
-    
 
 class ImageProfileSerializer(serializers.ModelSerializer):
     class Meta:

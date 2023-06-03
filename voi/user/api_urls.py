@@ -26,20 +26,15 @@ urlpatterns = [
         name="user_profile"),
     
     path(
-        'edit-username',
-        api_views.EditUsername.as_view(),
-        name='edit_username'),
+        'edit-profile',
+        api_views.EditProfile.as_view(),
+        name='edit_profile'),
     
     path(
         'edit-email',
         api_views.EditEmail.as_view(),
         name='edit_email'),
     
-    path(
-        'edit-date-of-birth',
-        api_views.EditDateOfBirth.as_view(),
-        name='edit_date_of_birth'),
-
     path(
         'change-password',
         api_views.ChangePassword.as_view(),
@@ -62,8 +57,8 @@ urlpatterns = [
         name='reset_password'
     ),
     path(
-        'test',
-        api_views.test.as_view(),
-        name='test'
+        'user-avatar-upload',
+        api_views.UserAvatarUpload.as_view(),
+        name='user_avatar_upload'
     )
 ]

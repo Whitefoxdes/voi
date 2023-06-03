@@ -42,52 +42,72 @@
         </div>
     </nav>
     <div class="info">
-        <img src="/media/user_avatar/test2-a5da9e5c-0718-4ac4-89f4-4ccbaa8c49b2.png" id="userAvatar" width="100" height="100" style="border: none; border-radius: 3rem;">
+        <img src="/media/user_avatar/base_avatar/test.png" id="userAvatar" width="100" height="100" style="border: none; border-radius: 3rem;">
         <p id="username"></p>
-        <input type="button" class="edit-top" id="usernameTop" value="Edit username">
-        <input type="button" class="edit-top" id="dateOfBirthTop" value="Edit date of birth">
-        <input type="button" class="edit-top" id="emailTop" value="Edit email">
-        <input type="button" class="edit-top" id="passwordTop" value="Change password">
-        <div class="edit-field">
+        <input type="button" class="edit-top" id="profileTop" value="Profile">
+        <input type="button" class="edit-top" id="safetyTop" value="Safety">
+        <div class="edit-fields">
 
-            <div class="username-field">
-                Username <br>
-                <input type="text" id="editUsername" value=""><br>
-                <p id="errorUsername" class="error">Username field empty</p>
-                <input type="button" class="save-button" id="saveUsername" value="Save">
+            <div class="profile-fields">
+                
+                <div class="username-field">
+                    <p class="field-text">Username</p>
+                    <input type="text" id="editUsername" value=""><br>
+                </div>
+                
+                <div class="date-of-birth-field">
+                    <p class="field-text">Date of birth</p>
+                    <input type="date" id="editDateOfBirth" value=""><br>
+                </div>
+                <p id="errorProfile" class="error">Request field empty</p>
+
+                <input type="button" class="save-button" id="saveProfile" value="Save">
+                
+                <div class="user-avatar-field">
+                    <input type="file" id="changeUserAvatar">
+                    <input type="button" class="clone-changeUserAvatar" value="Change avatar" onclick="document.getElementById('changeUserAvatar').click();"><br>
+                    <input type="button" class="save-button" id="saveUserAvatar" value="Save">
+                </div>
+                
             </div>
 
-            <div class="date-of-birth-field">
-                Date of birth <br>
-                <input type="date" id="editDateOfBirth" value=""><br>
-                <p id="errorDateOfBirth" class="error">Date of birth field empty</p>
-                <input type="button" class="save-button" id="saveDateOfBirth" value="Save">
-            </div>
+            <div class="safety-fields">
 
-            <div class="email-field">
-                Сonfirm identity <br>
-                <input type="password" class="password" id="confirmIdentityPassword"><br>
-                Email <br>
-                <input type="email" id="editEmail" value=""><br>
-                <p id="errorEmail" class="error">Email field empty</p>
-                <p id="errorEmailExist" class="error">Email exist</p>
-                <p id="errorWrongConfirmIdentityPassword" class="error">Wrong confirm identity password</p>
-                <input type="button" class="save-button" id="saveEmail" value="Save">
-            </div>
+                <div class="email-field">
+                    <p class="field-text">Сonfirm identity</p>
+                    <input type="password" class="password" id="confirmIdentityPassword"><br>
+                    <p class="field-text">Email</p>
+                    <input type="email" id="editEmail" value=""><br>
+                    
+                    <p id="errorEmail" class="error">Email field empty</p>
+                    <p id="errorEmailExist" class="error">Email exist</p>
+                    <p id="errorWrongConfirmIdentityPassword" class="error">Wrong confirm identity password</p>
+                    
+                    <input type="button" class="save-button" id="saveEmail" value="Save">
+                </div>
+                
+                <div class="password-field">
+                    
+                    <p class="field-text">Old password</p>
+                    <input type="password" class="password" id="oldPassword">
+                    
+                    <p class="field-text">Password</p>
+                    <input type="password" class="password" id="changePassword"><br>
+                    
+                    <p class="field-text">Confirm password</p>
+                    <input type="password" class="password" id="confirmPassword"><br>
+                    
+                    <p id="errorPassword" class="error">Password field empty</p>
+                    <p id="errorOldPassword" class="error">Wrong old password</p>
+                    <p id="errorWrongConfirmPassword" class="error">Wrong confirm password</p>
+                    
+                    <input type="button" class="save-button" id="savePassword" value="Save">
+                </div>
 
-            <div class="password-field">
-                Old password <br>
-                <input type="password" class="password" id="oldPassword"> <br>
-                Password <br>
-                <input type="password" class="password" id="changePassword"><br>
-                Confirm password <br>
-                <input type="password" class="password" id="confirmPassword"><br>
-                <p id="errorPassword" class="error">Password field empty</p>
-                <p id="errorOldPassword" class="error">Wrong old password</p>
-                <p id="errorWrongConfirmPassword" class="error">Wrong confirm password</p>
-                <input type="button" class="save-button" id="savePassword" value="Save">
             </div>
+        
         </div>
+
         <button id="logOut">Log out</button>
     </div>
 </body>
@@ -97,51 +117,36 @@
         $(".navbar-search").toggleClass('active');
     });
 
-    $("#usernameTop").click(function () {
-        $(".username-field").toggleClass('active');
-        $(".email-field").removeClass('active');
-        $(".password-field").removeClass('active');
-        $(".date-of-birth-field").removeClass('active');
+    $("#profileTop").click(function () {
+        $(".profile-fields").toggleClass('active');
+        $(".safety-fields").removeClass('active');
     });
 
-    $("#dateOfBirthTop").click(function () {
-        $(".date-of-birth-field").toggleClass('active');
-        $(".username-field").removeClass('active');
-        $(".email-field").removeClass('active');
-        $(".password-field").removeClass('active');
-    });
-
-    $("#emailTop").click(function () {
-        $(".email-field").toggleClass('active');
-        $(".username-field").removeClass('active');
-        $(".password-field").removeClass('active');
-        $(".date-of-birth-field").removeClass('active');
-    });
-
-    $("#passwordTop").click(function () {
-        $(".password-field").toggleClass('active');
-        $(".email-field").removeClass('active');
-        $(".username-field").removeClass('active');
-        $(".date-of-birth-field").removeClass('active');
+    $("#safetyTop").click(function () {
+        $(".safety-fields").toggleClass('active');
+        $(".profile-fields").removeClass('active');
     });
 
     let oldUsername;
     let oldEmail;
     let oldDateOfBirth;
-    $("#editUsername").on('input', function(){
-        if($("#editUsername").val() == oldUsername){
-            $("#saveUsername").css("display", "none");
+    $("#editUsername").add("#editDateOfBirth").on('input', function(){
+        if($("#editUsername").val() == oldUsername && $("#editDateOfBirth").val() == oldDateOfBirth){
+            $("#saveProfile").css("display", "none");
             return;
         }
-        $("#saveUsername").css("display", "inline");
+        $("#saveProfile").css("display", "inline");
     });
-    $("#editDateOfBirth").on('input', function(){
-        if($("#editDateOfBirth").val() == oldDateOfBirth){
-            $("#saveDateOfBirth").css("display", "none");
+    
+    $("#changeUserAvatar").on('input', function(){
+
+        if($("#changeUserAvatar").val() == null){
+            $("#saveUserAvatar").css("display", "none");
             return;
         }
-        $("#saveDateOfBirth").css("display", "inline");
+        $("#saveUserAvatar").css("display", "inline");  
     });
+
     $("#editEmail").on('input', function(){
         if($("#editEmail").val() == oldEmail){
             $("#saveEmail").css("display", "none");
@@ -175,16 +180,18 @@
                         url: "{% url 'user_api:user_profile' %}",
                         headers: { 'Authorization': `${prefix} ${token}` },
                         success: function (result) {
-                            oldUsername = result.data["username"];
-                            oldEmail = result.data["email"];
-                            oldDateOfBirth = result.data["date_of_birth"].split('T')[0];
-                            $("#username").append(`${result.data["username"]}`);
-                            $("#editEmail").val(result.data["email"]);
-                            $("#editUsername").val(result.data["username"]);
-                            $("#editDateOfBirth").val(result.data["date_of_birth"].split('T')[0]);
-                            test = result.data["user_avatar"]
-                            console.log(test)
-                            $("#userAvatar").attr("src", `/${test}`)
+                            oldUsername = result.data_profile["username"];
+                            oldDateOfBirth = result.data_profile["date_of_birth"];
+                            oldEmail = result.data_user["email"];
+                            
+                            $("#username").append(`${result.data_profile["username"]}`);
+                            
+                            $("#editUsername").val(result.data_profile["username"]);
+                            $("#editDateOfBirth").val(result.data_profile["date_of_birth"]);
+                            $("#editEmail").val(result.data_user["email"]);
+                            if(result.data_profile["user_avatar"]){
+                                $("#userAvatar").attr("src", `/media/${result.data_profile["user_avatar"]}`);
+                            }
                         },
                 });
             },
@@ -193,34 +200,18 @@
             }
     });
 
-    // setInterval(
-    //     function(){$.ajax({
-    //         method: "POST",
-    //         url: "{% url 'user_api:token_refresh'%}",
-    //         dataType: "json",
-    //         contentType: "application/json; charset=utf-8",
-    //         data: JSON.stringify({
-    //             "refresh": refresh_token
-    //         }),
-    //         success: function (result) {
-    //             token = result.access;
-    //         },
-    //         error: function(){
-    //             top.location.href = "{% url 'user:login' %}";
-    //         }
-    //     })},
-    // (29 * 1000));
-
-    $("#saveUsername").click(function(){
-        newUsername = $("#editUsername").val();
+    $("#saveProfile").click(function(){
+        let newUsername = $("#editUsername").val();
+        let newDateOfBirth = $("#editDateOfBirth").val();
         $.ajax({
             method: "PUT",
-            url: "{% url 'user_api:edit_username'%}",
+            url: "{% url 'user_api:edit_profile'%}",
             headers: { 'Authorization': `${prefix} ${token}` },
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify({
-                "username": newUsername 
+                "username": newUsername,
+                "date_of_birth": newDateOfBirth
             }),
             success: function(){
                 location.reload();
@@ -228,15 +219,36 @@
             },
             error: function(request, status, error){
                 if(request.responseJSON.error)
-                    $("#errorUsername").css("display", "block");
+                    $("#errorProfile").css("display", "block");
                     return;
+            }
+        });
+    });
+    $("#saveUserAvatar").click(function(){
+        let newUserAvatar = document.getElementById("changeUserAvatar").files[0];
+        let formData = new FormData();
+        formData.append("file_url", newUserAvatar);
+        $.ajax({
+            method: "PUT",
+            url: "{% url 'user_api:user_avatar_upload'%}",
+            headers: { 'Authorization': `${prefix} ${token}` },
+            contentDisposition: "attachment;filename=image",
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function(){
+                location.reload();
+                return;
+            },
+            error: function(request, status, error){
+
             }
         });
     });
 
     $("#saveEmail").click(function(){
-        newEmail = $("#editEmail").val();
-        confirmIdentityPassword = $("#confirmIdentityPassword").val()
+        let newEmail = $("#editEmail").val();
+        let confirmIdentityPassword = $("#confirmIdentityPassword").val();
         $.ajax({
             method: "PUT",
             url: "{% url 'user_api:edit_email'%}",
@@ -259,35 +271,11 @@
 
                 if(request.responseJSON.error_email_exist){
                     $("#errorEmailExist").css("display", "block");
-                    return
+                    return;
                 }
 
                 if(request.responseJSON.error_confirm_identity_password){
                     $("#errorWrongConfirmIdentityPassword").css("display", "block");
-                    return
-                }
-            }
-        });
-    });
-
-    $("#saveDateOfBirth").click(function(){
-        newDateOfBirth = $("#editDateOfBirth").val();
-        $.ajax({
-            method: "PUT",
-            url: "{% url 'user_api:edit_date_of_birth'%}",
-            headers: { 'Authorization': `${prefix} ${token}` },
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify({
-                "date_of_birth": newDateOfBirth
-            }),
-            success: function(){
-                location.reload();
-                return;
-            },
-            error: function(request, status, error){
-                if(request.responseJSON.error){
-                    $("#errorDateOfBirth").css("display", "block");
                     return;
                 }
             }
@@ -295,13 +283,14 @@
     });
 
     $("#savePassword").click(function(){
-        oldPassword = $("#oldPassword").val()
-        newPassword = $("#changePassword").val();
-        confirmPassword = $("#confirmPassword").val()
+        let email = $("#editEmail").val();
+        let oldPassword = $("#oldPassword").val();
+        let newPassword = $("#changePassword").val();
+        let confirmPassword = $("#confirmPassword").val();
 
         if(confirmPassword !== newPassword){
-            $("#errorWrongConfirmPassword").css("display", "block")
-            return 
+            $("#errorWrongConfirmPassword").css("display", "block");
+            return;
         }
 
         $.ajax({
@@ -312,7 +301,8 @@
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify({
                 "password": newPassword,
-                "old_password": oldPassword
+                "old_password": oldPassword,
+                "email": email
             }),
             success: function(){
                 location.reload();
@@ -332,9 +322,9 @@
     });
 
     $("#logOut").click(function(){
-        localStorage.clear()
-        top.location.href = "/"
-    })
+        localStorage.clear();
+        top.location.href = "/";
+    });
 
 </script>
 

@@ -1,11 +1,12 @@
 from uuid import uuid4
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, UserManager
+from django.core.validators import FileExtensionValidator
 # Create your models here.
 
-def url_upload_to(instance, filename):
+def url_upload_to_for_user_avatar(instance, filename):
     name, ext = filename.split('.')
-    filepath = f'user_avatar/user_{instance.user_id.id}/{name}-{uuid4()}.{ext}'
+    filepath = f'user_avatar/user_{instance.user_profile.id}/{name}-{uuid4()}.{ext}'
     return filepath
 
 class User(AbstractBaseUser):
@@ -34,8 +35,8 @@ class Profile(models.Model):
         'ImageProfile',
         on_delete=models.CASCADE,
         null=True)
-    date_of_birth = models.DateTimeField()
+    date_of_birth = models.DateField()
 
 class ImageProfile(models.Model):
     user_profile = models.ForeignKey("Profile", on_delete=models.CASCADE)
-    file_url = models.FileField(upload_to=url_upload_to, default="user_avatar/base_avatar/test.png")
+    file_url = models.FileField(upload_to=url_upload_to_for_user_avatar)

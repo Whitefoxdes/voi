@@ -69,10 +69,10 @@
         
         if (confirmPassword !== password){
             $("#wrongPasswordConfirm").css("display", "flex");
-            return
+            return;
         }
 
-        $("#registrateButton").attr("disabled", true)
+        $("#registrateButton").attr("disabled", true);
         
         $.ajax({
             method: "POST",
@@ -86,17 +86,17 @@
             "date_of_birth": dateOfBirth
         }),
         success: function(result){
-            $(".register-form").css("display", "none")
-            $(".activate-text").css("display", "flex")
+            $(".register-form").css("display", "none");
+            $(".activate-text").css("display", "flex");
         },
         error: function(request, status, error){
+            $("#registrateButton").attr("disabled", false);
             if(request.responseJSON.error_field_empty){
                 $("#fieldEmpy").css("display", "flex");
             }
             if(request.responseJSON.error_email_exist){
                 $("#emailExist").css("display", "flex");
             }
-        $("#registrateButton").attr("disabled", false)
         }
     });
 });

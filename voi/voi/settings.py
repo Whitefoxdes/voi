@@ -139,6 +139,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+FILE_UPLOAD_MAX_MEMORY_SIZE = 2624400
+
 STATIC_URL = 'static/'
 
 STATIC_ROOT = BASE_DIR / '/static/'

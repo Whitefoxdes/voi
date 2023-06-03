@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='ImageProfile',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file_url', models.FileField(upload_to=user.models.url_upload_to)),
+                ('file_url', models.FileField(upload_to=user.models.url_upload_to_for_user_avatar)),
             ],
         ),
     ]
