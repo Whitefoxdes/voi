@@ -67,6 +67,8 @@
                     <input type="file" id="changeUserAvatar">
                     <input type="button" class="clone-changeUserAvatar" value="Change avatar" onclick="document.getElementById('changeUserAvatar').click();"><br>
                     <input type="button" class="save-button" id="saveUserAvatar" value="Save">
+                    <p id="errorFileSize" class="error">File size is too large</p>
+                    <p id="errorFileExt" class="error">Invalid file type</p>
                 </div>
                 
             </div>
@@ -241,7 +243,14 @@
                 return;
             },
             error: function(request, status, error){
-
+                if(request.responseJSON.error_file_size){
+                    $("#errorFileSize").css("display", "block");
+                    return;
+                }
+                if(request.responseJSON.error_file_ext){
+                    $("#errorFileExt").css("display", "block");
+                    return;
+                }
             }
         });
     });
