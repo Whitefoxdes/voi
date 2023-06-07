@@ -18,14 +18,19 @@
 </head>
 <body>
     <nav class="navbar">
-       
-        <div class="navbar-brand">
-            <a href="/" class="navbar-brand-name">VOI</a>
+        <div>
+
+            <div class="navbar-brand">
+                <a href="/" class="navbar-brand-name">
+                    <img src="/media/navbar/logo.png" width="40" height="40" class="logo">VOI
+                </a>
+            </div>
         </div>
         
         <div class="navbar-search">
             <input type="text" name="" id="" placeholder="Search" class="navbar-search-input">
-            <input type="button" value="Search" class="navbar-search-button">
+            <button class="navbar-search-button">
+            </button>
         </div>
         
         <button class="toggle-button">
@@ -51,22 +56,22 @@
     
     <div class="mostPupularGames">
         <div class="cardGame">
-            <img src="{% static 'image/card_image/skyrim.jpg' %}" class="cardImg" alt="">
+            <img src="/media/card_image/skyrim.jpg" class="cardImg" alt="">
             <p class="cardText">The Elder Scrolls V: Skyrim</p>
         </div>
 
         <div class="cardGame">
-            <img src="{% static 'image/card_image/blasphemous.jpg' %}" class="cardImg" alt="">
+            <img src="/media/card_image/blasphemous.jpg" class="cardImg" alt="">
             <p class="cardText">Blasphemous</p>
         </div>
 
         <div class="cardGame">
-            <img src="{% static 'image/card_image/prey-2017.jpg' %}" class="cardImg" alt="">
+            <img src="/media/card_image/prey-2017.jpg" class="cardImg" alt="">
             <p class="cardText">Prey</p>
         </div>
 
         <div class="cardGame">
-            <img src="{% static 'image/card_image/hollow_knight.jpg' %}" class="cardImg" alt="">
+            <img src="/media/card_image/hollow_knight.jpg" class="cardImg" alt="">
             <p class="cardText">Hollow Knight</p>
         </div>
     </div>
