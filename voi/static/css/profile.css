@@ -1,0 +1,336 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body, head{
+    background-color: rgb(29, 44, 58);
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(24, 38, 51);
+    padding: 5px 0;
+}
+
+.navbar-brand{
+    margin-left: 70px;
+}
+
+.navbar-brand img{
+    vertical-align:-25%;
+}
+
+.navbar-brand-name{
+    color: azure;
+    font-size: 30px;
+}
+
+.navbar-search {
+    padding: 0;
+    display: flex;
+}
+
+.navbar-search input{
+    display: flex;
+    margin: 0;
+}
+
+.navbar-search-input{
+    width: 15rem;
+    height: 2rem;
+    font-size: 17px;
+    background-color: rgb(46, 76, 101);
+    border: none;
+    color: azure;
+    border-top-left-radius: 1px;
+    border-bottom-left-radius: 1px;
+    padding: 4px 8px;
+}
+
+.navbar-search-input:focus{
+    outline: none;
+} 
+
+.navbar-search-input::placeholder{
+    color: rgba(240, 255, 255, 0.392);
+}
+
+.navbar-search-button{
+    background-color: rgb(46, 76, 101);
+    border: none;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+    background-image: url(/media/navbar/seearch_loop.png);
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    background-size: 45px 45px;
+    background-position: top;
+    width: 45px;
+    padding: 8px;
+    cursor: pointer;
+}
+.navbar-search-button:hover{
+    background-color: rgb(66, 96, 121);
+}
+
+.navbar-links ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navbar-links li{
+    list-style: none;
+}
+
+.navbar-links li a{
+    display: block;
+    padding: 5px;
+    margin: 5px 10px;
+}
+
+.toggle-button{
+    position: absolute;
+    top: 10px;
+    right: 1rem;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+}
+
+.toggle-button .bar{
+    height: 3px;
+    width: 100%;
+    background-color: white;
+    border-radius: 1rem;
+}
+
+@media(max-width: 1000px){
+    .toggle-button{
+        display: flex;
+        background-color: rgba(0,0,0,0);
+        border: none;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .navbar{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-search{
+        display: none;
+        width: 100%;
+        justify-content: center;
+        margin: 0;
+    }
+
+    .navbar-search.active{
+        display: flex;
+    }
+
+    .navbar-links{
+        display: none;
+        width: 100%;
+    }
+    .navbar-links ul{
+        width: 100%;
+        flex-direction: column;
+    }
+    .navbar-links li{
+        text-align: center;
+    }
+    .navbar-links li a {
+        padding: .5rem 1rem;
+    }
+    .navbar-links.active{
+        display: flex;
+    }
+}
+
+a:visited, a:link {
+    text-decoration: none;
+}
+
+a:active, a:hover{
+    text-decoration: none;
+}
+
+.info{
+    margin-top: 3%;
+    border-radius: 5px;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%);
+    color: azure;
+    background-color: rgb(59, 74, 88);
+    width: 40%;
+    height: auto;
+    text-align: center;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+#username{
+    font-size: 32px;
+}
+.edit-fields{
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 1.5rem;
+    border-radius: 5px;
+    
+}
+
+.profile-fields{
+    display: none;
+}
+
+.profile-fields.active{
+    display: block;
+}
+
+.safety-fields{
+    display: none;
+}
+
+.safety-fields.active{
+    display: block;
+}
+
+.password{
+    margin-top: .5rem;
+    width: 55%;
+    height: 28px;
+    padding: 0px 5px;
+    outline: none;
+    border: none;
+    color: azure;
+    font-size: 18px;
+    background-color: rgb(85, 108, 129);
+}
+
+#editEmail{
+    margin-top: .5rem;
+    width: 55%;
+    height: 28px;
+    padding: 0px 5px;
+    outline: none;
+    border: none;
+    color: azure;
+    font-size: 18px;
+    background-color: rgb(85, 108, 129);
+}
+
+#editUsername{
+    margin-top: .5rem;
+    width: 55%;
+    height: 28px;
+    padding: 0px 5px;
+    outline: none;
+    border: none;
+    color: azure;
+    font-size: 18px;
+    background-color: rgb(85, 108, 129);
+}
+
+#editDateOfBirth{
+    margin-top: .5rem;
+    background-color: rgb(85, 108, 129);
+    color: azure;
+    border: none;
+    width: 7rem;
+    height: 28px;
+    outline: none;
+    cursor: pointer;
+}
+
+#changePassword{
+    margin-top: .5rem;
+    width: 55%;
+    height: 28px;
+    padding: 0px 5px;
+    outline: none;
+    border: none;
+    color: azure;
+    font-size: 18px;
+    background-color: rgb(85, 108, 129);
+}
+
+
+.save-button{
+    width: 4.5rem;
+    height: 24px;
+    border: none;
+    outline: none;
+    color: azure;
+    background-color: rgb(65, 88, 109);
+    display: none;
+    cursor: pointer;
+}
+
+.save-button:hover{
+    background-color: rgb(85, 108, 129);
+}
+
+.edit-top{
+    margin-top: 5px;
+    width: 7rem;
+    height: 24px;
+    border: none;
+    background-color: rgb(85, 107, 129);
+    color: azure;
+    cursor: pointer;
+}
+
+.edit-top:hover{
+    background-color: rgb(65, 87, 109);
+}
+
+.error{
+    margin-top: .5rem;
+    color: rgb(201, 42, 42);
+    display: none;
+}
+
+#logOut{
+    margin-top: 3%;
+    width: 7rem;
+    height: 24px;
+    background-color: rgb(105, 127, 149);
+    border: none;
+    outline: none;
+    color: azure;
+    cursor: pointer;
+}
+
+#logOut:hover{
+    background-color: rgb(85, 107, 129);
+}
+
+input[type=file]{
+    display: none;
+}
+.field-text{
+    margin-top: 10px;
+}
+
+.clone-changeUserAvatar{
+    margin-top: 10px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    width: 7rem;
+    height: 24px;
+    background-color: rgb(85, 107, 129);
+    color: azure;
+
+}

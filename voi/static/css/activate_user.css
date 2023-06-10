@@ -1,0 +1,23 @@
+body, head{
+    background-color: rgb(29, 44, 58);
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+}
+
+.status-text{
+    top: 20%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%);
+    text-align: center;
+}
+#activate{
+    color: azure;
+    font-size: 26px;
+    display: none;
+}
+#error{
+    color: rgb(201, 42, 42);
+    font-size: 26px;
+    display: none;
+}

@@ -1,0 +1,86 @@
+body, head{
+    background-color: rgb(29, 44, 58);
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+}
+
+.register-form{
+    top: 20%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%);
+    color: azure;
+}
+
+.email-field, .password-field, .username-field, .date-of-birth-field{
+    margin-top: 1rem;
+    font-size: 25px;
+}
+
+#email, #password, #confirmPassword, #username, #dateOfBirth{
+    border: none;
+    width: 19rem;
+    height: 2rem;
+    padding: 4px 8px;
+    font-size: 20px;
+    border-radius: 1px;
+}
+.register-form input:focus{
+    outline: none;
+}
+
+#registrateButton{
+    width: 50%;
+    height: 2rem;
+    margin-left: 25%;
+    margin-top: 1rem;
+    border: none;
+    background-color: rgb(36, 61, 81);
+    font-size: 1rem;
+    color: azure;
+    
+}
+#registrateButton:hover{
+    background-color: rgb(56, 81, 101);
+}
+
+#registrateButton:disabled{
+    background-color: rgb(31, 55, 5);
+    cursor: wait;
+}
+
+a:visited, a:link {
+    text-decoration: none;
+}
+
+a:active, a:hover{
+    text-decoration: none;
+}
+
+.navbar-brand{
+    top: 15%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%);   
+}
+
+.navbar-brand a{
+    color: azure;
+    font-size: 30px;
+}
+
+.error{
+    display: none;
+    font-size: 16px;
+    color: rgb(201, 42, 42);
+}
+
+.activate-text{
+    display: none;
+    top: 20%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%);
+    color: azure;
+    font-size: 20px;
+}

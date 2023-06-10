@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div>
+
+            <div class="navbar-brand">
+                <a href="/" class="navbar-brand-name">
+                    <img src="/media/navbar/logo.png" width="40" height="40" class="logo">VOI
+                </a>
+            </div>
+        </div>
+        
+        <div class="navbar-search">
+            <input type="text" name="" id="" placeholder="Search" class="navbar-search-input">
+            <button class="navbar-search-button">
+            </button>
+        </div>
+        
+        <button class="toggle-button">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+
+        <div class="navbar-links">
+            <ul>
+                <li>
+                    <a class="login" id="login" href="{% url 'user:login' %}">Log in</a>
+                </li>
+                <li>
+                    <a class="register" id="register" href="{% url 'user:register' %}">Register</a>
+                </li>
+                <li>
+                    <a class="profile" id="profile" href="{% url 'user:profile' %}">Profile</a>
+                </li>
+            </ul>            
+        </div>
+    </nav>
+    
+    <div class="mostPupularGames">
+        <div class="cardGame">
+            <img src="/media/card_image/skyrim.jpg" class="cardImg" alt="">
+            <p class="cardText">The Elder Scrolls V: Skyrim</p>
+        </div>
+
+        <div class="cardGame">
+            <img src="/media/card_image/blasphemous.jpg" class="cardImg" alt="">
+            <p class="cardText">Blasphemous</p>
+        </div>
+
+        <div class="cardGame">
+            <img src="/media/card_image/prey-2017.jpg" class="cardImg" alt="">
+            <p class="cardText">Prey</p>
+        </div>
+
+        <div class="cardGame">
+            <img src="/media/card_image/hollow_knight.jpg" class="cardImg" alt="">
+            <p class="cardText">Hollow Knight</p>
+        </div>
+    </div>
+</body>
+<script>
+    $(".toggle-button").click(function(){
+        $(".navbar-links").toggleClass('active');
+        $(".navbar-search").toggleClass('active');
+    });
+    $(".profile").css("display", "none")
+    let token = localStorage.getItem("token");
+    if (token){
+        $("#login").css("display", "none");
+        $("#register").css("display", "none");
+        $("#profile").css("display", "block");
+    }
+</script>
+</html>

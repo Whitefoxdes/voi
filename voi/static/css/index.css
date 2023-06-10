@@ -1,0 +1,241 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+body, head{
+    background-color: rgb(29, 44, 58);
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(24, 38, 51);
+}
+
+.navbar-brand{
+    margin-left: 70px;
+}
+
+.navbar-brand img{
+    vertical-align:-25%;
+}
+
+.navbar-brand-name{
+    color: azure;
+    font-size: 30px;
+}
+
+.navbar-search {
+    padding: 0;
+    display: flex;
+}
+
+.navbar-search input{
+    display: flex;
+    margin: 0;
+}
+
+.navbar-search-input{
+    width: 15rem;
+    height: 2rem;
+    font-size: 17px;
+    background-color: rgb(46, 76, 101);
+    border: none;
+    color: azure;
+    border-top-left-radius: 1px;
+    border-bottom-left-radius: 1px;
+    padding: 4px 8px;
+}
+
+.navbar-search-input:focus{
+    outline: none;
+} 
+
+.navbar-search-input::placeholder{
+    color: rgba(240, 255, 255, 0.392);
+}
+
+.navbar-search-button{
+    background-color: rgb(46, 76, 101);
+    border: none;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+    background-image: url(/media/navbar/seearch_loop.png);
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    background-size: 45px 45px;
+    background-position: top;
+    width: 45px;
+    padding: 8px;
+    cursor: pointer;
+}
+.navbar-search-button:hover{
+    background-color: rgb(66, 96, 121);
+}
+
+.navbar-links{
+    margin-right: 4.3%;
+}
+
+.navbar-links ul {
+    margin-right: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navbar-links li{
+    list-style: none;
+}
+
+.navbar-links li a{
+    display: block;
+    padding: 5px;
+    margin: 5px 10px;
+}
+
+.toggle-button{
+    position: absolute;
+    top: 10px;
+    right: 1rem;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+}
+
+.toggle-button .bar{
+    height: 3px;
+    width: 100%;
+    background-color: white;
+    border-radius: 1rem;
+}
+
+@media(max-width: 1000px){
+    .toggle-button{
+        display: flex;
+        background-color: rgba(0,0,0,0);
+        border: none;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .navbar{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-search{
+        display: none;
+        width: 100%;
+        justify-content: center;
+        margin: 0;
+    }
+
+    .navbar-search.active{
+        display: flex;
+    }
+
+    .navbar-links{
+        display: none;
+        width: 100%;
+    }
+    .navbar-links ul{
+        width: 100%;
+        flex-direction: column;
+    }
+    .navbar-links li{
+        text-align: center;
+    }
+    .navbar-links li a {
+        padding: .5rem 1rem;
+    }
+
+    .navbar-links.active{
+        display: flex;
+    }
+}
+
+ .login{
+    color: azure;
+    border-color: rgb(37, 82, 102);
+    border-style: solid;
+    font-size: 25px;
+    padding: 5px 5px;
+}
+
+.login:hover{
+    border-color: rgb(90, 156, 187);
+    background-color: rgb(40, 40, 40);
+}
+
+.register{
+    color: azure;
+    border-radius: 0%;
+    border-color: rgb(39, 67, 80);
+    border-style: solid;
+    font-size: 25px;
+}
+
+.register:hover{
+    border-color: rgb(90, 156, 187);
+    background-color: rgb(40, 40, 40);
+}
+
+.profile{
+    color: azure;
+    background-color: rgb(70, 92, 121);
+    font-size: 25px;
+    padding: 5px 5px;
+}
+.profile:hover{
+    background-color: rgb(102, 163, 224);
+}
+
+a:visited, a:link {
+    text-decoration: none;
+}
+
+a:active, a:hover{
+    text-decoration: none;
+}
+
+.mostPupularGames{
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 2fr));
+    display: grid;
+    margin-top: 5%;
+    gap: 1rem;
+    left: 5%;
+    right: 5%;
+    position: absolute;
+}
+.cardGame{
+    border-radius: .3em;
+    background-color: rgb(50, 72, 101);
+    height: 20rem;
+    cursor: pointer;
+}
+
+.cardGame:hover{
+    background-color: rgb(70, 92, 121);
+    box-shadow: 3px 3px 12px rgb(18, 18, 18);
+}
+
+.cardGame > .cardText{
+    margin-top: 10px;
+    padding: .5rem;
+    font-size: 23px;
+    color: azure;
+    text-align: center;
+}
+.cardImg{
+    width: 100%;
+    height: 250px;
+}
