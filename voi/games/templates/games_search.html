@@ -2,18 +2,19 @@
 <html lang="en">
 <head>
     {% load static %}
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
-    
+
+    <link rel="stylesheet" href="{% static 'css/games_search.css' %}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap" rel="stylesheet">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    
+
     <title>Document</title>
 </head>
 <body>
@@ -42,7 +43,7 @@
         <div class="navbar-links">
             <ul>
                 <li>
-                    <a class="games" id="games" href="#">Games</a>
+                    <a class="games" id="games" href="/">Games</a>
                 </li>
                 <li>
                     <a class="login" id="login" href="{% url 'user_view:login' %}">Log in</a>
@@ -57,26 +58,16 @@
         </div>
     </nav>
     
-    <div class="mostPupularGames">
-        <div class="cardGame">
-            <img src="/media/card_image/skyrim.jpg" class="cardImg" alt="">
-            <p class="cardText">Skyrim</p>
-        </div>
+    <div id="gamesList">
 
-        <div class="cardGame">
-            <img src="/media/card_image/blasphemous.jpg" class="cardImg" alt="">
-            <p class="cardText">Blasphemous</p>
-        </div>
+    </div>
 
-        <div class="cardGame">
-            <img src="/media/card_image/prey-2017.jpg" class="cardImg" alt="">
-            <p class="cardText">Prey</p>
-        </div>
-
-        <div class="cardGame">
-            <img src="/media/card_image/hollow_knight.jpg" class="cardImg" alt="">
-            <p class="cardText">Hollow Knight</p>
-        </div>
+    <nav aria-label="pagination" id="pageButton">
+        <ul class="pagination">
+        </ul>
+    </nav>
+    <div class="errors">
+        <p id="errorGameNotFound">Game not found : &#40</p>
     </div>
 </body>
 <script>
@@ -86,18 +77,57 @@
     });
 
     $(".profile").css("display", "none");
-
+    
     let token = localStorage.getItem("token");
-
+    
     if (token){
         $("#login").css("display", "none");
         $("#register").css("display", "none");
-        $("#profile").css("display", "block");
+        $("#profile").css("display", "block");    
     }
+
+    url = window.location.href.split('?')[1];
+    $.ajax({
+        method: "GET",
+        url: `{% url 'games_api:games_search' %}?${url}`,
+        success: function(result){
+            
+            if(result.results == ""){
+                $("#errorGameNotFound").css("display", "inline")
+            }
+            
+            var game = result.results;
+
+            $.each(game, function(index){
+                var name = game[index]["name"];
+                var screenshot = game[index]["screenshot"];
+                $("#gamesList").append(
+                    `
+                    <div class="game">    
+                        <p class="game-name">${name}</p>
+                    </div>
+                    `
+                );
+            });            
+            if(result.previous){
+                var previousPage = result.previous.split("?")[1];
+                $(".pagination").append(
+                    `<li><a href="{% url 'games_view:games_search' %}?${previousPage}" class="previousButton">&#10094</a><br></li>`
+                );
+            }
+            if(result.next){
+                var nextPage = result.next.split("?")[1];
+                $(".pagination").append(
+                    `<li><a href="{% url 'games_view:games_search' %}?${nextPage}" class="nextButton">&#10095</a><br></li>`
+                );
+            }
+        }
+    });
 
     $("#navbarSearchButton").click(function(){
         searchInput = $("#searchInput").val();
         top.location.href = `{% url 'games_view:games_search' %}?name=${searchInput}&is_active=true&page=1`
     });
+
 </script>
 </html>

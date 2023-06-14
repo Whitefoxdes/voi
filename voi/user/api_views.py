@@ -3,14 +3,16 @@ from .models import (
     User, 
     Profile,
     ImageProfile)
+
 from .serializer import (
     UserSerializer,
     ProfileSerializer,
     ImageProfileSerializer)
+
 from voi.settings import (
     EMAIL_HOST_USER,
     FILE_UPLOAD_MAX_MEMORY_SIZE)
-from django.shortcuts import render
+
 from django.core.mail import send_mail
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -18,7 +20,6 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework_simplejwt.authentication import JWTAuthentication
-import datetime
 # Create your views here.
 
 class Register(APIView):    

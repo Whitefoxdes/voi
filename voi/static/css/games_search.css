@@ -3,10 +3,12 @@
     padding: 0;
 }
 
+
 body, head{
     background-color: rgb(29, 44, 58);
     font-family: 'Raleway', sans-serif;
     font-weight: 400;
+
 }
 
 .navbar{
@@ -106,7 +108,7 @@ body, head{
     flex-direction: column;
     justify-content: space-between;
     width: 30px;
-    height: 20px;
+    height: 21px;
 }
 
 .toggle-button .bar{
@@ -166,14 +168,6 @@ body, head{
     }
 }
 
-a:visited, a:link {
-    text-decoration: none;
-}
-
-a:active, a:hover{
-    text-decoration: none;
-}
-
 .games{
     color: azure;
     border-color: rgb(90, 118, 125);
@@ -186,172 +180,125 @@ a:active, a:hover{
     background-color: rgb(51, 75, 90);
 }
 
-.info{
-    margin-top: 3%;
-    border-radius: 5px;
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%);
+ .login{
     color: azure;
-    background-color: rgb(59, 74, 88);
-    width: 40%;
-    height: auto;
+    border-color: rgb(37, 82, 102);
+    border-style: solid;
+    font-size: 25px;
+    padding: 5px 5px;
+}
+
+.login:hover{
+    border-color: rgb(90, 156, 187);
+    background-color: rgb(40, 40, 40);
+}
+
+.register{
+    color: azure;
+    border-radius: 0%;
+    border-color: rgb(39, 67, 80);
+    border-style: solid;
+    font-size: 25px;
+}
+
+.register:hover{
+    border-color: rgb(90, 156, 187);
+    background-color: rgb(40, 40, 40);
+}
+
+.profile{
+    color: azure;
+    background-color: rgb(70, 92, 121);
+    font-size: 25px;
+    padding: 5px 5px;
+}
+.profile:hover{
+    background-color: rgb(102, 163, 224);
+}
+
+a:visited, a:link {
+    text-decoration: none;
+}
+
+a:active, a:hover{
+    text-decoration: none;
+}
+
+.game-name{
+    color: red;
+}
+
+#gamesList{
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 2fr));
+    display: grid;
+    margin-top: 5%;
+    gap: 1rem;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.game{
+    border-radius: .3em;
+    background-color: rgb(50, 72, 101);
+    height: 3rem;
+    cursor: pointer;
     text-align: center;
-    padding-top: 1rem;
-    padding-bottom: 2rem;
 }
-#username{
-    font-size: 32px;
+
+.game:hover{
+    background-color: rgb(70, 92, 121);
+    box-shadow: 3px 3px 12px rgb(18, 18, 18);
 }
-.edit-fields{
-    margin-top: 1rem;
+
+.game > .game-name{
+    padding-top: 10px;
+    font-size: 23px;
+    color: azure;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1; 
+    -webkit-box-orient: vertical;
+}
+
+/* #pageButton{
+    display: inline-block;
+    background-color: rgb(24, 38, 51);
+} */
+
+#pageButton{
+    display: flex;
+    justify-content: center;
+    margin-top: .5rem;
+    position: static;
+}
+        
+.pagination {
+    list-style: none;
+    display: flex;
+}
+        
+.pagination li {
+    padding: .5rem;
+    border-radius: 3px;
+    border: none;
     text-align: center;
-    font-size: 1.5rem;
-    border-radius: 5px;
-    
+    background-color: rgb(78, 102, 135);
+    margin: 0 3px;
 }
 
-.profile-fields{
+.pagination li a {
+    color: azure;
+}
+
+.errors{
+    display: flex;
+    justify-content: center;
+    position: static;
+}
+
+#errorGameNotFound{
     display: none;
-}
-
-.profile-fields.active{
-    display: block;
-}
-
-.safety-fields{
-    display: none;
-}
-
-.safety-fields.active{
-    display: block;
-}
-
-.password{
-    margin-top: .5rem;
-    width: 55%;
-    height: 28px;
-    padding: 0px 5px;
-    outline: none;
-    border: none;
-    color: azure;
-    font-size: 18px;
-    background-color: rgb(85, 108, 129);
-}
-
-#editEmail{
-    margin-top: .5rem;
-    width: 55%;
-    height: 28px;
-    padding: 0px 5px;
-    outline: none;
-    border: none;
-    color: azure;
-    font-size: 18px;
-    background-color: rgb(85, 108, 129);
-}
-
-#editUsername{
-    margin-top: .5rem;
-    width: 55%;
-    height: 28px;
-    padding: 0px 5px;
-    outline: none;
-    border: none;
-    color: azure;
-    font-size: 18px;
-    background-color: rgb(85, 108, 129);
-}
-
-#editDateOfBirth{
-    margin-top: .5rem;
-    background-color: rgb(85, 108, 129);
-    color: azure;
-    border: none;
-    width: 7rem;
-    height: 28px;
-    outline: none;
-    cursor: pointer;
-}
-
-#changePassword{
-    margin-top: .5rem;
-    width: 55%;
-    height: 28px;
-    padding: 0px 5px;
-    outline: none;
-    border: none;
-    color: azure;
-    font-size: 18px;
-    background-color: rgb(85, 108, 129);
-}
-
-
-.save-button{
-    width: 4.5rem;
-    height: 24px;
-    border: none;
-    outline: none;
-    color: azure;
-    background-color: rgb(65, 88, 109);
-    display: none;
-    cursor: pointer;
-}
-
-.save-button:hover{
-    background-color: rgb(85, 108, 129);
-}
-
-.edit-top{
-    margin-top: 5px;
-    width: 7rem;
-    height: 24px;
-    border: none;
-    background-color: rgb(85, 107, 129);
-    color: azure;
-    cursor: pointer;
-}
-
-.edit-top:hover{
-    background-color: rgb(65, 87, 109);
-}
-
-.error{
-    margin-top: .5rem;
     color: rgb(201, 42, 42);
-    display: none;
-}
-
-#logOut{
-    margin-top: 3%;
-    width: 7rem;
-    height: 24px;
-    background-color: rgb(105, 127, 149);
-    border: none;
-    outline: none;
-    color: azure;
-    cursor: pointer;
-}
-
-#logOut:hover{
-    background-color: rgb(85, 107, 129);
-}
-
-input[type=file]{
-    display: none;
-}
-.field-text{
-    margin-top: 10px;
-}
-
-.clone-changeUserAvatar{
-    margin-top: 10px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    width: 7rem;
-    height: 24px;
-    background-color: rgb(85, 107, 129);
-    color: azure;
-
+    font-size: 3rem;
 }

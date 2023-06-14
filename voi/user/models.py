@@ -1,15 +1,56 @@
 from uuid import uuid4
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, UserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.core.validators import FileExtensionValidator
-# Create your models here.
 
 def url_upload_to_for_user_avatar(instance, filename):
     name, ext = filename.split('.')
     filepath = f'user_avatar/user_{instance.user_profile.id}/{name}-{uuid4()}.{ext}'
     return filepath
 
-class User(AbstractBaseUser):
+# Create your models here.
+
+class Profile(models.Model):
+    username = models.CharField(max_length=25)
+    user_avatar = models.OneToOneField(
+        'ImageProfile',
+        on_delete=models.CASCADE,
+        null=True)
+    date_of_birth = models.DateField()
+
+class UserManager(BaseUserManager):
+
+    def create_user(self, email, password):
+
+        if email is None:
+            raise TypeError('Users must have an email address.')
+
+        profile = Profile(
+            username = "superuser",
+            date_of_birth = "2000-01-01"
+        )
+        profile.save()
+
+        user = self.model(email=self.normalize_email(email), profile=profile)
+        user.set_password(password)
+        user.save()
+
+        return user
+
+    def create_superuser(self, email, password):
+
+        if password is None:
+            raise TypeError('Superusers must have a password.')
+
+        user = self.create_user(email, password)
+        user.is_active = True
+        user.is_superuser = True
+        user.is_staff = True
+        user.save()
+
+        return user
+
+class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name="email",max_length=100, unique=True)
     user_activation_uuid = models.TextField()
     reset_password_uuid = models.TextField(null=True)
@@ -27,15 +68,6 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-
-
-class Profile(models.Model):
-    username = models.CharField(max_length=25)
-    user_avatar = models.OneToOneField(
-        'ImageProfile',
-        on_delete=models.CASCADE,
-        null=True)
-    date_of_birth = models.DateField()
 
 class ImageProfile(models.Model):
     user_profile = models.ForeignKey("Profile", on_delete=models.CASCADE)

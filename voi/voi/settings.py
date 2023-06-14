@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'games.apps.GamesConfig',
     'handbook.apps.HandbookConfig',
     'telegram_bot.apps.TelegramBotConfig',
+    'django_filters',
     'rest_framework',
     'rest_framework_simplejwt',
     'django.contrib.admin',

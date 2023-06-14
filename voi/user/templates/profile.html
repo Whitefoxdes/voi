@@ -21,26 +21,33 @@
 
 <body>
     <nav class="navbar">
+        <div>
 
-        <div class="navbar-brand">
-            <a href="/" class="navbar-brand-name">
-                <img src="/media/navbar/logo.png" width="40" height="40" class="logo">VOI
-            </a>
+            <div class="navbar-brand">
+                <a href="/" class="navbar-brand-name">
+                    <img src="/media/navbar/logo.png" width="40" height="40" class="logo">VOI
+                </a>
+            </div>
         </div>
-
+        
         <div class="navbar-search">
-            <input type="text" name="" id="" placeholder="Search" class="navbar-search-input">
-            <button class="navbar-search-button"></button>
+            <input type="text" id="searchInput" placeholder="Search" class="navbar-search-input">
+            <button class="navbar-search-button" id="navbarSearchButton">
+            </button>
         </div>
-
+        
         <button class="toggle-button">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
         </button>
+
         <div class="navbar-links">
             <ul>
-            </ul>
+                <li>
+                    <a class="games" id="games" href="#">Games</a>
+                </li>
+            </ul>            
         </div>
     </nav>
     <div class="info">
@@ -335,6 +342,11 @@
     $("#logOut").click(function(){
         localStorage.clear();
         top.location.href = "/";
+    });
+
+    $("#navbarSearchButton").click(function(){
+        searchInput = $("#searchInput").val();
+        top.location.href = `{% url 'games_view:games_search' %}?name=${searchInput}&is_active=true&page=1`
     });
 
 </script>

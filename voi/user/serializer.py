@@ -37,7 +37,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     username = serializers.CharField()
     date_of_birth = serializers.DateField()
-    user_avatar = serializers.CharField(source="user_avatar.file_url", required=False)
+    user_avatar = serializers.URLField(source="user_avatar.file_url", required=False)
 
 class ImageProfileSerializer(serializers.ModelSerializer):
     class Meta:

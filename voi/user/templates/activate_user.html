@@ -33,7 +33,7 @@
         success: function(){
             $("#activate").css("display", "block");
             setTimeout(function() {
-                top.location.href = "{% url 'user:login' %}";
+                top.location.href = "{% url 'user_view:login' %}";
             }, 3000);
         },
         error: function(request, status, error){
