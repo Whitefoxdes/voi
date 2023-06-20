@@ -8,4 +8,10 @@ urlpatterns = [
         r"^search/$",
         views.GamesSearchListView.as_view(),
         name='games_search'),
+
+    path(
+        "add-new-game",
+        views.AddNewGame.as_view(),
+        name='add_new_game'
+    )
 ]

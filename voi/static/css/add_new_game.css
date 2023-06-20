@@ -1,0 +1,284 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body, head{
+    background-color: rgb(29, 44, 58);
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+}
+
+.navbar{
+    display: flex;
+    align-items: center;
+    background-color: rgb(24, 38, 51);
+}
+
+.navbar-brand{
+    margin-left: 8rem;
+}
+
+.navbar-brand img{
+    vertical-align:-25%;
+}
+
+.navbar-brand-name{
+    color: azure;
+    font-size: 30px;
+}
+
+.navbar-search {
+    padding: 0;
+    display: flex;
+    margin-left: 20%;
+}
+
+.navbar-search input{
+    display: flex;
+    margin: 0;
+}
+
+.navbar-search-input{
+    width: 15rem;
+    height: 2rem;
+    font-size: 17px;
+    background-color: rgb(46, 76, 101);
+    border: none;
+    color: azure;
+    border-top-left-radius: 1px;
+    border-bottom-left-radius: 1px;
+    padding: 4px 8px;
+}
+
+.navbar-search-input:focus{
+    outline: none;
+} 
+
+.navbar-search-input::placeholder{
+    color: rgba(240, 255, 255, 0.392);
+}
+
+.navbar-search-button{
+    background-color: rgb(46, 76, 101);
+    border: none;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+    background-image: url(/media/navbar/seearch_loop.png);
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    background-size: 45px 45px;
+    background-position: top;
+    width: 45px;
+    padding: 8px;
+    cursor: pointer;
+}
+.navbar-search-button:hover{
+    background-color: rgb(66, 96, 121);
+}
+
+.navbar-links{
+    margin-left: 55px;
+}
+
+.navbar-links ul {
+    margin-right: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navbar-links li{
+    list-style: none;
+}
+
+.navbar-links li a{
+    display: block;
+    padding: 5px;
+    margin: 5px 10px;
+}
+
+.toggle-button{
+    position: absolute;
+    top: 10px;
+    right: 1rem;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+}
+
+.toggle-button .bar{
+    height: 3px;
+    width: 100%;
+    background-color: white;
+    border-radius: 1rem;
+}
+
+@media(max-width: 1150px){
+    .toggle-button{
+        display: flex;
+        background-color: rgba(0,0,0,0);
+        border: none;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .navbar{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-brand{
+        margin-left: 6rem;
+    }
+
+    .navbar-search{
+        display: none;
+        width: 100%;
+        justify-content: center;
+        margin: 0;
+    }
+
+    .navbar-search.active{
+        display: flex;
+    }
+
+    .navbar-links{
+        display: none;
+        width: 100%;
+        margin-left: 25%;
+    }
+    .navbar-links ul{
+        width: 50%;
+        flex-direction: column;
+    }
+    .navbar-links li{
+        text-align: center;
+    }
+    .navbar-links li a {
+        padding: .5rem 1rem;
+    }
+
+    .navbar-links.active{
+        display: flex;
+    }
+}
+
+.games{
+    color: azure;
+    border-color: rgb(90, 118, 125);
+    border-style: solid;
+    font-size: 25px;
+    padding: 5px 5px;
+}
+
+.games:hover{
+    background-color: rgb(51, 75, 90);
+}
+
+.profile{
+    color: azure;
+    background-color: rgb(70, 92, 121);
+    font-size: 25px;
+    padding: 5px 5px;
+}
+.profile:hover{
+    background-color: rgb(102, 163, 224);
+}
+
+a:visited, a:link {
+    text-decoration: none;
+}
+
+a:active, a:hover{
+    text-decoration: none;
+}
+
+.add-new-game{
+    margin-top: 3%;
+    border-radius: 5px;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%);
+    color: azure;
+    background-color: rgb(59, 74, 88);
+    width: 40%;
+    height: auto;
+    text-align: center;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+
+.add-game{
+    font-size: 32px;
+}
+.upload-screenshot-for-game{
+    font-size: 32px;
+    display: none;
+}
+#uploadScreeshot{
+    display: none;
+}
+
+#gameName{
+    background-color: rgb(64, 102, 138);
+    border: none;
+    outline: none;
+    color: azure;
+    width: 8rem;
+    height: 24px;
+}
+
+#gameName::placeholder{
+    text-align: center;
+    color: rgba(240, 255, 255, 0.500);
+}
+
+#saveGame{
+    color: azure;
+    width: 7.5rem;
+    height: 2rem;
+    background-color: rgb(94, 130, 165);
+    display: none;
+    border: none;
+    outline: none;
+}
+
+.clone-uploadScreeshot{
+    color: azure;
+    width: 7.5rem;
+    height: 2rem;
+    background-color: rgb(70, 103, 124);
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+#saveScreenshot{
+    color: azure;
+    width: 7.5rem;
+    height: 2rem;
+    background-color: rgb(94, 130, 165);
+    display: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+#saveScreenshot:disabled{
+    background-color: rgb(64, 100, 135);
+    cursor: not-allowed;
+}
+
+.error{
+    display: none;
+    font-size: 24px;
+    color: rgb(201, 42, 42);
+}
+
+#addNewGame{
+    display: none;
+    font-size: 26px;
+}

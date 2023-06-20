@@ -59,7 +59,7 @@
                 console.log(1)
                 localStorage.setItem("token", result.access);
                 localStorage.setItem("refresh_token", result.refresh);
-                top.location.href = document.referrer
+                top.location.href = "/"
             },
             error: function(request){
                 if (request.responseJSON.email || request.responseJSON.password){

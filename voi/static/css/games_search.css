@@ -3,7 +3,6 @@
     padding: 0;
 }
 
-
 body, head{
     background-color: rgb(29, 44, 58);
     font-family: 'Raleway', sans-serif;
@@ -260,11 +259,6 @@ a:active, a:hover{
     line-clamp: 1; 
     -webkit-box-orient: vertical;
 }
-
-/* #pageButton{
-    display: inline-block;
-    background-color: rgb(24, 38, 51);
-} */
 
 #pageButton{
     display: flex;

@@ -15,13 +15,13 @@ class UserProfileRender(APIView):
         return render(request, 'profile.html')
     
 class ActivateUserRender(APIView):
-    def get(self, request, user_activate_number):
-        return render(request, "activate_user.html", context={"user_activate_number": user_activate_number})
+    def get(self, request, user_activate_uuid):
+        return render(request, "activate_user.html", context={"user_activate_uuid": user_activate_uuid})
     
 class SendResetPasswordLetterRender(APIView):
     def get(self, request):
         return render(request, "send_reset_password_letter.html")
 
 class ResetPasswordRender(APIView):
-    def get(self, request, reset_password_number):
-        return render(request, "reset_password.html", context={"reset_password_number": reset_password_number})
+    def get(self, request, reset_password_uuid):
+        return render(request, "reset_password.html", context={"reset_password_uuid": reset_password_uuid})

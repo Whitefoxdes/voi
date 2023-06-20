@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/add_new_game.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div>
+
+            <div class="navbar-brand">
+                <a href="/" class="navbar-brand-name">
+                    <img src="/media/navbar/logo.png" width="40" height="40" class="logo">VOI
+                </a>
+            </div>
+        </div>
+        
+        <div class="navbar-search">
+            <input type="text" id="searchInput" placeholder="Search" class="navbar-search-input">
+            <button class="navbar-search-button" id="navbarSearchButton">
+            </button>
+        </div>
+        
+        <button class="toggle-button">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+
+        <div class="navbar-links">
+            <ul>
+                <li>
+                    <a class="games" id="games" href="/">Games</a>
+                </li>
+                <li>
+                    <a class="profile" id="profile" href="{% url 'user_view:profile' %}">Profile</a>
+                </li>
+            </ul>            
+        </div>
+    </nav>
+    <div class="add-new-game">
+        <p id="step">Step 1 of 2</p>
+        <div class="add-game">
+            
+            <p id="test">Game</p>
+            
+            <input type="text" id="gameName" placeholder="Game name"><br>
+            
+            <p class="error" id="errorNameFieldEmpty">Request field empty</p>
+            <p class="error" id="errorGameExist">Game already exist</p>
+            
+            <input type="button" id="saveGame" value="Save game">
+
+        </div><br>
+
+        <div class="upload-screenshot-for-game">
+            
+            <p>Screenshot</p>
+            
+            <input type="file" id="uploadScreeshot" multiple="multiple">
+            <input type="button" class="clone-uploadScreeshot" value="Upload screenshot" onclick="document.getElementById('uploadScreeshot').click();"><br>
+            
+            <p class="error" id="errorMoreThanLimitFile"></p>
+            <p class="error" id="errorFieldFieldEmpty">Request field empty</p>
+            <p class="error" id="errorFileSize">File size is too large</p>
+            <p class="error" id="errorFileExt">Invalid file type</p>
+
+            <input type="button" id="saveScreenshot" value="Save screenshot">
+            
+            <p id="addNewGame">New game has been add</p>
+        </div>
+    </div>
+
+</body>
+<script>
+    var prefix = "Bearer";
+    var token = localStorage.getItem("token");
+    $("#gameName").on("input", function(){
+        if ($("#gameName").val() == ""){
+            $("#saveGame").css("display", "none");
+            return;
+        }
+        $("#saveGame").css("display", "inline");
+    });
+    $("#navbarSearchButton").click(function(){
+        searchInput = $("#searchInput").val();
+        top.location.href = `{% url 'games_view:games_search' %}?name=${searchInput}&is_active=true&page=1`
+    });
+    $("#saveGame").click(function(){
+        $(".error").css("display", "none");
+        var name = $("#gameName").val()
+        $.ajax({
+            method: "POST",
+            url: "/api/v1/games/add-game",
+            headers: { 'Authorization': `${prefix} ${token}` },
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({
+                "name": name,
+            }),
+            success: function(result){
+                $("#upload-screenshot-for-game").css("display", "block");
+                $("#step").text("Step 2 of 2");
+                $(".upload-screenshot-for-game").css("display", "block");
+                $(".add-game").css("display", "none");
+                var game_id = result.game_id;
+                
+                $("#uploadScreeshot").on("input", function(){
+                    if ($("#saveScreenshot").val() == null){
+                        $("#saveScreenshot").css("display", "none");
+                        return;
+                    }
+                    $("#saveScreenshot").css("display", "inline");
+                    
+                    if (document.getElementById("uploadScreeshot").files.length > 5){
+                        $("#errorMoreThanLimitFile").css("display", "block");
+                        $("#saveScreenshot").attr("disabled", true);
+                        $("#errorMoreThanLimitFile").text(`More than 5 files: ${document.getElementById("uploadScreeshot").files.length}`);
+                        return;
+                    }
+
+                    $("#saveScreenshot").attr("disabled", false);
+                    $("#errorMoreThanLimitFile").text("");
+                });
+                
+                $("#saveScreenshot").click(function(){
+                    $(".error").css("display", "none");
+                    var formData = new FormData();
+                    $.each(document.getElementById("uploadScreeshot").files, function(index){
+                        screenshot = document.getElementById("uploadScreeshot").files[index];
+                        formData.append("file_url", screenshot);
+                    });
+                    $.ajax({
+                        method: "PUT",
+                        url: `/api/v1/games/upload-screenshot-for-game/${game_id}`,
+                        headers: { 'Authorization': `${prefix} ${token}` },
+                        contentDisposition: "attachment;filename=image",
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        success: function(result){
+                            $("#addNewGame").css("display", "block");
+                            $("#saveScreenshot").attr("disabled", true);
+                            setTimeout(
+                                function(){
+                                    top.location.reload();
+                                },
+                                3000
+                            );
+                        },
+                        error: function(request, status, error){
+                            if(request.responseJSON.error_field_empty){
+                                $("#errorFileFieldEmpty").css("display", "block");
+                            }
+
+                            if (request.responseJSON.error_file_size){
+                                $("#errorFileSize").css("display", "block");
+                            }
+
+                            if (request.responseJSON.error_file_ext){
+                                $("#errorFileExt").css("display", "block");
+                            }
+                        }
+                    });
+                });
+            },
+            error: function(request, status, error){
+                if (request.responseJSON.error_game_exist){
+                    $("#errorGameExist").css("display", "block");
+                }
+
+                if(request.responseJSON.error_field_empty){
+                    $("#errorNameFieldEmpty").css("display", "block");
+                }
+            }
+        });
+    });
+</script>
+</html>

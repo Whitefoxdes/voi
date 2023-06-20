@@ -44,9 +44,6 @@ class Register(APIView):
         
         data_profile = profile_serializer.validated_data
 
-        if not data_profile:
-            return Response({"error_field_empty": "Request field empty"}, 400)
-
         new_profile = Profile(
             username = data_profile.get("username"),
             date_of_birth = data_profile.get("date_of_birth")
@@ -127,7 +124,13 @@ class ChangePassword(APIView):
 
         serializer = UserSerializer(data=request.data)
         
-        serializer.check_old_password(data={"old_password": request.data.get("old_password"), "user_id": user_id})
+        serializer.check_old_password(
+            data={
+                "old_password": request.data.get("old_password"),
+                "user_id": user_id
+            }
+        )
+
         serializer.is_valid()
         if serializer.errors:
             return Response({"error": "Request field empty"}, status=400)     
@@ -211,9 +214,9 @@ class UserAvatarUpload(APIView):
         return Response({'status': "Upload"}, status=200)
     
 class ActivateUser(APIView):
-    def put(self, request, user_activation_number):
+    def put(self, request, user_activation_uuid):
         
-        user = User.objects.filter(user_activation_uuid = user_activation_number, is_active = False).first()
+        user = User.objects.filter(user_activation_uuid = user_activation_uuid, is_active = False).first()
         if not user: 
             return Response({"error_user": "Your account already activate or URL incapacitated"}, status=400)
         
@@ -227,24 +230,28 @@ class SendResetPasswordLetter(APIView):
         
         serializer = UserSerializer(data=request.data)
         
-        serializer.is_valid()
-        if serializer.errors:
-            return Response({"error": "Request field empty"}, status=400)
+        serializer.send_reset_password_letter_serializer(
+            data={
+                "email": request.data.get("email")
+            }
+        )
 
-        data = serializer.validated_data
+        serializer.is_valid()
+
+        data = serializer.data
 
         user = User.objects.filter(email=data.get("email")).first()
 
         if not user:
             return Response({"error_not_found_email": "Not found user with this email"}, status=404)
         
-        user.reset_password_number = uuid4()
+        user.reset_password_uuid = uuid4()
         user.save()
         user.refresh_from_db()
 
         send_mail(
-            subject = f'Hello {user.username}',
-            message = f"Reset password link http://127.0.0.1:8000/user/reset-password/{user.reset_password_number}",
+            subject = f'Hello {user.profile.username}',
+            message = f"Reset password link http://127.0.0.1:8000/user/reset-password/{user.reset_password_uuid}",
             from_email = EMAIL_HOST_USER,
             recipient_list = [f'{user.email}'],
             fail_silently = False
@@ -252,23 +259,25 @@ class SendResetPasswordLetter(APIView):
         return Response({"status": "Send"}, status=200)
     
 class ResetPassword(APIView):
-    def put(self,request, reset_password_number):
+    def put(self,request, reset_password_uuid):
         
         serializer = UserSerializer(data=request.data)
         
+        serializer.reset_password_serializer(
+            data={
+                "password": request.data.get("password")
+            }
+        )
         serializer.is_valid()
-        
-        if serializer.errors.get("password"):
-            return Response({"error": "Request field empty"}, status=400)
         
         data = serializer.data
 
-        user = User.objects.filter(reset_password_number = reset_password_number).first()
+        user = User.objects.filter(reset_password_uuid = reset_password_uuid).first()
 
         if not user:
             return Response({"error_url":"URL incapacitated"}, status = 404)
         
-        user.reset_password_number = None
+        user.reset_password_uuid = None
         user.set_password(data.get('password'))
         user.save()
         user.refresh_from_db()

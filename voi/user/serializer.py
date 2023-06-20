@@ -24,6 +24,16 @@ class UserSerializer(serializers.ModelSerializer):
 
         if not check_password(old_password, user.password):
             raise serializers.ValidationError({"error_old_password": "Wrong old password"})
+    
+    def send_reset_password_letter_serializer(self, data):
+        email = data.get("email")
+        if not email:
+            raise serializers.ValidationError({"error_email": "Request field empty"})
+    
+    def reset_password_serializer(self, data):
+        password = data.get("password")
+        if not password:
+            raise serializers.ValidationError({"error_password": "Request field empty"})
         
 class ProfileSerializer(serializers.ModelSerializer):
     

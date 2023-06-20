@@ -91,7 +91,6 @@
         method: "GET",
         url: `{% url 'games_api:games_search' %}?${url}`,
         success: function(result){
-            
             if(result.results == ""){
                 $("#errorGameNotFound").css("display", "inline")
             }

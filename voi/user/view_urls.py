@@ -20,7 +20,7 @@ urlpatterns = [
         name='profile'),
 
     path(
-        'activate-user/<uuid:user_activate_number>',
+        'activate-user/<uuid:user_activate_uuid>',
         views.ActivateUserRender.as_view(),
         name='activate_user'),
 
@@ -31,7 +31,7 @@ urlpatterns = [
     ),
 
     path(
-        'reset-password/<str:reset_password_number>',
+        'reset-password/<str:reset_password_uuid>',
         views.ResetPasswordRender.as_view(),
         name='reset_password'
     ),

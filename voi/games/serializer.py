@@ -4,14 +4,15 @@ from .models import (
 
 from rest_framework import serializers
 
-class GameScreeonshoSerializer(serializers.ModelSerializer):
+class GameScreeonshotSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameScreenshot
         fields = [
             "file_url"
         ]
-    # file_url = serializers.CharField()
-    file_url = serializers.URLField()
+    file_url = serializers.ListField(
+        child = serializers.FileField(write_only=True)
+    )
 
 class GamesSerializer(serializers.ModelSerializer):
 
@@ -22,4 +23,4 @@ class GamesSerializer(serializers.ModelSerializer):
             "screenshot"
         ]
     name = serializers.CharField()
-    screenshot = GameScreeonshoSerializer(many=True)
+    screenshot = GameScreeonshotSerializer(many=True, required=False)
