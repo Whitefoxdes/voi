@@ -41,35 +41,5 @@
         <p style="text-align: center;">Forgot password? <a href="{% url 'user_view:send_reset_password_letter' %}" style="color: rgb(0, 191, 255);">Reset password</a></p>
     </div>
 </body>
-<script>
-    $("#loginButton").click(function(){
-        let email = $("#email").val();
-        let password = $("#password").val();
-
-        $.ajax({
-            method: "POST",
-            url: "{% url 'user_api:login' %}",
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify({
-                "email": email,
-                "password": password
-            }),
-            success: function(result){
-                console.log(1)
-                localStorage.setItem("token", result.access);
-                localStorage.setItem("refresh_token", result.refresh);
-                top.location.href = "/"
-            },
-            error: function(request){
-                if (request.responseJSON.email || request.responseJSON.password){
-                    $("#fieldEmpy").css("display", "flex");
-                }
-                if (request.status == 401 || request.responseJSON.detail){
-                    $("#wrongEmailOrPassword").css("display", "flex");             
-                }
-            }
-        });        
-    });
-</script>
+<script src="{% static 'js/login.js' %}"></script>
 </html>

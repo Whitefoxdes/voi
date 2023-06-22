@@ -13,5 +13,10 @@ urlpatterns = [
         "add-new-game",
         views.AddNewGame.as_view(),
         name='add_new_game'
+    ),
+    re_path(
+        r"^all-games/$",
+        views.AllGamesListView.as_view(),
+        name='all_games'
     )
 ]

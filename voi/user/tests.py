@@ -7,9 +7,10 @@ from voi.settings import BASE_DIR
 @pytest.mark.django_db
 def test_should_register_user(
         client,
+        mocker,
         send_data_for_register_user
     ):
-
+    mocker.patch("django.core.mail.send_mail", return_value="return Response({'status':'Register'}, status=200)")
     responce = client.post(
         reverse("user_api:register"),
         send_data_for_register_user
@@ -231,10 +232,12 @@ def test_should_responce_wrong_password_error_for_edit_email(
 @pytest.mark.django_db
 def test_should_change_password(
         client,
+        mocker,
         send_new_user_access_token,
         send_data_for_change_password
     ):
-
+    
+    mocker.patch("django.core.mail.send_mail", return_value="return Response({'status':'Update'}, status=200)")
     responce = client.put(
         reverse("user_api:change_password"),
         headers = send_new_user_access_token,
@@ -332,10 +335,11 @@ def test_should_responce_profile_serializer_error_for_edit_profile(
 
 @pytest.mark.django_db
 def test_should_send_reset_password_letter(
-    client,
-    send_data_for_send_reset_password_letter
+        client,
+        mocker,
+        send_data_for_send_reset_password_letter
     ):
-
+    mocker.patch("django.core.mail.send_mail", return_value="return Response({'status':'Send'}, status=200)")
     responce = client.post(
         reverse("user_api:send_reset_password_letter"),
         data = send_data_for_send_reset_password_letter
@@ -476,7 +480,7 @@ def test_should_responce_file_ext_error(
     client,
     send_new_user_access_token
     ):
-    
+
     responce = client.put(
         reverse("user_api:user_avatar_upload"),
         headers = send_new_user_access_token,

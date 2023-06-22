@@ -210,9 +210,12 @@ body, head{
     background-color: rgb(70, 92, 121);
     font-size: 25px;
     padding: 5px 5px;
+    border-color: rgb(70, 92, 121);
+    border-style: solid;
 }
 .profile:hover{
     background-color: rgb(102, 163, 224);
+    border-color: rgb(102, 163, 224);
 }
 
 a:visited, a:link {
@@ -272,17 +275,34 @@ a:active, a:hover{
     display: flex;
 }
         
-.pagination li {
-    padding: .5rem;
+.previousButton {
+    width: 28px;
+    height: 28px;
     border-radius: 3px;
     border: none;
     text-align: center;
     background-color: rgb(78, 102, 135);
     margin: 0 3px;
+    color: azure;
 }
 
-.pagination li a {
+.previousButton:hover {
+    background-color: rgb(58, 82, 115);
+}
+
+.nextButton {
+    width: 28px;
+    height: 28px;
+    border-radius: 3px;
+    border: none;
+    text-align: center;
+    background-color: rgb(78, 102, 135);
+    margin: 0 3px;
     color: azure;
+}
+
+.nextButton:hover {
+    background-color: rgb(58, 82, 115);
 }
 
 .errors{

@@ -211,9 +211,12 @@ body, head{
     background-color: rgb(70, 92, 121);
     font-size: 25px;
     padding: 5px 5px;
+    border-color: rgb(70, 92, 121);
+    border-style: solid;
 }
 .profile:hover{
     background-color: rgb(102, 163, 224);
+    border-color: rgb(102, 163, 224);
 }
 
 a:visited, a:link {

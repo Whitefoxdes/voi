@@ -43,12 +43,12 @@
         <div class="navbar-links">
             <ul>
                 <li>
-                    <a class="games" id="games" href="/">Games</a>
+                    <a class="games" id="games" href="{% url 'games_view:all_games' %}">Games</a>
                 </li>
-                <li>
+                <li id="loginLi">
                     <a class="login" id="login" href="{% url 'user_view:login' %}">Log in</a>
                 </li>
-                <li>
+                <li class="registerLi">
                     <a class="register" id="register" href="{% url 'user_view:register' %}">Register</a>
                 </li>
                 <li>
@@ -63,70 +63,12 @@
     </div>
 
     <nav aria-label="pagination" id="pageButton">
-        <ul class="pagination">
-        </ul>
+        <div class="pagination">
+        </div>
     </nav>
     <div class="errors">
         <p id="errorGameNotFound">Game not found : &#40</p>
     </div>
 </body>
-<script>
-    $(".toggle-button").click(function(){
-        $(".navbar-links").toggleClass('active');
-        $(".navbar-search").toggleClass('active');
-    });
-
-    $(".profile").css("display", "none");
-    
-    let token = localStorage.getItem("token");
-    
-    if (token){
-        $("#login").css("display", "none");
-        $("#register").css("display", "none");
-        $("#profile").css("display", "block");    
-    }
-
-    url = window.location.href.split('?')[1];
-    $.ajax({
-        method: "GET",
-        url: `{% url 'games_api:games_search' %}?${url}`,
-        success: function(result){
-            if(result.results == ""){
-                $("#errorGameNotFound").css("display", "inline")
-            }
-            
-            var game = result.results;
-
-            $.each(game, function(index){
-                var name = game[index]["name"];
-                var screenshot = game[index]["screenshot"];
-                $("#gamesList").append(
-                    `
-                    <div class="game">    
-                        <p class="game-name">${name}</p>
-                    </div>
-                    `
-                );
-            });            
-            if(result.previous){
-                var previousPage = result.previous.split("?")[1];
-                $(".pagination").append(
-                    `<li><a href="{% url 'games_view:games_search' %}?${previousPage}" class="previousButton">&#10094</a><br></li>`
-                );
-            }
-            if(result.next){
-                var nextPage = result.next.split("?")[1];
-                $(".pagination").append(
-                    `<li><a href="{% url 'games_view:games_search' %}?${nextPage}" class="nextButton">&#10095</a><br></li>`
-                );
-            }
-        }
-    });
-
-    $("#navbarSearchButton").click(function(){
-        searchInput = $("#searchInput").val();
-        top.location.href = `{% url 'games_view:games_search' %}?name=${searchInput}&is_active=true&page=1`
-    });
-
-</script>
+<script src="{% static 'js/games_search.js' %}"></script>
 </html>

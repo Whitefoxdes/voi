@@ -12,10 +12,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = [
             "email",
             "password",
+            "is_staff"
         ]
 
     email = serializers.CharField()
     password = serializers.CharField()
+    is_staff = serializers.BooleanField(required=False)
 
     def check_old_password(self, data):
         old_password = data.get("old_password")

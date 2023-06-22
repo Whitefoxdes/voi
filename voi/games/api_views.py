@@ -59,7 +59,6 @@ class ScreenshotForGameUpload(APIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
     def put(self, request, game_id):
         serializer = GameScreeonshotSerializer(data=request.FILES)
-
         serializer.is_valid()
         if serializer.errors:
             return Response(
@@ -103,3 +102,8 @@ class ScreenshotForGameUpload(APIView):
         GameScreenshot.objects.bulk_create(screenshot_list)
 
         return Response({"status": "Upload"}, status=200)
+
+class AllGamesList(generics.ListAPIView):
+    queryset = Games.objects.all()
+    serializer_class = GamesSerializer
+    pagination_class = GamesListPagination

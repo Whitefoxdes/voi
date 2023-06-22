@@ -11,16 +11,26 @@ class GameScreeonshotSerializer(serializers.ModelSerializer):
             "file_url"
         ]
     file_url = serializers.ListField(
-        child = serializers.FileField(write_only=True)
+        child = serializers.FileField(write_only=True),
     )
+
+class GameScreeonshotURLSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GameScreenshot
+        fields = [
+            "file_url",
+        ]
+    file_url = serializers.URLField()
 
 class GamesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Games
         fields = [
+            "id",
             "name",
             "screenshot"
         ]
     name = serializers.CharField()
-    screenshot = GameScreeonshotSerializer(many=True, required=False)
+    id = serializers.IntegerField(required=False)
+    screenshot = GameScreeonshotURLSerializer(many=True, required=False)

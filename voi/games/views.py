@@ -11,3 +11,7 @@ class GamesSearchListView(APIView):
 class AddNewGame(APIView):
     def get(self, request):
         return render(request, "add_new_game.html")
+    
+class AllGamesListView(APIView):
+    def get(self, request):
+        return render(request, "all_games.html")

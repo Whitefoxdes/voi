@@ -9,8 +9,8 @@
 
     {% load static %}
 
-    
     <link rel="stylesheet" href="{% static 'css/activate_user.css' %}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap" rel="stylesheet">
@@ -24,26 +24,5 @@
         <p id="error">Your account already activate or URL incapacitated</p>
     </div>
 </body>
-<script>
-    $.ajax({
-        method: "PUT",
-        url: "{% url 'user_api:activate_user' user_activate_number %}",
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function(){
-            $("#activate").css("display", "block");
-            setTimeout(function() {
-                top.location.href = "{% url 'user_view:login' %}";
-            }, 3000);
-        },
-        error: function(request, status, error){
-            if (request.responseJSON.error_user){
-                $("#error").css("display", "block");
-                setTimeout(function() {
-                    top.location.href = "/";
-                }, 3000);
-            }
-        }
-    });
-    </script>
-    </html>
+<script src="{% static 'js/activate_user.js' %}"></script>
+</html>

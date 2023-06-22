@@ -186,6 +186,19 @@ a:active, a:hover{
     background-color: rgb(51, 75, 90);
 }
 
+.add-new-game{
+    color: azure;
+    border-color: rgb(90, 118, 125);
+    background-color: rgb(51, 75, 90);
+    border-style: solid;
+    font-size: 25px;
+    padding: 5px 5px; 
+}
+
+.add-new-game:hover{
+    background-color: rgb(31, 55, 70);
+}
+
 .info{
     margin-top: 3%;
     border-radius: 5px;
