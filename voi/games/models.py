@@ -10,7 +10,16 @@ def url_upload_to_for_game(instance, filename):
 class Games(models.Model):
     name = models.TextField(unique=True)
     is_active = models.BooleanField(default=False)
+    genere = models.ManyToManyField("GameGenere")
+    def __str__(self):
+        return self.name
 
 class GameScreenshot(models.Model):
     game = models.ForeignKey("Games", related_name="screenshot", on_delete=models.CASCADE)
     file_url = models.FileField(upload_to=url_upload_to_for_game)
+
+class GameGenere(models.Model):
+    genere_name = models.TextField()
+
+    def __str__(self):
+        return self.genere_name

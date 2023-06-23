@@ -22,7 +22,7 @@ urlpatterns = [
         name="screenshot_upload"
     ),
     re_path(
-        r"^all-games/$",
+        r"^all-games/?$",
         api_views.AllGamesList.as_view(),
         name='all_games'
     ),
@@ -30,5 +30,10 @@ urlpatterns = [
         "<int:game_id>",
         api_views.GameInfo.as_view(),
         name='game_info'
+    ),
+    path(
+        "genere-list",
+        api_views.GenereList.as_view(),
+        name='genere_list'
     )
 ]

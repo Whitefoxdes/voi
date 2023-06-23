@@ -13,11 +13,11 @@ $("#gameName").on("input", function(){
 });
 $("#navbarSearchButton").click(function(){
     searchInput = $("#searchInput").val();
-    top.location.href = `/games/search/?name=${searchInput}&is_active=true&page=1`
+    top.location.href = `/games/search/?name=${searchInput}&is_active=true&page=1`;
 });
 $("#saveGame").click(function(){
     $(".error").css("display", "none");
-    var name = $("#gameName").val()
+    var name = $("#gameName").val();
     $.ajax({
         method: "POST",
         url: "/api/v1/games/add-game",

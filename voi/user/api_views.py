@@ -4,18 +4,15 @@ from .models import (
     Profile,
     ImageProfile
     )
-
 from .serializer import (
     UserSerializer,
     ProfileSerializer,
     ImageProfileSerializer
     )
-
 from voi.settings import (
     EMAIL_HOST_USER,
     FILE_UPLOAD_MAX_MEMORY_SIZE
     )
-
 from django.core.mail import send_mail
 from rest_framework.views import APIView
 from rest_framework.response import Response

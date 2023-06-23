@@ -316,3 +316,27 @@ a:active, a:hover{
     color: rgb(201, 42, 42);
     font-size: 3rem;
 }
+
+#genereFilter{
+    position: absolute;
+    margin-top: 2%;
+    left: 15%;
+    color: azure;
+}
+
+#genereCheckbox{
+    display: none;
+    padding: 1px 6px;
+    overflow: scroll;
+    height: 89px;    
+    background-color: rgba(59, 74, 88, 0.8);
+    border-radius: .3em;
+}
+
+#genereFilterButton{
+    cursor: pointer;
+}
+
+#exitFromCheckbox{
+    cursor: pointer;
+}

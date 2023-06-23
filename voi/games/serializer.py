@@ -1,5 +1,7 @@
 from .models import (
-    Games, GameScreenshot
+    Games,
+    GameGenere,
+    GameScreenshot
 )
 
 from rest_framework import serializers
@@ -22,6 +24,16 @@ class GameScreeonshotURLSerializer(serializers.ModelSerializer):
         ]
     file_url = serializers.URLField()
 
+class GameGenereSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GameGenere
+        fields = [
+            "id",
+            "genere_name"
+        ]
+    id = serializers.IntegerField(required=False)
+    genere_name = serializers.CharField()
+
 class GamesSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -29,8 +41,10 @@ class GamesSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+            "genere",
             "screenshot"
         ]
-    name = serializers.CharField()
     id = serializers.IntegerField(required=False)
+    name = serializers.CharField()
+    genere = GameGenereSerializer(many=True, required=False)
     screenshot = GameScreeonshotURLSerializer(many=True, required=False)

@@ -1,21 +1,26 @@
+from .models import (
+    Games,
+    GameGenere,
+    GameScreenshot
+    )
 from uuid import uuid4
 from .serializer import (
     GamesSerializer,
+    GameGenereSerializer,
     GameScreeonshotSerializer
     )
 from .filter import GamesListFilter
 from rest_framework import generics
 from rest_framework.views import APIView
-from .models import (
-    Games,
-    GameScreenshot
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAdminUser
     )
 from .pagination import GamesListPagination
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from voi.settings import FILE_UPLOAD_MAX_MEMORY_SIZE
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class GamesSearchList(generics.ListAPIView):
@@ -121,6 +126,8 @@ class ScreenshotUpload(APIView):
 class AllGamesList(generics.ListAPIView):
     queryset = Games.objects.all()
     serializer_class = GamesSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = GamesListFilter
     pagination_class = GamesListPagination
 
 class GameInfo(APIView):
@@ -137,3 +144,7 @@ class GameInfo(APIView):
 
         serializer = GamesSerializer(game)
         return Response({"game": serializer.data}, status=200)
+    
+class GenereList(generics.ListAPIView):
+    queryset = GameGenere.objects.all()
+    serializer_class = GameGenereSerializer

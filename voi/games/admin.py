@@ -1,4 +1,8 @@
-from .models import Games,GameScreenshot
+from .models import (
+    Games,
+    GameGenere,
+    GameScreenshot
+    )
 from django.contrib import admin
 # Register your models here.
 
@@ -8,7 +12,8 @@ class GameScreenshotInline(admin.StackedInline):
 
 class GamesAdmine(admin.ModelAdmin):
     inlines = [
-        GameScreenshotInline
+        GameScreenshotInline        
     ]
 
 admin.site.register(Games, GamesAdmine)
+admin.site.register(GameGenere)
