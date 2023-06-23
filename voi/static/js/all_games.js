@@ -25,13 +25,15 @@ $.ajax({
 
         $.each(game, function(index){
             var name = game[index]["name"];
-            var screenshot = game[index]["screenshot"];
+            var gameId = game[index]["id"];
             
             $("#gamesList").append(
                 `
-                <div class="game">
-                    <p class="game-name">${name}</p>
-                </div>
+                <a href='/games/${gameId}'>
+                    <div class="game">
+                        <p class="game-name">${name}</p>
+                    </div>
+                </a>
                 `
             );
         });

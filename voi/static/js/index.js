@@ -12,8 +12,6 @@ $(".profile").css("display", "none");
 let token = localStorage.getItem("token");
 
 if (token){
-    // $("#login").css("display", "none");
-    // $("#register").css("display", "none");
     $("#loginLi").empty();
     $("#registerLi").empty();
     $("#profile").css("display", "block");

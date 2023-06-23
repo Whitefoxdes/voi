@@ -18,12 +18,17 @@ urlpatterns = [
 
     path(
         "upload-screenshot-for-game/<int:game_id>",
-        api_views.ScreenshotForGameUpload.as_view(),
+        api_views.ScreenshotUpload.as_view(),
         name="screenshot_upload"
     ),
     re_path(
         r"^all-games/$",
         api_views.AllGamesList.as_view(),
         name='all_games'
+    ),
+    path(
+        "<int:game_id>",
+        api_views.GameInfo.as_view(),
+        name='game_info'
     )
 ]

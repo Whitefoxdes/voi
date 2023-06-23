@@ -1,14 +1,20 @@
 from uuid import uuid4
+from .serializer import (
+    GamesSerializer,
+    GameScreeonshotSerializer
+    )
 from .filter import GamesListFilter
 from rest_framework import generics
 from rest_framework.views import APIView
-from .models import Games, GameScreenshot
+from .models import (
+    Games,
+    GameScreenshot
+    )
 from .pagination import GamesListPagination
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from voi.settings import FILE_UPLOAD_MAX_MEMORY_SIZE
 from django_filters.rest_framework import DjangoFilterBackend
-from .serializer import GamesSerializer, GameScreeonshotSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
@@ -53,10 +59,11 @@ class AddGame(APIView):
             status=200
         )
     
-class ScreenshotForGameUpload(APIView):
+class ScreenshotUpload(APIView):
     parser_classes = [MultiPartParser]
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminUser]
+    
     def put(self, request, game_id):
         serializer = GameScreeonshotSerializer(data=request.FILES)
         serializer.is_valid()
@@ -71,6 +78,14 @@ class ScreenshotForGameUpload(APIView):
         data = serializer.validated_data
 
         game = Games.objects.filter(pk = game_id).first()
+
+        if not game:
+            return Response(
+                {
+                    "error_game_not_found": "Not found"
+                },
+                status=404
+            )
 
         screenshot_list = []
         
@@ -107,3 +122,18 @@ class AllGamesList(generics.ListAPIView):
     queryset = Games.objects.all()
     serializer_class = GamesSerializer
     pagination_class = GamesListPagination
+
+class GameInfo(APIView):
+    def get(self, request, game_id):
+        game = Games.objects.filter(pk=game_id).first()
+        
+        if not game:
+            return Response(
+                {
+                    "error_game_not_found": "Not found"
+                },
+                status=404
+            )
+
+        serializer = GamesSerializer(game)
+        return Response({"game": serializer.data}, status=200)

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load static %}
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{% static 'css/games_search.css' %}">
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/game_info.css' %}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,7 +48,7 @@
                 <li id="loginLi">
                     <a class="login" id="login" href="{% url 'user_view:login' %}">Log in</a>
                 </li>
-                <li class="registerLi">
+                <li id="registerLi">
                     <a class="register" id="register" href="{% url 'user_view:register' %}">Register</a>
                 </li>
                 <li>
@@ -57,18 +57,18 @@
             </ul>            
         </div>
     </nav>
-    
-    <div id="gamesList">
+    <div id="game">
+        <div id="gameName">
 
-    </div>
-
-    <nav aria-label="pagination" id="pageButton">
-        <div class="pagination">
         </div>
-    </nav>
-    <div class="errors">
-        <p id="errorGameNotFound">Game not found&#40;</p>
+        <div id="gameScreenshot">
+            <div id="screenshotList">
+
+            </div>
+            <img id="curentScreenshot" src=''><br>
+        </div>
+        <p class="error" id="errorGameNotFound">Game not found&#40;</p>
     </div>
 </body>
-<script src="{% static 'js/games_search.js' %}"></script>
+<script src="{% static 'js/game_info.js' %}"></script>
 </html>

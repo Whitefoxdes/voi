@@ -18,5 +18,10 @@ urlpatterns = [
         r"^all-games/$",
         views.AllGamesListView.as_view(),
         name='all_games'
+    ),
+    path(
+        "<int:game_id>",
+        views.GameInfo.as_view(),
+        name='game_info'
     )
 ]

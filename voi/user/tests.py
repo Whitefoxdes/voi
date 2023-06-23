@@ -1,5 +1,5 @@
 import pytest
-from .models import User
+from .models import User, ImageProfile, Profile
 from django.urls import reverse
 from voi.settings import BASE_DIR
 # Create your tests here.
@@ -107,7 +107,6 @@ def test_should_login_user(
 @pytest.mark.django_db
 def test_should_responce_unactivated_user_error(
         client,
-        
         send_data_for_login_user_with_unactivated_user
     ):
 
@@ -146,7 +145,6 @@ def test_should_get_user_profile(
 @pytest.mark.django_db
 def test_should_responce_authorization_error_for_user_profile(
         client,
-        
     ):
 
     responce = client.get(
@@ -159,8 +157,8 @@ def test_should_responce_authorization_error_for_user_profile(
 @pytest.mark.django_db
 def test_should_edit_email(
         client,
-        send_new_user_access_token,
-        send_data_for_edit_email
+        send_data_for_edit_email,
+        send_new_user_access_token
     ):
 
     responce = client.put(
@@ -349,7 +347,7 @@ def test_should_send_reset_password_letter(
 
 @pytest.mark.django_db
 def test_should_responce_send_reset_password_letter_serializer_error(
-    client,
+        client,
     ):
 
     responce = client.post(
@@ -361,8 +359,8 @@ def test_should_responce_send_reset_password_letter_serializer_error(
 
 @pytest.mark.django_db
 def test_should_responce_email_not_found_error(
-    client,
-    send_data_for_email_not_found_error
+        client,
+        send_data_for_email_not_found_error
     ):
 
     responce = client.post(
@@ -374,9 +372,9 @@ def test_should_responce_email_not_found_error(
 
 @pytest.mark.django_db
 def test_should_reset_password(
-    client,
-    send_data_for_reset_password,
-    new_user
+        client,
+        send_data_for_reset_password,
+        new_user
     ):
 
     responce = client.put(
@@ -393,9 +391,8 @@ def test_should_reset_password(
 
 @pytest.mark.django_db
 def test_should_responce_reset_password_serializer_error(
-    client,
-    send_data_for_reset_password,
-    new_user
+        client,
+        new_user
     ):
 
     responce = client.put(
@@ -412,8 +409,8 @@ def test_should_responce_reset_password_serializer_error(
 
 @pytest.mark.django_db
 def test_should_responce_url_incapacitated_error(
-    client,
-    send_data_for_reset_password,
+        client,
+        send_data_for_reset_password,
     ):
 
     responce = client.put(
@@ -430,9 +427,14 @@ def test_should_responce_url_incapacitated_error(
 
 @pytest.mark.django_db
 def test_should_user_avatar_upload(
-    client,send_new_user_access_token
+        client,
+        mocker,
+        send_new_user_access_token
     ):
 
+    mocker.patch.object(Profile, "save", return_value="return Response({'status':'Upload'}, status=200)")
+    mocker.patch.object(ImageProfile, "save", return_value="return Response({'status':'Upload'}, status=200)")
+    
     responce = client.put(
         reverse("user_api:user_avatar_upload"),
         headers = send_new_user_access_token,
@@ -445,8 +447,7 @@ def test_should_user_avatar_upload(
 
 @pytest.mark.django_db
 def test_should_responce_authorization_error_for_file_upload(
-    client,
-    send_new_user_access_token
+        client,
     ):
 
     responce = client.put(
@@ -461,8 +462,8 @@ def test_should_responce_authorization_error_for_file_upload(
 
 @pytest.mark.django_db
 def test_should_responce_file_size_error(
-    client,
-    send_new_user_access_token
+        client,
+        send_new_user_access_token
     ):
 
     responce = client.put(
@@ -477,8 +478,8 @@ def test_should_responce_file_size_error(
 
 @pytest.mark.django_db
 def test_should_responce_file_ext_error(
-    client,
-    send_new_user_access_token
+        client,
+        send_new_user_access_token
     ):
 
     responce = client.put(
