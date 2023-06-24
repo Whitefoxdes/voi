@@ -24,5 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name="index"),
     path('user/', include("user.view_urls")),
-    path('api/v1/user/', include("user.api_urls"))
+    path('api/v1/user/', include("user.api_urls")),
+    path('games/', include("games.view_urls")),
+    path('api/v1/games/', include("games.api_urls"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

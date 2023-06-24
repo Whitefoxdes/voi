@@ -11,14 +11,12 @@ body, head{
 
 .navbar{
     display: flex;
-    justify-content: space-between;
     align-items: center;
     background-color: rgb(24, 38, 51);
-    padding: 5px 0;
 }
 
 .navbar-brand{
-    margin-left: 70px;
+    margin-left: 8rem;
 }
 
 .navbar-brand img{
@@ -33,6 +31,7 @@ body, head{
 .navbar-search {
     padding: 0;
     display: flex;
+    margin-left: 20%;
 }
 
 .navbar-search input{
@@ -79,8 +78,12 @@ body, head{
     background-color: rgb(66, 96, 121);
 }
 
+.navbar-links{
+    margin-left: 55px;
+}
+
 .navbar-links ul {
-    margin: 0;
+    margin-right: 0;
     padding: 0;
     display: flex;
 }
@@ -103,7 +106,7 @@ body, head{
     flex-direction: column;
     justify-content: space-between;
     width: 30px;
-    height: 21px;
+    height: 20px;
 }
 
 .toggle-button .bar{
@@ -113,7 +116,7 @@ body, head{
     border-radius: 1rem;
 }
 
-@media(max-width: 1000px){
+@media(max-width: 1150px){
     .toggle-button{
         display: flex;
         background-color: rgba(0,0,0,0);
@@ -125,6 +128,10 @@ body, head{
     .navbar{
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .navbar-brand{
+        margin-left: 6rem;
     }
 
     .navbar-search{
@@ -141,9 +148,10 @@ body, head{
     .navbar-links{
         display: none;
         width: 100%;
+        margin-left: 25%;
     }
     .navbar-links ul{
-        width: 100%;
+        width: 50%;
         flex-direction: column;
     }
     .navbar-links li{
@@ -152,6 +160,7 @@ body, head{
     .navbar-links li a {
         padding: .5rem 1rem;
     }
+
     .navbar-links.active{
         display: flex;
     }
@@ -163,6 +172,31 @@ a:visited, a:link {
 
 a:active, a:hover{
     text-decoration: none;
+}
+
+.games{
+    color: azure;
+    border-color: rgb(90, 118, 125);
+    border-style: solid;
+    font-size: 25px;
+    padding: 5px 5px;
+}
+
+.games:hover{
+    background-color: rgb(51, 75, 90);
+}
+
+.add-new-game{
+    color: azure;
+    border-color: rgb(90, 118, 125);
+    background-color: rgb(51, 75, 90);
+    border-style: solid;
+    font-size: 25px;
+    padding: 5px 5px; 
+}
+
+.add-new-game:hover{
+    background-color: rgb(31, 55, 70);
 }
 
 .info{

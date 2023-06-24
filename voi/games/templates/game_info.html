@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/game_info.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div>
+
+            <div class="navbar-brand">
+                <a href="/" class="navbar-brand-name">
+                    <img src="/media/navbar/logo.png" width="40" height="40" class="logo">VOI
+                </a>
+            </div>
+        </div>
+        
+        <div class="navbar-search">
+            <input type="text" id="searchInput" placeholder="Search" class="navbar-search-input">
+            <button class="navbar-search-button" id="navbarSearchButton">
+            </button>
+        </div>
+        
+        <button class="toggle-button">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+
+        <div class="navbar-links">
+            <ul>
+                <li>
+                    <a class="games" id="games" href="{% url 'games_view:all_games' %}">Games</a>
+                </li>
+                <li id="loginLi">
+                    <a class="login" id="login" href="{% url 'user_view:login' %}">Log in</a>
+                </li>
+                <li id="registerLi">
+                    <a class="register" id="register" href="{% url 'user_view:register' %}">Register</a>
+                </li>
+                <li>
+                    <a class="profile" id="profile" href="{% url 'user_view:profile' %}">Profile</a>
+                </li>
+            </ul>            
+        </div>
+    </nav>
+    <div id="game">
+        <div id="gameName">
+
+        </div>
+        <div id="gameScreenshot">
+            <div id="screenshotList">
+
+            </div>
+            <img id="curentScreenshot" src=''><br>
+        </div>
+        <p class="error" id="errorGameNotFound">Game not found&#40;</p>
+    </div>
+</body>
+<script src="{% static 'js/game_info.js' %}"></script>
+</html>

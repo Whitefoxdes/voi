@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'games.apps.GamesConfig',
     'handbook.apps.HandbookConfig',
     'telegram_bot.apps.TelegramBotConfig',
+    'django_filters',
     'rest_framework',
     'rest_framework_simplejwt',
     'django.contrib.admin',
@@ -139,7 +140,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-FILE_UPLOAD_MAX_MEMORY_SIZE = 2624400
+FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880
 
 STATIC_URL = 'static/'
 

@@ -12,10 +12,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = [
             "email",
             "password",
+            "is_staff"
         ]
 
     email = serializers.CharField()
     password = serializers.CharField()
+    is_staff = serializers.BooleanField(required=False)
 
     def check_old_password(self, data):
         old_password = data.get("old_password")
@@ -24,6 +26,16 @@ class UserSerializer(serializers.ModelSerializer):
 
         if not check_password(old_password, user.password):
             raise serializers.ValidationError({"error_old_password": "Wrong old password"})
+    
+    def send_reset_password_letter_serializer(self, data):
+        email = data.get("email")
+        if not email:
+            raise serializers.ValidationError({"error_email": "Request field empty"})
+    
+    def reset_password_serializer(self, data):
+        password = data.get("password")
+        if not password:
+            raise serializers.ValidationError({"error_password": "Request field empty"})
         
 class ProfileSerializer(serializers.ModelSerializer):
     
@@ -37,7 +49,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     username = serializers.CharField()
     date_of_birth = serializers.DateField()
-    user_avatar = serializers.CharField(source="user_avatar.file_url", required=False)
+    user_avatar = serializers.URLField(source="user_avatar.file_url", required=False)
 
 class ImageProfileSerializer(serializers.ModelSerializer):
     class Meta:

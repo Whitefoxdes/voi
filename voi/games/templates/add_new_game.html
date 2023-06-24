@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/add_new_game.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'js/add_new_game.js' %}"> -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div>
+
+            <div class="navbar-brand">
+                <a href="/" class="navbar-brand-name">
+                    <img src="/media/navbar/logo.png" width="40" height="40" class="logo">VOI
+                </a>
+            </div>
+        </div>
+        
+        <div class="navbar-search">
+            <input type="text" id="searchInput" placeholder="Search" class="navbar-search-input">
+            <button class="navbar-search-button" id="navbarSearchButton">
+            </button>
+        </div>
+        
+        <button class="toggle-button">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+
+        <div class="navbar-links">
+            <ul>
+                <li>
+                    <a class="games" id="games" href="{% url 'games_view:all_games' %}">Games</a>
+                </li>
+                <li>
+                    <a class="profile" id="profile" href="{% url 'user_view:profile' %}">Profile</a>
+                </li>
+            </ul>            
+        </div>
+    </nav>
+    <div class="add-new-game">
+        <p id="step">Step 1 of 2</p>
+        <div class="add-game">
+            
+            <p id="test">Game</p>
+            
+            <input type="text" id="gameName" placeholder="Game name"><br>
+            
+            <p class="error" id="errorNameFieldEmpty">Request field empty</p>
+            <p class="error" id="errorGameExist">Game already exist</p>
+            
+            <input type="button" id="saveGame" value="Save game">
+
+        </div><br>
+
+        <div class="upload-screenshot-for-game">
+            
+            <p>Screenshot</p>
+            
+            <input type="file" id="uploadScreeshot" multiple="multiple">
+            <input type="button" class="clone-uploadScreeshot" value="Upload screenshot" onclick="document.getElementById('uploadScreeshot').click();"><br>
+            
+            <p class="error" id="errorMoreThanLimitFile"></p>
+            <p class="error" id="errorFieldFieldEmpty">Request field empty</p>
+            <p class="error" id="errorFileSize">File size is too large</p>
+            <p class="error" id="errorFileExt">Invalid file type</p>
+
+            <input type="button" id="saveScreenshot" value="Save screenshot">
+            
+            <p id="addNewGame">New game has been add</p>
+        </div>
+    </div>
+
+</body>
+<script src="{% static 'js/add_new_game.js' %}"></script>
+</html>

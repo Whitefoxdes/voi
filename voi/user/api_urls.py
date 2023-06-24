@@ -16,7 +16,7 @@ urlpatterns = [
         name='login'),
     
     path(
-        'token/refresh',
+        'token-refresh',
         TokenRefreshView.as_view(),
         name='token_refresh'),
     
@@ -41,7 +41,7 @@ urlpatterns = [
         name='change_password'),
     
     path(
-        'activate-user/<uuid:user_activation_number>',
+        'activate-user/<uuid:user_activation_uuid>',
         api_views.ActivateUser.as_view(),
         name='activate_user'),
     
@@ -52,7 +52,7 @@ urlpatterns = [
     ),
     
     path(
-        'reset-password/<str:reset_password_number>',
+        'reset-password/<str:reset_password_uuid>',
         api_views.ResetPassword.as_view(),
         name='reset_password'
     ),
