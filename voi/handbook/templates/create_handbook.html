@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load static %}
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{% static 'css/add_new_game.css' %}">
-    <!-- <link rel="stylesheet" href="{% static 'js/add_new_game.js' %}"> -->
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/create_handbook.css' %}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap" rel="stylesheet">
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -46,28 +45,41 @@
                 <li>
                     <a class="games" id="games" href="{% url 'games_view:all_games' %}">Games</a>
                 </li>
+                <li id="loginLi">
+                    <a class="login" id="login" href="{% url 'user_view:login' %}">Log in</a>
+                </li>
+                <li id="registerLi">
+                    <a class="register" id="register" href="{% url 'user_view:register' %}">Register</a>
+                </li>
                 <li>
                     <a class="profile" id="profile" href="{% url 'user_view:profile' %}">Profile</a>
                 </li>
             </ul>            
         </div>
     </nav>
-    <div class="add-new-game">
-        <p id="step">Step 1 of 2</p>
-        <div class="add-game">
-            
-            <p id="test">Game</p>
-            
-            <input type="text" id="gameName" placeholder="Game name"><br>
-            
-            <p class="error" id="errorNameFieldEmpty">Request field empty</p>
-            <p class="error" id="errorGameExist">Game already exist</p>
-            
-            <input type="button" id="saveGame" value="Save game">
-
-        </div><br>
-
-        <div class="upload-screenshot-for-game" id="uploadScreenshotForGame">
+    <div id="createNewHandbook">
+        <div id="createHandbook">
+            <input type="text" id="handbookTitle">
+            <div id="handbookBodyEditorButtons">
+                <button id="addStrong"></button>
+                <button id="addEm"></button
+                    ><button id="addLink"></button>
+                </div>
+                <div id="handbookBodyEditor">
+                    <textarea  id="handbookBody" maxlength="4000"></textarea>
+                </div>
+                <div id="previewHandbookBody"></div>
+                
+                <div id="handbookType">
+                    <label for="types">Handbook type</label><br>
+                    <select id="types">
+                        
+                    </select>
+                </div>
+                
+                <button id="saveNewHandbook">Save</button>
+        </div>
+        <div class="upload-screenshot-for-handbook" id="uploadScreenshotForHandbook">
             
             <p>Screenshot</p>
             
@@ -78,13 +90,12 @@
             <p class="error" id="errorFieldFieldEmpty">Request field empty</p>
             <p class="error" id="errorFileSize">File size is too large</p>
             <p class="error" id="errorFileExt">Invalid file type</p>
-
+    
             <input type="button" id="saveScreenshot" value="Save screenshot">
             
         </div>
-        <p id="addNewGame">New game has been add</p>
+        <p id="successMessage">New handbook has been create, soon admin will check your handbook</p>
     </div>
-
+    
 </body>
-<script src="{% static 'js/add_new_game.js' %}"></script>
 </html>

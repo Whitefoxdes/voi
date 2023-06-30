@@ -1,76 +1,93 @@
 from .models import (
-    Games,
-    GameGenere,
-    GameScreenshot
+    Handbook,
+    HandbookType,
+    HandbookScreenshot
     )
+
+
 from uuid import uuid4
+from user.models import User
+from games.models import Games
 from .serializer import (
-    GamesSerializer,
-    GameGenereSerializer,
-    GameScreeonshotSerializer
+    HandbookSerializer,
+    HandbookTypeSerializer,
+    HandbookScreeonshotSerializer
     )
-from .filter import GamesListFilter
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.permissions import (
     IsAuthenticated,
     IsAdminUser
     )
-from .pagination import GamesListPagination
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from voi.settings import FILE_UPLOAD_MAX_MEMORY_SIZE
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-class GamesSearchList(generics.ListAPIView):
-    queryset = Games.objects.all()
-    serializer_class = GamesSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = GamesListFilter
-    pagination_class = GamesListPagination
-
-class AddGame(APIView):
+class CreateHandbook(APIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsAdminUser]
-    def post(self, request):
-        serializer = GamesSerializer(data=request.data)
+    permission_classes = [IsAuthenticated]
+    def post(self, request, game_id):
+        user_id = request.user.id
 
+        serializer = HandbookSerializer(data=request.data)
         serializer.is_valid()
         if serializer.errors:
             return Response(
                 {
                     "error_field_empty": "Request field empty"
-                }, 
+                },
                 status=400
             )
 
-        data = serializer.validated_data
-        if Games.objects.filter(name=data["name"]).exists():
+        data = serializer.data
+        handbook_type = HandbookType.objects.filter(pk=data.get("type").get("id")).first()
+
+        if not handbook_type:
             return Response(
                 {
-                    "error_game_exist":"Game exist"
+                    "error_handbook_type_not_allowed": "Handbook type not allowed",
                 },
-                status=400)
+                status=400
+            )
         
-        new_game = Games(name = data.get("name"), is_active=True)
-        new_game.save()
+        user = User.objects.filter(pk=user_id).first()
+        game = Games.objects.filter(pk=game_id).first()
+
+        if not game:
+            return Response(
+                {
+                    "error_game_not_found": "Game not found",
+                },
+                status=404
+            )
+
+        new_handbook = Handbook(
+            title = data.get("title"),
+            body = data.get("body"),
+            author = user,
+            game = game,
+            type = handbook_type
+        )
+
+        new_handbook.save()
 
         return Response(
             {
-                "status": "Created",
-                "game_id": new_game.id
+                "status": "Create",
+                "handbook_id" : new_handbook.id
             },
             status=200
         )
-    
+
 class ScreenshotUpload(APIView):
     parser_classes = [MultiPartParser]
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminUser]
     
-    def post(self, request, game_id):
-        serializer = GameScreeonshotSerializer(data=request.FILES)
+    def post(self, request, handbook_id):
+        serializer = HandbookScreeonshotSerializer(data=request.FILES)
         serializer.is_valid()
         if serializer.errors:
             return Response(
@@ -81,17 +98,15 @@ class ScreenshotUpload(APIView):
             )
         
         data = serializer.validated_data
+        handbook = Handbook.objects.filter(pk = handbook_id).first()
 
-        game = Games.objects.filter(pk = game_id).first()
-
-        if not game:
+        if not handbook:
             return Response(
                 {
-                    "error_game_not_found": "Not found"
+                    "error_handbook_not_found": "Handbook not found"
                 },
                 status=404
             )
-
         screenshot_list = []
         
         for screenshot in data.get("file_url"):
@@ -102,7 +117,6 @@ class ScreenshotUpload(APIView):
                     },
                     status=400
                 )
-            
             file_ext = screenshot.name.split(".")[1]
 
             if file_ext not in ["png","jpg","jpeg","gif",]:
@@ -113,38 +127,16 @@ class ScreenshotUpload(APIView):
                     status=400
                 )
             
-            screenshot_list.append(GameScreenshot(
+            screenshot_list.append(HandbookScreenshot(
                 file_url=screenshot,
-                game=game
+                handbook=handbook
                 )
             )
 
-        GameScreenshot.objects.bulk_create(screenshot_list)
+        HandbookScreenshot.objects.bulk_create(screenshot_list)
 
         return Response({"status": "Upload"}, status=200)
 
-class AllGamesList(generics.ListAPIView):
-    queryset = Games.objects.all()
-    serializer_class = GamesSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = GamesListFilter
-    pagination_class = GamesListPagination
-
-class GameInfo(APIView):
-    def get(self, request, game_id):
-        game = Games.objects.filter(pk=game_id).first()
-        
-        if not game:
-            return Response(
-                {
-                    "error_game_not_found": "Not found"
-                },
-                status=404
-            )
-
-        serializer = GamesSerializer(game)
-        return Response({"game": serializer.data}, status=200)
-    
-class GenereList(generics.ListAPIView):
-    queryset = GameGenere.objects.all()
-    serializer_class = GameGenereSerializer
+class HandbookTypeList(generics.ListAPIView):
+    queryset = HandbookType.objects.all()
+    serializer_class = HandbookTypeSerializer
