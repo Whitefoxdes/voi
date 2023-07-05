@@ -5,7 +5,7 @@ app_name = "handbook_api"
 
 urlpatterns = [
     path(
-        "create-handbook-for-game/<int:game_id>",
+        "create/<int:game_id>",
         api_views.CreateHandbook.as_view(),
         name='create_handbook'
     ),
@@ -17,4 +17,12 @@ urlpatterns = [
         "upload-screenshot-for-handbook/<int:handbook_id>",
         api_views.ScreenshotUpload.as_view(),
     ),
+    re_path(
+        r"handbook-list/$",
+        api_views.AllHandbookList.as_view(),
+    ),
+    path(
+        "<int:handbook_id>",
+        api_views.HandbookInfo.as_view()
+    )
 ]

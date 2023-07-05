@@ -3,11 +3,11 @@
     padding: 0;
     }
 
-    body, head{
-        background-color: rgb(29, 44, 58);
-        font-family: 'Raleway', sans-serif;
-        font-weight: 400;
-    }
+body, head{
+    background-color: rgb(29, 44, 58);
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+}
     
 .navbar{
     display: flex;
@@ -178,32 +178,6 @@
     background-color: rgb(51, 75, 90);
 }
 
- .login{
-    color: azure;
-    border-color: rgb(37, 82, 102);
-    border-style: solid;
-    font-size: 25px;
-    padding: 5px 5px;
-}
-
-.login:hover{
-    border-color: rgb(90, 156, 187);
-    background-color: rgb(40, 40, 40);
-}
-
-.register{
-    color: azure;
-    border-radius: 0%;
-    border-color: rgb(39, 67, 80);
-    border-style: solid;
-    font-size: 25px;
-}
-
-.register:hover{
-    border-color: rgb(90, 156, 187);
-    background-color: rgb(40, 40, 40);
-}
-
 .profile{
     color: azure;
     background-color: rgb(70, 92, 121);
@@ -230,7 +204,7 @@ a:active, a:hover{
 }
 
 #addStrong{
-    background-image: url(/media/add_strong.png);
+    background-image: url(/media/text_editor/add_strong.png);
     background-color: rgb(46, 76, 101);
     border: none;
     background-repeat: no-repeat;
@@ -243,7 +217,7 @@ a:active, a:hover{
     cursor: pointer;
 }
 #addEm{
-    background-image: url(/media/add_em.png);
+    background-image: url(/media/text_editor/add_em.png);
     background-color: rgb(46, 76, 101);
     border: none;
     background-repeat: no-repeat;
@@ -256,7 +230,7 @@ a:active, a:hover{
     cursor: pointer;
 }
 #addLink{
-    background-image: url(/media/add_link.png);
+    background-image: url(/media/text_editor/add_link.png);
     background-color: rgb(46, 76, 101);
     border: none;
     background-repeat: no-repeat;
@@ -281,6 +255,7 @@ a:active, a:hover{
     padding: 1rem;
 }
 #handbookBodyEditorButtons{
+    margin-top: 4px;
     background-color: rgb(46, 76, 101);
     border-color: rgb(66, 96, 121);
     border-style: solid;
@@ -316,7 +291,7 @@ a:active, a:hover{
     outline: none;
     position: relative;
     border-color: rgb(66, 96, 121);
-    border-style: solid solid none;
+    border-style: solid;
     background-color: rgb(37, 49, 60);
     color: azure;
 }
@@ -338,10 +313,10 @@ a:active, a:hover{
     position: relative;
     background-color: rgb(37, 49, 60);
     color: azure;
+    cursor: pointer;
 }
 #saveNewHandbook:hover{
     background-color: rgb(66, 97, 124);
-    cursor: pointer;
 }
 
 #handbookType{

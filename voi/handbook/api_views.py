@@ -4,7 +4,6 @@ from .models import (
     HandbookScreenshot
     )
 
-
 from uuid import uuid4
 from user.models import User
 from games.models import Games
@@ -13,13 +12,17 @@ from .serializer import (
     HandbookTypeSerializer,
     HandbookScreeonshotSerializer
     )
+
 from rest_framework import generics
+from .filter import HandbookListFilter
 from rest_framework.views import APIView
 from rest_framework.permissions import (
     IsAuthenticated,
     IsAdminUser
     )
+
 from rest_framework.response import Response
+from .pagination import HandbookListPagination
 from rest_framework.parsers import MultiPartParser
 from voi.settings import FILE_UPLOAD_MAX_MEMORY_SIZE
 from django_filters.rest_framework import DjangoFilterBackend
@@ -140,3 +143,25 @@ class ScreenshotUpload(APIView):
 class HandbookTypeList(generics.ListAPIView):
     queryset = HandbookType.objects.all()
     serializer_class = HandbookTypeSerializer
+
+class AllHandbookList(generics.ListAPIView):
+    queryset = Handbook.objects.filter(is_active=True).all()
+    serializer_class = HandbookSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = HandbookListFilter
+    pagination_class=HandbookListPagination
+
+class HandbookInfo(APIView):
+    def get(self, request, handbook_id):
+        game = Handbook.objects.filter(pk=handbook_id).first()
+        
+        if not game:
+            return Response(
+                {
+                    "error_game_not_found": "Not found"
+                },
+                status=404
+            )
+
+        serializer = HandbookSerializer(game)
+        return Response({"handbook": serializer.data}, status=200)

@@ -16,7 +16,7 @@ if (token){
 
 $("#navbarSearchButton").click(function(){
     searchInput = $("#searchInput").val();
-    top.location.href = `/games/search/?name=${searchInput}&is_active=true&page=1`;
+    top.location.href = `/games/search/?name=${searchInput}`;
 });
     
 $.ajax({
@@ -60,7 +60,7 @@ $("#saveNewHandbook").click(function(){
     var typeName = $('#types').find(":selected").text();
     $.ajax({
         method: "POST",
-        url: `/api/v1/handbook/create-handbook-for-game/${gameId}`,
+        url: `/api/v1/handbook/create/${gameId}`,
         headers: { 'Authorization': `${prefix} ${token}` },
         dataType: "json",
         contentType: "application/json; charset=utf-8",

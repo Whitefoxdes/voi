@@ -5,7 +5,7 @@ $(".toggle-button").click(function(){
 
 $("#navbarSearchButton").click(function(){
     searchInput = $("#searchInput").val();
-    top.location.href = `/games/search/?name=${searchInput}&is_active=true&page=1`;
+    top.location.href = `/games/search/?name=${searchInput}`;
 });
 
 $(".profile").css("display", "none");

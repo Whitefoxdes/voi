@@ -24,7 +24,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class GamesSearchList(generics.ListAPIView):
-    queryset = Games.objects.all()
+    queryset = Games.objects.filter(is_active=True).all()
     serializer_class = GamesSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = GamesListFilter
@@ -124,7 +124,7 @@ class ScreenshotUpload(APIView):
         return Response({"status": "Upload"}, status=200)
 
 class AllGamesList(generics.ListAPIView):
-    queryset = Games.objects.all()
+    queryset = Games.objects.filter(is_active=True).all()
     serializer_class = GamesSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = GamesListFilter

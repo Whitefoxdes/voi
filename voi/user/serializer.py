@@ -5,12 +5,27 @@ from .models import (
 from rest_framework import serializers
 from django.contrib.auth.hashers import check_password
 
+class ProfileSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Profile
+        fields = [
+            "username",
+            "date_of_birth",
+            "user_avatar"
+        ]
+
+    username = serializers.CharField()
+    date_of_birth = serializers.DateField()
+    user_avatar = serializers.URLField(source="user_avatar.file_url", required=False)
+
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
         fields = [
             "email",
+            "profile",
             "password",
             "is_staff"
         ]
@@ -18,6 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
     email = serializers.CharField()
     password = serializers.CharField()
     is_staff = serializers.BooleanField(required=False)
+    profile = ProfileSerializer(required=False)
 
     def check_old_password(self, data):
         old_password = data.get("old_password")
@@ -36,20 +52,6 @@ class UserSerializer(serializers.ModelSerializer):
         password = data.get("password")
         if not password:
             raise serializers.ValidationError({"error_password": "Request field empty"})
-        
-class ProfileSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Profile
-        fields = [
-            "username",
-            "date_of_birth",
-            "user_avatar"
-        ]
-
-    username = serializers.CharField()
-    date_of_birth = serializers.DateField()
-    user_avatar = serializers.URLField(source="user_avatar.file_url", required=False)
 
 class ImageProfileSerializer(serializers.ModelSerializer):
     class Meta:

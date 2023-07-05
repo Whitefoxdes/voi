@@ -13,7 +13,7 @@ $("#gameName").on("input", function(){
 });
 $("#navbarSearchButton").click(function(){
     searchInput = $("#searchInput").val();
-    top.location.href = `/games/search/?name=${searchInput}&is_active=true&page=1`;
+    top.location.href = `/games/search/?name=${searchInput}`;
 });
 $("#saveGame").click(function(){
     $(".error").css("display", "none");

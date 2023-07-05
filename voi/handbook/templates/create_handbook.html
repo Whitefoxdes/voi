@@ -45,12 +45,6 @@
                 <li>
                     <a class="games" id="games" href="{% url 'games_view:all_games' %}">Games</a>
                 </li>
-                <li id="loginLi">
-                    <a class="login" id="login" href="{% url 'user_view:login' %}">Log in</a>
-                </li>
-                <li id="registerLi">
-                    <a class="register" id="register" href="{% url 'user_view:register' %}">Register</a>
-                </li>
                 <li>
                     <a class="profile" id="profile" href="{% url 'user_view:profile' %}">Profile</a>
                 </li>
@@ -95,7 +89,7 @@
             
         </div>
         <p id="successMessage">New handbook has been create, soon admin will check your handbook</p>
-    </div>
-    
+    </div> 
 </body>
+<script src="{% static 'js/create_handbook.js' %}"></script>
 </html>
