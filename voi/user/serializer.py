@@ -24,12 +24,14 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
+            "id",
             "email",
             "profile",
             "password",
             "is_staff"
         ]
 
+    id = serializers.IntegerField(required=False)
     email = serializers.CharField()
     password = serializers.CharField()
     is_staff = serializers.BooleanField(required=False)

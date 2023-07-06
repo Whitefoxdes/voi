@@ -16,6 +16,7 @@ class Handbook(models.Model):
     author = models.ForeignKey(User, related_name="handbook", on_delete=models.CASCADE)
     game = models.ForeignKey(Games, related_name="handbook", on_delete=models.CASCADE)
     is_active = models.BooleanField(default=False)
+    is_delete = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -28,3 +29,4 @@ class HandbookType(models.Model):
 class HandbookScreenshot(models.Model):
     handbook = models.ForeignKey("Handbook", related_name="screenshot", on_delete=models.CASCADE)
     file_url = models.FileField(upload_to=url_upload_to_for_handbook)
+    is_delete = models.BooleanField(default=False)

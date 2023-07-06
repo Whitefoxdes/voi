@@ -24,5 +24,17 @@ urlpatterns = [
     path(
         "<int:handbook_id>",
         api_views.HandbookInfo.as_view()
+    ),
+    path(
+        "edit/<int:handbook_id>",
+        api_views.EditHandbook.as_view()
+    ),
+    path(
+        "delete/<int:handbook_id>",
+        api_views.DeleteHandbook.as_view()
+    ),
+    path(
+        "delete-screenshot/<int:handbook_id>",
+        api_views.DeleteScreenshot.as_view()
     )
 ]

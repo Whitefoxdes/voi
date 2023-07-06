@@ -3,16 +3,14 @@ from .models import (
     HandbookType,
     HandbookScreenshot
     )
-
 from uuid import uuid4
 from user.models import User
 from games.models import Games
 from .serializer import (
     HandbookSerializer,
     HandbookTypeSerializer,
-    HandbookScreeonshotSerializer
+    HandbookScreenshotSerializer
     )
-
 from rest_framework import generics
 from .filter import HandbookListFilter
 from rest_framework.views import APIView
@@ -20,7 +18,6 @@ from rest_framework.permissions import (
     IsAuthenticated,
     IsAdminUser
     )
-
 from rest_framework.response import Response
 from .pagination import HandbookListPagination
 from rest_framework.parsers import MultiPartParser
@@ -87,10 +84,10 @@ class CreateHandbook(APIView):
 class ScreenshotUpload(APIView):
     parser_classes = [MultiPartParser]
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated]
     
     def post(self, request, handbook_id):
-        serializer = HandbookScreeonshotSerializer(data=request.FILES)
+        serializer = HandbookScreenshotSerializer(data=request.FILES)
         serializer.is_valid()
         if serializer.errors:
             return Response(
@@ -145,7 +142,10 @@ class HandbookTypeList(generics.ListAPIView):
     serializer_class = HandbookTypeSerializer
 
 class AllHandbookList(generics.ListAPIView):
-    queryset = Handbook.objects.filter(is_active=True).all()
+    queryset = Handbook.objects.filter(
+        is_active=True,
+        is_delete=False
+    ).all()
     serializer_class = HandbookSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = HandbookListFilter
@@ -153,15 +153,167 @@ class AllHandbookList(generics.ListAPIView):
 
 class HandbookInfo(APIView):
     def get(self, request, handbook_id):
-        game = Handbook.objects.filter(pk=handbook_id).first()
+        handbook = Handbook.objects.filter(pk=handbook_id, is_delete=False).first()
         
-        if not game:
+        if not handbook:
             return Response(
                 {
-                    "error_game_not_found": "Not found"
+                    "error_handbook_not_found": "Not found"
                 },
                 status=404
             )
 
-        serializer = HandbookSerializer(game)
+        serializer = HandbookSerializer(handbook)
         return Response({"handbook": serializer.data}, status=200)
+    
+class EditHandbook(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    def put(self, request, handbook_id):
+        
+        user_id = request.user.id
+        
+        serializer = HandbookSerializer(data=request.data)
+        serializer.is_valid()
+
+        if serializer.errors:
+            return Response(
+                {
+                    "error_field_empty": "Request field empty"
+                },
+                status=400
+            )
+
+        data = serializer.data
+
+        handbook = Handbook.objects.filter(pk=handbook_id, is_delete=False).first()
+
+        if not handbook:
+            return Response(
+                {
+                    "error_handbook_not_found": "Handbook not found"
+                },
+                status=404
+            )
+        
+        if user_id != handbook.author.id:
+            return Response(
+                {
+                    "error_user_id": "Request data isn't yours"
+                },
+                status=403
+            )
+
+        handbook_type = HandbookType.objects.filter(pk=data.get("type").get("id")).first()
+
+        if not handbook_type:
+            return Response(
+                {
+                    "error_handbook_type_not_allowed": "Handbook type not allowed",
+                },
+                status=400
+            )
+        
+        handbook.title = data.get("title")
+        handbook.body = data.get("body")
+        handbook.type = handbook_type
+        handbook.is_active = False
+
+        handbook.save()
+        
+        return Response(
+            {
+                "status": "Update"
+            },
+            status=200
+        )
+    
+class DeleteHandbook(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    def delete(self, request, handbook_id):
+        
+        user_id = request.user.id
+
+        handbook = Handbook.objects.filter(pk=handbook_id, is_delete=False).first()
+
+        if not handbook:
+            return Response(
+                {
+                    "error_handbook_not_found": "Handbook not found"
+                },
+                status=404
+            )
+    
+        if user_id != handbook.author.id:
+            return Response(
+                {
+                    "error_user_id": "Request data isn't yours"
+                },
+                status=403
+            )
+        
+        handbook.is_delete = True
+
+        handbook.save()
+
+        return Response(
+            {
+                "status": "Delete"
+            },
+            status=200
+        )
+
+class DeleteScreenshot(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    def delete(self, request, handbook_id):
+        
+        old_screenshot_serializer = HandbookScreenshotSerializer(data=request.data)
+        
+        old_screenshot_serializer.is_valid()
+        
+        old_screenshot_data = old_screenshot_serializer.data
+
+        if not old_screenshot_data.get("id"):
+            return Response(
+                {
+                    "error_field_empty":"Request field empty"
+                },
+                status=400
+            )
+
+        old_screenshot_list = []
+
+        for screenshot_id in old_screenshot_data.get("id"):
+            if not HandbookScreenshot.objects.filter(pk=screenshot_id).exists():
+                return Response(
+                    {
+                        "error_screenshot_not_found":"Screenshot not found"
+                    },
+                    status=400
+                )
+            old_screenshot = HandbookScreenshot.objects.filter(pk=screenshot_id, is_delete=False).first()
+
+            if not old_screenshot:
+                return Response(
+                    {
+                        "error_screenshot_already_delete":"Screenshot already delete"
+                    },
+                    status=400
+                )
+
+            old_screenshot.is_delete = True
+            old_screenshot_list.append(old_screenshot)
+
+        HandbookScreenshot.objects.bulk_update(
+            old_screenshot_list,
+            ["is_delete"]
+        )
+
+        return Response(
+            {
+                "status": "Delete"
+            },
+            status=200
+        ) 

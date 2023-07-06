@@ -1,3 +1,8 @@
+marked.use({
+    mangle: false,
+    headerIds: false
+});
+
 $(".toggle-button").click(function(){
     $(".navbar-links").toggleClass('active');
     $(".navbar-search").toggleClass('active');
@@ -9,8 +14,6 @@ var prefix = "Bearer";
 var token = localStorage.getItem("token");
 
 if (token){
-    $("#loginLi").empty();
-    $("#registerLi").empty();
     $("#profile").css("display", "block");
 }
 
@@ -23,7 +26,7 @@ $.ajax({
     method: "GET",
     url : "/api/v1/handbook/handbook-type-list",
     success: function(result){
-        types = result;
+        var types = result;
         $.each(types, function(index){
             var typeId = types[index]['id'];
             var typeName = types[index]['type_name'];
@@ -35,21 +38,29 @@ $.ajax({
 });
 
 $("#addStrong").click(function(){
-    $("#handbookBody").val( $("#handbookBody").val() + "**strong text**" );
+    $("#handbookBody").val( $("#handbookBody").val() + "**strong text**" ).trigger("input");
 });
 
 $("#addEm").click(function(){
-    $("#handbookBody").val( $("#handbookBody").val() + "*emphasized text*" );
+    $("#handbookBody").val( $("#handbookBody").val() + "*emphasized text*" ).trigger("input");
 });
 
 $("#addLink").click(function(){
-    $("#handbookBody").val( $("#handbookBody").val() + "[link name](url)" );
+    $("#handbookBody").val( $("#handbookBody").val() + "[link name](url)" ).trigger("input");
 });
 
 $("#handbookBody").on("input", function(){
     $("#previewHandbookBody").empty();
     text = $("#handbookBody").val();
-    $("#previewHandbookBody").append(marked.parse(text));
+    $("#previewHandbookBody").append(marked.parse(text)).change();
+});
+
+$("#handbookTitle").add("#handbookBody").on('input', function(){
+    if($("#handbookTitle").val() == "" || $("#handbookBody").val() == ""){
+        $("#saveNewHandbook").css("display", "none");
+        return;
+    }
+    $("#saveNewHandbook").css("display", "inline");
 });
 
 $("#saveNewHandbook").click(function(){
@@ -113,6 +124,16 @@ $("#saveNewHandbook").click(function(){
                         $("#uploadScreenshotForHandbook").css("display", "none");
                     },
                     error: function(request, status, error){
+                        if (request.responseJSON.error_handbook_not_found){
+                            $("#errorHandbookNotFound").css("display", "inline");
+                            $("#handbook").css("display", "none");
+                            setTimeout(
+                                function(){
+                                    window.location.href = "/";
+                                },
+                                2500
+                            );
+                        }
                         if(request.responseJSON.error_field_empty){
                             $("#errorFileFieldEmpty").css("display", "block");
                         }
@@ -121,6 +142,9 @@ $("#saveNewHandbook").click(function(){
                         }
                         if (request.responseJSON.error_file_ext){
                             $("#errorFileExt").css("display", "block");
+                        }
+                        if (request.status == 401){
+                            window.location.href = "/"
                         }
                     }
                 });

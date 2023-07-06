@@ -65,56 +65,13 @@
         <div id="body"></div>
         <div id="handbookScreenshot">
         </div>
+        <div id="editHandbook">
+        </div>
+    </div>
+    <div id="errors">
+        <p class="error" id="errorHandbookNotFound">Handbook not found</p>
     </div>
 </body>
-<script>
-
-$(".toggle-button").click(function(){
-    $(".navbar-links").toggleClass('active');
-    $(".navbar-search").toggleClass('active');
-});
-
-$("#navbarSearchButton").click(function(){
-    searchInput = $("#searchInput").val();
-    top.location.href = `/games/search/?name=${searchInput}`;
-});
-
-$(".profile").css("display", "none");
-
-let token = localStorage.getItem("token");
-
-if (token){
-    $("#loginLi").empty();
-    $("#registerLi").empty();
-    $("#profile").css("display", "block");
-}
-
-    handbookId = window.location.href.split("/")[4]
-    $.ajax({
-        method: "GET",
-        url: `/api/v1/handbook/${handbookId}`,
-        success: function(result){
-            var handbook = result["handbook"];
-            console.log(handbook)
-            var author = result["handbook"]["author"]["profile"]["username"];
-            var title = handbook["title"];
-            var body = handbook["body"];
-            var screenshot = handbook["screenshot"];
-            if (screenshot){
-                $.each(screenshot, function(index){
-                    var file_url = screenshot[index]["file_url"]
-                    $("#handbookScreenshot").append(
-                        `<img class='screenshot' src='/media/${file_url}' id='screenshot_${index}'>`
-                    );
-                    $(`#screenshot_${index}`).click(function(){
-                        window.open(`/media/${file_url}`)
-                    });
-                });
-            }
-            $("#author").append(author);
-            $("#title").append(title);
-            $("#body").append(marked.parse(body));
-        }
-    })
-</script>
+<script src="{% static 'js/authentication.js' %}"></script>
+<script src="{% static 'js/handbook_info.js' %}"></script>
 </html>

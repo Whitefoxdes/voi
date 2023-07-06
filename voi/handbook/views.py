@@ -13,3 +13,7 @@ class AllHandbookListView(APIView):
 class HandbookInfoView(APIView):
     def get(self, request, handbook_id):
         return render(request, "handbook_info.html")
+    
+class EditHandbookView(APIView):
+    def get(self, request, handbook_id):
+        return render(request, "edit_handbook.html")

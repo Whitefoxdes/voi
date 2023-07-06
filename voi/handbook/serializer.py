@@ -7,23 +7,32 @@ from rest_framework import serializers
 from user.serializer import UserSerializer
 from games.serializer import GamesSerializer
 
-class HandbookScreeonshotSerializer(serializers.ModelSerializer):
+class HandbookScreenshotSerializer(serializers.ModelSerializer):
     class Meta:
         model = HandbookScreenshot
         fields = [
+            "id",
             "file_url"
         ]
     file_url = serializers.ListField(
         child = serializers.FileField(write_only=True),
     )
+    id = serializers.ListField(
+        child = serializers.IntegerField(required=False),
+        required=False
+    )
 
-class HandbookScreeonshotURLSerializer(serializers.ModelSerializer):
+class HandbookScreenshotURLSerializer(serializers.ModelSerializer):
     class Meta:
         model = HandbookScreenshot
         fields = [
+            "id",
             "file_url",
+            "is_delete"
         ]
+    id = serializers.CharField(required=False)
     file_url = serializers.URLField()
+    is_delete = serializers.BooleanField(required=False)
 
 class HandbookTypeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -52,6 +61,6 @@ class HandbookSerializer(serializers.ModelSerializer):
     type = HandbookTypeSerializer()
     body = serializers.CharField()
     title= serializers.CharField()
-    screenshot = HandbookScreeonshotURLSerializer(many=True, required=False)
+    screenshot = HandbookScreenshotURLSerializer(many=True, required=False)
     author = UserSerializer(required=False)
     game = GamesSerializer(required=False)

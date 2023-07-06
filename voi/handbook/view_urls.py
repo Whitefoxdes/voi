@@ -17,5 +17,9 @@ urlpatterns = [
     path(
         "<int:handbook_id>",
         views.HandbookInfoView.as_view()
+    ),
+    path(
+        "edit/<int:handbook_id>",
+        views.EditHandbookView.as_view()
     )
 ]
