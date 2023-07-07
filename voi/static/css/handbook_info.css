@@ -218,6 +218,10 @@ body, head{
     border-color: rgb(102, 163, 224);
 }
 
+a{
+    color: rgb(0, 191, 255);
+}
+
 a:visited, a:link {
     text-decoration: none;
 }
@@ -226,63 +230,64 @@ a:active, a:hover{
     text-decoration: none;
 }
 
-#game{
-    margin-top: 3%;
-    border-radius: 5px;
-    left: 50%;
+#handbook{
+    margin-top: 1%;
     position: relative;
+    left: 50%;
     transform: translate(-50%);
+    width: 80%;
+    height: 100%;
+    background-color: rgb(23, 62, 89);
     color: azure;
-    background-color: rgb(79, 94, 108);
-    width: 60%;
-    height: 75%;
-    text-align: center;
-    padding: 1rem 3rem;
+    padding: 8px;
+    border-radius: 8px;
 }
 
-.name{
-    font-size: 2.5rem;
+#author{
+    font-size: 20px;
 }
 
-#gameScreenshot {
-    margin-top: 1rem;
-    align-items: center;
+#title{
+    margin-top: 4px;
+    font-size: 24px;
+    word-break: break-all;
+    width: 100%;
+}
+
+#body{
+    width: 100%;
+    height: auto;
+    max-height: 25rem;
+    overflow: scroll;
+    word-break: break-all;
+    font-size: 18px;
+}
+
+#handbookScreenshot {
+    margin-top: 4px;
+    width: 100%;
+    height: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    display: flex;
 }
 
 .screenshot {
-    width: 150px;
-    height: 100px;
-    margin: 0 3px;
+    cursor: pointer;
+    margin: 0 4px;
     border-radius: 1px;
+    max-width: 100%;
+    max-height: 150px;
 }
 
-#curentScreenshot{
-    margin-top: 1rem;
-    border-radius: 1px;
-    width: 50%;
-    height: 250px;
+#errors{
+    display: flex;
+    justify-content: center;
+    position: static;
 }
 
 .error{
     display: none;
     color: rgb(201, 42, 42);
     font-size: 3rem;
-}
-
-#createNewHandbook{
-    font-size: 18px;
-    width: 12rem;
-    height: 24px;
-    border: none;
-    color: rgb(0, 191, 255);
-    cursor: pointer;
-}
-
-#allHandbook{
-    font-size: 18px;
-    width: 12rem;
-    height: 24px;
-    border: none;
-    color: rgb(0, 191, 255);
-    cursor: pointer;
 }

@@ -2,29 +2,32 @@ from .models import (
     Games,
     GameGenere,
     GameScreenshot
-    )
+)
 from uuid import uuid4
 from .serializer import (
     GamesSerializer,
     GameGenereSerializer,
-    GameScreeonshotSerializer
-    )
+    GameScreenshotSerializer
+)
+from voi.settings import (
+    ALLOWED_FILE_EXT,
+    FILE_UPLOAD_MAX_MEMORY_SIZE
+)
 from .filter import GamesListFilter
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.permissions import (
-    IsAuthenticated,
-    IsAdminUser
-    )
+    IsAdminUser,
+    IsAuthenticated
+)
 from .pagination import GamesListPagination
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
-from voi.settings import FILE_UPLOAD_MAX_MEMORY_SIZE
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class GamesSearchList(generics.ListAPIView):
-    queryset = Games.objects.all()
+    queryset = Games.objects.filter(is_active=True).all()
     serializer_class = GamesSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = GamesListFilter
@@ -69,8 +72,8 @@ class ScreenshotUpload(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminUser]
     
-    def put(self, request, game_id):
-        serializer = GameScreeonshotSerializer(data=request.FILES)
+    def post(self, request, game_id):
+        serializer = GameScreenshotSerializer(data=request.FILES)
         serializer.is_valid()
         if serializer.errors:
             return Response(
@@ -105,7 +108,7 @@ class ScreenshotUpload(APIView):
             
             file_ext = screenshot.name.split(".")[1]
 
-            if file_ext not in ["png","jpg","jpeg","gif",]:
+            if file_ext not in ALLOWED_FILE_EXT:
                 return Response(
                     {
                         "error_file_ext": "Invalid file type"
@@ -124,7 +127,7 @@ class ScreenshotUpload(APIView):
         return Response({"status": "Upload"}, status=200)
 
 class AllGamesList(generics.ListAPIView):
-    queryset = Games.objects.all()
+    queryset = Games.objects.filter(is_active=True).all()
     serializer_class = GamesSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = GamesListFilter

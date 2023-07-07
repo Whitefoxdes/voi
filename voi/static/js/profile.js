@@ -17,6 +17,12 @@ let oldUsername;
 let oldEmail;
 let oldDateOfBirth;
 $("#editUsername").add("#editDateOfBirth").on('input', function(){
+    
+    if($("#editUsername").val() == "" || $("#editDateOfBirth").val() == ""){
+        $("#saveProfile").css("display", "none");
+        return;
+    }
+    
     if($("#editUsername").val() == oldUsername && $("#editDateOfBirth").val() == oldDateOfBirth){
         $("#saveProfile").css("display", "none");
         return;

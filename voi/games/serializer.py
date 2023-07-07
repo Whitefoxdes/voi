@@ -6,7 +6,7 @@ from .models import (
 
 from rest_framework import serializers
 
-class GameScreeonshotSerializer(serializers.ModelSerializer):
+class GameScreenshotSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameScreenshot
         fields = [
@@ -16,7 +16,7 @@ class GameScreeonshotSerializer(serializers.ModelSerializer):
         child = serializers.FileField(write_only=True),
     )
 
-class GameScreeonshotURLSerializer(serializers.ModelSerializer):
+class GameScreenshotURLSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameScreenshot
         fields = [
@@ -47,4 +47,4 @@ class GamesSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
     name = serializers.CharField()
     genere = GameGenereSerializer(many=True, required=False)
-    screenshot = GameScreeonshotURLSerializer(many=True, required=False)
+    screenshot = GameScreenshotURLSerializer(many=True, required=False)

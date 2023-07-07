@@ -1,11 +1,22 @@
 import pytest
 from uuid import uuid4
+from user.models import (
+    User,
+    Profile
+)
+from games.models import (
+    Games,
+    GameScreenshot
+)
+from handbook.models import (
+    Handbook,
+    HandbookType,
+    HandbookScreenshot
+)
 from django.urls import reverse
-from user.models import User, Profile
-from rest_framework.test import APIClient
-from games.models import Games, GameScreenshot
-from django.contrib.auth.hashers import make_password
 from voi.settings import BASE_DIR
+from rest_framework.test import APIClient
+from django.contrib.auth.hashers import make_password
 
 @pytest.fixture
 def client():
@@ -291,26 +302,165 @@ def send_data_for_add_game_with_exist_game_name(add_game):
 @pytest.fixture
 def send_data_for_screenshot_upload():
     data = [
-        (BASE_DIR / "media" / "for_test" / "test_screenshot_upload.png").open("rb"),
-        (BASE_DIR / "media" / "for_test" / "test_screenshot_upload2.png").open("rb"),
-        (BASE_DIR / "media" / "for_test" / "test_screenshot_upload3.png").open("rb")
+        (BASE_DIR / "media" / "for_test" / "test.png").open("rb"),
+        (BASE_DIR / "media" / "for_test" / "test.png").open("rb"),
+        (BASE_DIR / "media" / "for_test" / "test.png").open("rb")
     ]
     return data
 
 @pytest.fixture
 def send_data_for_responce_file_size_error():
     data = [
-        (BASE_DIR / "media" / "for_test" / "test_screenshot_upload.png").open("rb"),
-        (BASE_DIR / "media" / "for_test" / "test2.png").open("rb"),
-        (BASE_DIR / "media" / "for_test" / "test_screenshot_upload3.png").open("rb")
+        (BASE_DIR / "media" / "for_test" / "test.png").open("rb"),
+        (BASE_DIR / "media" / "for_test" / "test2.txt").open("rb"),
+        (BASE_DIR / "media" / "for_test" / "test.png").open("rb")
     ]
     return data
 
 @pytest.fixture
 def send_data_for_responce_file_ext_error():
     data = [
-        (BASE_DIR / "media" / "for_test" / "test_screenshot_upload.png").open("rb"),
-        (BASE_DIR / "media" / "for_test" / "test_screenshot_upload2.png").open("rb"),
-        (BASE_DIR / "media" / "for_test" / "test3.pdf").open("rb")
+        (BASE_DIR / "media" / "for_test" / "test.png").open("rb"),
+        (BASE_DIR / "media" / "for_test" / "test3.txt").open("rb"),
+        (BASE_DIR / "media" / "for_test" / "test.png").open("rb")
     ]
     return data
+
+@pytest.fixture
+def add_handbook_type():
+    type = HandbookType(
+        type_name="BESTIARIES"
+    )
+    type.save()
+    return type
+
+@pytest.fixture
+def send_data_for_create_handbook(add_handbook_type):
+    data = {
+        "title": "test",
+        "body": "test",
+        "type": {
+            "id": add_handbook_type.id,
+            "type_name": add_handbook_type.type_name
+        }
+    }
+    return data
+
+@pytest.fixture
+def send_data_with_not_allowed_type_for_create_handbook(add_handbook_type):
+    data = {
+        "title": "test",
+        "body": "test",
+        "type": {
+            "id": 999,
+            "type_name": "TEST"
+        }
+    }
+    return data
+
+@pytest.fixture
+def new_handbook(
+    new_user,
+    add_game,
+    add_handbook_type
+):
+    
+    new_handbook = Handbook(
+        title="Test",
+        body="Test",
+        author=new_user,
+        game=add_game,
+        type=add_handbook_type
+    )
+    new_handbook.save()
+
+    return new_handbook
+
+@pytest.fixture
+def send_data_for_edit_handbook(add_handbook_type):
+    data = {
+        "title": "test 2",
+        "body": "test 2",
+        "type": {
+            "id": add_handbook_type.id,
+            "type_name": add_handbook_type.type_name
+        }
+    }
+
+    return data
+
+@pytest.fixture
+def new_user2():
+
+    new_profile = Profile(
+        username = "tester",
+        date_of_birth = "2000-01-01"
+    )
+    new_profile.save()
+
+    new_user = User(
+        email = "tester2@email.com",
+        password = make_password("password"),
+        profile = new_profile,
+        user_activation_uuid = uuid4()
+    )
+    new_user.save()
+    return new_user
+
+@pytest.fixture
+def send_data_for_login_new_user2(new_user2):
+    new_user2.is_active = True
+    new_user2.save()
+    data = {
+        "email": new_user2.email,
+        "password":"password",
+    }
+
+    return data
+@pytest.fixture
+def send_new_user_obtain_token2(client, send_data_for_login_new_user2):
+    responce = client.post(
+        reverse("user_api:login"),
+        send_data_for_login_new_user2
+    )
+
+    return responce.data
+
+@pytest.fixture
+def send_new_user_access_token2(send_new_user_obtain_token2):
+
+    access_token = send_new_user_obtain_token2["access"]
+
+    authorization = {"Authorization": f"Bearer {access_token}"}
+
+    return authorization
+
+@pytest.fixture
+def upload_screenshot(
+    client,
+    new_handbook,
+    send_new_user_access_token,
+    send_data_for_screenshot_upload
+):
+    responce = client.post(
+        reverse(
+            "handbook_api:screenshot_upload",
+            kwargs={
+                "handbook_id": new_handbook.id
+            }
+        ),
+        headers = send_new_user_access_token,
+        data = {
+                "file_url" : send_data_for_screenshot_upload
+        }
+    )
+    return {"id": [1, 2, 3]}
+
+@pytest.fixture
+def send_deleted_screenshot(
+    upload_screenshot
+):
+        deleted_screenshot = HandbookScreenshot.objects.filter(pk=upload_screenshot["id"][0]).first()
+        deleted_screenshot.is_delete = True
+        deleted_screenshot.save()
+        return {"id" : [deleted_screenshot.id]}

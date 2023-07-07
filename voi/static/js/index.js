@@ -1,7 +1,3 @@
-$("console").on("input", function(){
-    console.log(ahahah)
-})
-
 $(".toggle-button").click(function(){
     $(".navbar-links").toggleClass('active');
     $(".navbar-search").toggleClass('active');
@@ -19,5 +15,5 @@ if (token){
 
 $("#navbarSearchButton").click(function(){
     searchInput = $("#searchInput").val();
-    top.location.href = `/games/search/?name=${searchInput}&is_active=true&page=1`
+    top.location.href = `/games/search/?name=${searchInput}&is_active=true&page=1`;
 });

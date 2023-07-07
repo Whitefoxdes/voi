@@ -7,14 +7,13 @@
 
     {% load static %}
 
-    <link rel="stylesheet" href="{% static 'css/game_info.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all_handbook_list.css' %}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400&display=swap" rel="stylesheet">
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -57,20 +56,18 @@
             </ul>            
         </div>
     </nav>
-    <div id="game">
-        <div id="gameName">
+    <div id="handbookList">
 
-        </div>
-        <div id="gameScreenshot">
-            <div id="screenshotList">
-
-            </div>
-            <img id="curentScreenshot" src=''><br>
-        </div>
-        <p class="error" id="errorGameNotFound">Game not found&#40;</p>
-        <div id="handbook">
-        </div>
     </div>
+    <nav aria-label="pagination" id="pageButton">
+        <div class="pagination">
+        </div>
+    </nav>
+
+    <div class="errors">
+        <p class="error" id="errorHandbookNotFound">Handbook for this game not found&#40;</p>
+    </div>
+
 </body>
-<script src="{% static 'js/game_info.js' %}"></script>
+<script src="{% static 'js/all_handbook_list.js' %}"></script>
 </html>

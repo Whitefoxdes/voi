@@ -13,7 +13,7 @@ $("#gameName").on("input", function(){
 });
 $("#navbarSearchButton").click(function(){
     searchInput = $("#searchInput").val();
-    top.location.href = `/games/search/?name=${searchInput}&is_active=true&page=1`;
+    top.location.href = `/games/search/?name=${searchInput}`;
 });
 $("#saveGame").click(function(){
     $(".error").css("display", "none");
@@ -28,14 +28,13 @@ $("#saveGame").click(function(){
             "name": name,
         }),
         success: function(result){
-            $("#upload-screenshot-for-game").css("display", "block");
+            $("#uploadScreenshotForGame").css("display", "block");
             $("#step").text("Step 2 of 2");
-            $(".upload-screenshot-for-game").css("display", "block");
             $(".add-game").css("display", "none");
-            var game_id = result.game_id;
+            var gameId = result.game_id;
             
             $("#uploadScreeshot").on("input", function(){
-                if ($("#saveScreenshot").val() == null){
+                if ($("#uploadScreeshot").val() == null){
                     $("#saveScreenshot").css("display", "none");
                     return;
                 }
@@ -53,15 +52,14 @@ $("#saveGame").click(function(){
             });
             
             $("#saveScreenshot").click(function(){
-                $(".error").css("display", "none");
                 var formData = new FormData();
                 $.each(document.getElementById("uploadScreeshot").files, function(index){
                     screenshot = document.getElementById("uploadScreeshot").files[index];
                     formData.append("file_url", screenshot);
                 });
                 $.ajax({
-                    method: "PUT",
-                    url: `/api/v1/games/upload-screenshot-for-game/${game_id}`,
+                    method: "POST",
+                    url: `/api/v1/games/upload-screenshot-for-game/${gameId}`,
                     headers: { 'Authorization': `${prefix} ${token}` },
                     contentDisposition: "attachment;filename=image",
                     processData: false,
@@ -69,7 +67,8 @@ $("#saveGame").click(function(){
                     data: formData,
                     success: function(result){
                         $("#addNewGame").css("display", "block");
-                        $("#saveScreenshot").attr("disabled", true);
+                        $("#step").css("display", "none");
+                        $("#uploadScreenshotForGame").css("display", "none");
                         setTimeout(
                             function(){
                                 top.location.reload();

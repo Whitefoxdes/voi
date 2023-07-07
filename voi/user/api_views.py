@@ -11,7 +11,8 @@ from .serializer import (
     )
 from voi.settings import (
     EMAIL_HOST_USER,
-    FILE_UPLOAD_MAX_MEMORY_SIZE
+    ALLOWED_FILE_EXT,
+    FILE_UPLOAD_MAX_MEMORY_SIZE,
     )
 from django.core.mail import send_mail
 from rest_framework.views import APIView
@@ -197,7 +198,7 @@ class UserAvatarUpload(APIView):
 
         file_ext = data.get("file_url").name.split(".")[1]
 
-        if file_ext not in ["png","jpg","jpeg","gif",]:
+        if file_ext not in ALLOWED_FILE_EXT:
             return Response({"error_file_ext": "Invalid file type"}, status=400)
 
         profile = Profile.objects.filter(user__id=user_id).first()

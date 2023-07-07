@@ -16,4 +16,3 @@ class GamesListFilter(filters.FilterSet):
         to_field_name='id',
         queryset=GameGenere.objects.all()
     )
-    is_active = filters.BooleanFilter(field_name="is_active")

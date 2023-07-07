@@ -5,7 +5,7 @@ $(".toggle-button").click(function(){
 
 $("#navbarSearchButton").click(function(){
     searchInput = $("#searchInput").val();
-    top.location.href = `/games/search/?name=${searchInput}&is_active=true&page=1`;
+    top.location.href = `/games/search/?name=${searchInput}`;
 });
 
 $(".profile").css("display", "none");
@@ -19,12 +19,14 @@ if (token){
 }
 
 url = window.location.href.split('?')[1];
+
 $.ajax({
     method: "GET",
     url: `/api/v1/games/search/?${url}`,
     success: function(result){
         if(result.results == ""){
             $("#errorGameNotFound").css("display", "inline");
+            $("#genereFilter").css("display", "none")
         }
         var game = result.results;
 
@@ -61,6 +63,7 @@ $.ajax({
         }
     }
 });
+
 $.ajax({
     method: "GET",
     url: "/api/v1/games/genere-list",

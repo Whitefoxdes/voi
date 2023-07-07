@@ -15,14 +15,23 @@ if (token){
 
 $("#navbarSearchButton").click(function(){
     searchInput = $("#searchInput").val();
-    top.location.href = `/games/search/?name=${searchInput}&is_active=true&page=1`;
+    top.location.href = `/games/search/?name=${searchInput}`;
 });
 
 gameId = window.location.href.split("/")[4];
+
 $.ajax({
     method: "GET",
     url: `/api/v1/games/${gameId}`,
     success: function(result){
+        $("#handbook").append(
+            `<a href="/handbook/handbook-list/?game=${gameId}" id="allHandbook">All handbook</a><br>`
+        )
+        if(token){
+            $("#handbook").append(
+                `<a href="/handbook/create/${gameId}" id="createNewHandbook">Create new handbook</a>`
+            );
+        }
         game = result.game;
         $("#gameName").append(
             `
