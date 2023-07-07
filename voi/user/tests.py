@@ -470,11 +470,12 @@ def test_should_responce_file_size_error(
         reverse("user_api:user_avatar_upload"),
         headers = send_new_user_access_token,
         data = {
-            "file_url": (BASE_DIR / "media" / "for_test" / "test2.png").open("rb")
+            "file_url": (BASE_DIR / "media" / "for_test" / "test2.txt").open("rb")
         }
     )
 
     assert responce.status_code == 400
+    assert responce.data == {"error_file_size": "File size is too large"}
 
 @pytest.mark.django_db
 def test_should_responce_file_ext_error(
@@ -486,8 +487,9 @@ def test_should_responce_file_ext_error(
         reverse("user_api:user_avatar_upload"),
         headers = send_new_user_access_token,
         data = {
-            "file_url": (BASE_DIR / "media" / "for_test" / "test3.pdf").open("rb")
+            "file_url": (BASE_DIR / "media" / "for_test" / "test3.txt").open("rb")
         }
     )
 
     assert responce.status_code == 400
+    assert responce.data == {"error_file_ext": "Invalid file type"}

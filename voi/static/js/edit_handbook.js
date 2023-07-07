@@ -227,7 +227,7 @@ $("#uploadScreeshot").on("input", function(){
 $("#deleteScreenshot").click(function(){
     $.ajax({
         method: "DELETE",
-        url: `/api/v1/handbook/delete-screenshot/${handbookId}`,
+        url: `/api/v1/handbook/delete-screenshot`,
         headers: { 'Authorization': `${prefix} ${token}` },
         dataType: "json",
         contentType: "application/json; charset=utf-8",

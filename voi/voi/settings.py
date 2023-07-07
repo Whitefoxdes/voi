@@ -142,6 +142,8 @@ USE_TZ = True
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880
 
+ALLOWED_FILE_EXT = ["png","jpg","jpeg","gif",]
+
 STATIC_URL = 'static/'
 
 STATIC_ROOT = BASE_DIR / '/static/'

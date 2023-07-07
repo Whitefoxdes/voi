@@ -2,26 +2,26 @@ from .models import (
     Handbook,
     HandbookType,
     HandbookScreenshot
-    )
+)
 from uuid import uuid4
 from user.models import User
 from games.models import Games
+from voi.settings import (
+    ALLOWED_FILE_EXT,
+    FILE_UPLOAD_MAX_MEMORY_SIZE
+)
 from .serializer import (
     HandbookSerializer,
     HandbookTypeSerializer,
     HandbookScreenshotSerializer
-    )
+)
 from rest_framework import generics
 from .filter import HandbookListFilter
 from rest_framework.views import APIView
-from rest_framework.permissions import (
-    IsAuthenticated,
-    IsAdminUser
-    )
 from rest_framework.response import Response
 from .pagination import HandbookListPagination
 from rest_framework.parsers import MultiPartParser
-from voi.settings import FILE_UPLOAD_MAX_MEMORY_SIZE
+from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
@@ -119,7 +119,7 @@ class ScreenshotUpload(APIView):
                 )
             file_ext = screenshot.name.split(".")[1]
 
-            if file_ext not in ["png","jpg","jpeg","gif",]:
+            if file_ext not in ALLOWED_FILE_EXT:
                 return Response(
                     {
                         "error_file_ext": "Invalid file type"
@@ -267,13 +267,15 @@ class DeleteHandbook(APIView):
 class DeleteScreenshot(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    def delete(self, request, handbook_id):
+    def delete(self, request):
         
         old_screenshot_serializer = HandbookScreenshotSerializer(data=request.data)
         
         old_screenshot_serializer.is_valid()
         
         old_screenshot_data = old_screenshot_serializer.data
+
+        # import pdb;pdb.set_trace()
 
         if not old_screenshot_data.get("id"):
             return Response(
@@ -291,7 +293,7 @@ class DeleteScreenshot(APIView):
                     {
                         "error_screenshot_not_found":"Screenshot not found"
                     },
-                    status=400
+                    status=404
                 )
             old_screenshot = HandbookScreenshot.objects.filter(pk=screenshot_id, is_delete=False).first()
 
