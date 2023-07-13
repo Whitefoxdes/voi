@@ -17,6 +17,7 @@ class Games(models.Model):
 class GameScreenshot(models.Model):
     game = models.ForeignKey("Games", related_name="screenshot", on_delete=models.CASCADE)
     file_url = models.FileField(upload_to=url_upload_to_for_game)
+    is_delete = models.BooleanField(default=False)
 
 class GameGenere(models.Model):
     genere_name = models.TextField()

@@ -25,7 +25,7 @@ $.ajax({
     url: `/api/v1/games/${gameId}`,
     success: function(result){
         $("#handbook").append(
-            `<a href="/handbook/handbook-list/?game=${gameId}" id="allHandbook">All handbook</a><br>`
+            `<a href="/handbook/handbook-list/?game=${gameId}&type=1" id="allHandbook">All handbook</a><br>`
         )
         if(token){
             $("#handbook").append(

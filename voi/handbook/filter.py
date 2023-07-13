@@ -1,4 +1,7 @@
-from .models import Handbook
+from .models import (
+    Handbook,
+    HandbookType
+)
 from games.models import Games
 from django_filters import rest_framework as filters
 
@@ -7,12 +10,16 @@ class HandbookListFilter(filters.FilterSet):
         model = Handbook
         fields = [
             "game",
-            # "is_active"
+            "type"
         ]
 
     game = filters.ModelMultipleChoiceFilter(
         field_name='game',
         to_field_name='id',
         queryset=Games.objects.all()
+    ),
+    type = filters.ModelMultipleChoiceFilter(
+        field_name='type',
+        to_field_name='id',
+        queryset=HandbookType.objects.all()
     )
-    # is_active = filters.BooleanFilter(field_name="is_active")

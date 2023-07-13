@@ -228,8 +228,23 @@ a:visited, a:link {
 a:active, a:hover{
     text-decoration: none;
 }
+
+#typeFilter{
+    left: 504px;
+    margin-top: 1%;
+    position: relative;
+}
+
+#typeSelect{
+    background-color: rgb(50, 62, 73);
+    color: azure;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+}
+
 #handbookList{
-    margin-top: 2%;
+    /* margin-top: 2%; */
     width: 30%;
     height: 30%;
     left: 50%;

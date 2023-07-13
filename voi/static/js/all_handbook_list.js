@@ -19,6 +19,44 @@ if (token){
 }
 
 var url = window.location.href.split("?")[1];
+var urlParams = new URLSearchParams(window.location.search);
+$.ajax({
+    method: "GET",
+    url: "/api/v1/handbook/handbook-type-list",
+    success: function(result){
+        types = result;
+        $.each(types, function(index){
+            
+            let typeId = types[index]["id"];
+            let typeName = types[index]["type_name"];
+
+            editedTypeName = typeName.toLowerCase()
+
+            $("#typeSelect").append(
+                `<option value="${typeId}">${editedTypeName}</option>`
+            );
+        });
+        if(urlParams.get("type")){
+            $("#typeSelect").val(urlParams.get("type"))
+        }
+    }
+});
+
+$('#typeSelect').change(function() {
+    nowUrl = window.location.href
+    
+    if(urlParams.get("type")){
+        selectedTypeId = $('#typeSelect').find(":selected").val()
+        newUrl = nowUrl.replace(`type=${urlParams.get("type")}`, `type=${selectedTypeId}`)
+        window.location.href = newUrl
+        return
+    }
+
+    param = `&type=${$('#typeSelect').find(":selected").val()}`
+    newUrl = nowUrl + param
+    window.location.href = newUrl
+});
+
 $.ajax({
     method: "GET",
     url: `/api/v1/handbook/handbook-list/?${url}`,
