@@ -1,4 +1,5 @@
 import os
+import json
 import telebot
 import requests
 from telebot.types import (
@@ -10,7 +11,6 @@ from handbook.models import (
     Handbook, 
     HandbookType
 )
-import json
 from games.models import Games
 from handbook.serializer import (
     HandbookSerializer,
@@ -189,6 +189,54 @@ def games_search_previous_page(call):
         None,
         url_param=json.loads(call.data).get("prev_page"),
         user_chat_id=call.from_user.id
+    )
+
+@bot.callback_query_handler(
+        func=lambda call:
+        json.loads(call.data).get("type") == "game"
+)
+def games_info(call):
+    game_id = json.loads(call.data).get("game_id")
+    r = requests.get(f"http://127.0.0.1:8000/api/v1/games/{game_id}")
+    request_data = r.json()
+
+    game = request_data.get("game")
+    bot.send_message(call.from_user.id, game.get("name"))
+
+    game_screenshots = []
+    
+    for screenshot in game.get("screenshot"):
+        game_screenshots.append(
+            InputMediaPhoto(
+                open(
+                    BASE_DIR/"media"/screenshot.get("file_url"),
+                    "rb"
+                )
+            )
+        )
+
+    bot.send_media_group(
+        call.from_user.id,
+        game_screenshots
+    )
+
+    keyboard = InlineKeyboardMarkup()
+
+    all_handbook = InlineKeyboardButton(
+        f"all handbook for {game.get('name')}",
+        callback_data=json.dumps(
+            {
+                "type": "all_handbook",
+                "game_id": game_id
+            }
+        )
+    )
+    
+    keyboard.add(all_handbook)
+    bot.send_message(
+        call.from_user.id,
+        f"All handbook for {game.get('name')}",
+        reply_markup=keyboard
     )
 
 bot.infinity_polling()
