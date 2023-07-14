@@ -581,4 +581,50 @@ def all_handbook_previous_page(call):
         url_param=url_param,
         user_chat_id=call.from_user.id
     )
+@bot.callback_query_handler(
+    func=lambda call:
+    json.loads(call.data).get("f") == callback_data_filter["handbook_info"]
+)
+def handbook_info(call):
+    handbook_id = json.loads(call.data).get("h")
+    request_url = f"http://127.0.0.1:8000/api/v1/handbook/{handbook_id}"
+    r = requests.get(request_url)
+    request_data = r.json()
+
+    handbook = request_data.get("handbook")
+    handbook_author = handbook.get("author")
+    handbook_author_profile = handbook_author.get("profile")
+
+    bot.send_message(
+        call.from_user.id,
+        handbook_author_profile.get("username")
+    )    
+    bot.send_message(
+        call.from_user.id,
+        handbook.get("title")
+    )
+    bot.send_message(
+        call.from_user.id,
+        handbook.get("body")
+    )
+    hanbook_screenshots = []
+    for screenshot in handbook.get("screenshot"):
+        if len(hanbook_screenshots) > 8:
+            bot.send_media_group(
+                call.from_user.id,
+                hanbook_screenshots
+            )
+            hanbook_screenshots = []
+        hanbook_screenshots.append(
+            InputMediaPhoto(
+                open(
+                    BASE_DIR/"media"/screenshot.get("file_url"),
+                    "rb"
+                )
+            )
+        )
+    bot.send_media_group(
+        call.from_user.id,
+        hanbook_screenshots
+    )
 bot.infinity_polling()
