@@ -34,15 +34,13 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
-BOT_TOKEN = os.environ.get('BOT_TOKEN')
-
 # Application definition
 
 INSTALLED_APPS = [
     'user.apps.UserConfig',
     'games.apps.GamesConfig',
     'handbook.apps.HandbookConfig',
-    'bot.apps.BotConfig',
+    # 'bot.apps.BotConfig',
     'django_filters',
     'rest_framework',
     'rest_framework_simplejwt',
