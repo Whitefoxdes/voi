@@ -63,9 +63,12 @@ async def game_list(
     next_page = request_data.get("next")
 
     game_button = []
+    
     global game_id_list
+    
     game_id_list = {}
     game_button_index = 0
+
     for game in games:
         callback_data = f"game_info_{game_button_index}"
         game_button.append(
@@ -92,8 +95,8 @@ async def game_list(
         )
     page_button = []
     if prev_page:
-        global game_list_prev_page
-        game_list_prev_page = prev_page
+        global game_list_prev_page_url
+        game_list_prev_page_url = prev_page
 
         callback_data = "game_list_prev_page"
 
@@ -102,8 +105,8 @@ async def game_list(
         )
 
     if next_page:
-        global game_list_next_page
-        game_list_next_page = next_page
+        global game_list_next_page_url
+        game_list_next_page_url = next_page
 
         callback_data = "game_list_next_page"
 
@@ -134,7 +137,7 @@ async def game_list_next_page(
 
     await game_list(
         update=update, context=context,
-        url=game_list_next_page)
+        url=game_list_next_page_url)
 
 async def game_list_prev_page(
         update: Update,
@@ -142,7 +145,7 @@ async def game_list_prev_page(
 
     await game_list(
         update=update, context=context,
-        url=game_list_prev_page
+        url=game_list_prev_page_url
     )
 
 async def game_info(
@@ -178,7 +181,7 @@ async def game_info(
     await query.message.reply_media_group(
         screenshot_list
     )
-    callback_data = "all_handbook"
+    callback_data = "handbook_list"
     all_handbook_button = [
         InlineKeyboardButton(
             f"Get all handbook for {game.get('name')}",
@@ -191,6 +194,92 @@ async def game_info(
     await query.message.reply_text(
         f"All handbook for {game.get('name')}",
         reply_markup=keyboard_all_handbook
+    )
+
+async def handbook_list(
+        update: Update,
+        context: ContextTypes.DEFAULT_TYPE,
+        url=None):
+    
+    query = update.callback_query
+    
+    if url:
+        request_url = f"{url}"
+    else:
+        request_url = f"{URL_API}handbook/handbook-list/?game={game_id}"
+
+    request = requests.get(request_url)
+    request_data = request.json()
+
+    handbooks = request_data.get("results")
+    prev_page = request_data.get("previous")
+    next_page = request_data.get("next")
+
+    handbook_button = []
+    global handbook_id_list
+    handbook_id_list = {}
+    handbook_button_index = 0
+    
+    for handbook in handbooks:
+        callback_data = f"handbook_info_{handbook_button_index}"
+        handbook_button.append(
+            [
+                InlineKeyboardButton(
+                    handbook.get("title"),
+                    callback_data=callback_data
+                )
+            ]
+        )
+        handbook_id_list[callback_data] = handbook.get("id")
+        handbook_button_index += 1
+
+    keyboard_handbook = InlineKeyboardMarkup(handbook_button)
+    await query.message.reply_text(
+        "Handbook list",
+        reply_markup=keyboard_handbook
+    )
+    page_button = []
+    if prev_page:
+        global handbook_list_prev_page_url
+        handbook_list_prev_page_url = prev_page
+
+        callback_data = "handbook_list_prev_page"
+
+        page_button.append(
+            InlineKeyboardButton("❮", callback_data=callback_data)
+        )
+
+    if next_page:
+        global handbook_list_next_page_url
+        handbook_list_next_page_url = next_page
+
+        callback_data = "handbook_list_next_page"
+
+        page_button.append(
+            InlineKeyboardButton("❯", callback_data=callback_data)
+        )
+
+    keyboard_page = InlineKeyboardMarkup([page_button])
+
+    await query.message.reply_text(
+        "Select page",
+        reply_markup=keyboard_page
+    )
+    # return
+
+async def handbook_list_next_page(
+        update: Update,
+        context: ContextTypes.DEFAULT_TYPE):
+    await handbook_list(
+        update=update, context=context,
+        url=handbook_list_next_page_url)
+
+async def handbook_list_prev_page(
+        update: Update,
+        context: ContextTypes.DEFAULT_TYPE):
+    await handbook_list(
+        update=update, context=context,
+        url=handbook_list_prev_page_url
     )
 
 async def cancel(
@@ -231,7 +320,13 @@ def main():
     app.add_handler(
         CallbackQueryHandler(
             game_list_next_page,
-            pattern="game_list_next_page"
+            pattern="^" + "game_list_next_page" + "$"
+        )
+    )
+    app.add_handler(
+        CallbackQueryHandler(
+            game_list_prev_page,
+            pattern="^" + "game_list_prev_page" + "$"
         )
     )
     app.add_handler(
@@ -240,14 +335,24 @@ def main():
             pattern=r"game_info_[0-9]{1}"
         )
     )
-    
     app.add_handler(
         CallbackQueryHandler(
-            game_list_prev_page,
-            pattern="game_list_prev_page"
+            handbook_list,
+            pattern="^" + "handbook_list" + "$"
         )
     )
-
+    app.add_handler(
+        CallbackQueryHandler(
+            handbook_list_next_page,
+            pattern="^" + "handbook_list_next_page" + "$"
+        )
+    )
+    app.add_handler(
+        CallbackQueryHandler(
+            handbook_list_prev_page,
+            pattern="^" +"handbook_list_prev_page" + "$"
+        )
+    )
     app.run_polling()
 
 if __name__ == "__main__":
