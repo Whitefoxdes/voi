@@ -3,6 +3,8 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+MEDIA_DIR = BASE_DIR/"voi"/"media"
+
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 
 STATES = {

@@ -5,9 +5,11 @@ from config import (
     URL_API,
     BASE_DIR,
     BOT_TOKEN,
+    MEDIA_DIR
 )
 from telegram import (
     Update,
+    InputMediaPhoto,
     InlineKeyboardButton,
     InlineKeyboardMarkup
 )
@@ -24,7 +26,7 @@ from telegram.ext import (
 async def start(
         update: Update,
         context: ContextTypes.DEFAULT_TYPE):
-    
+
     await update.message.reply_text("Hello, this'xis VOI bot")
 
 async def game_search(
@@ -33,20 +35,20 @@ async def game_search(
 
     await update.message.reply_text(
         "Write game name, like this: Skyrim, Prey, Dishonored")
-    
+
     return STATES["GAME_SEARCH"]
 
 async def game_list(
         update: Update,
         context: ContextTypes.DEFAULT_TYPE,
         url=None):
-    
+
     if update.callback_query:
         query = update.callback_query
         await query.answer()
     else:
         query = None
-    
+
     if url:
         request_url = f"{url}"
     else: 
@@ -55,7 +57,7 @@ async def game_list(
 
     request = requests.get(request_url)
     request_data = request.json()
-    
+
     games = request_data.get("results")
     prev_page = request_data.get("previous")
     next_page = request_data.get("next")
@@ -89,28 +91,30 @@ async def game_list(
             reply_markup=keyboard_game
         )
     page_button = []
-    if prev_page:        
+    if prev_page:
         global game_list_prev_page
         game_list_prev_page = prev_page
 
         callback_data = "game_list_prev_page"
-        
+
         page_button.append(
             InlineKeyboardButton("❮", callback_data=callback_data)
         )
-        
-    if next_page:        
+
+    if next_page:
         global game_list_next_page
         game_list_next_page = next_page
 
         callback_data = "game_list_next_page"
-        
+
         page_button.append(
             InlineKeyboardButton("❯", callback_data=callback_data)
         )
+    if not page_button:
+        return ConversationHandler.END
 
     keyboard_page = InlineKeyboardMarkup([page_button])
-    
+
     if query:
         await query.message.reply_text(
             "Select page",
@@ -121,31 +125,78 @@ async def game_list(
             "Select page",
             reply_markup=keyboard_page
         )
-
     return ConversationHandler.END
 
 
 async def game_list_next_page(
         update: Update,
         context: ContextTypes.DEFAULT_TYPE):
-    
+
     await game_list(
         update=update, context=context,
         url=game_list_next_page)
-    
+
 async def game_list_prev_page(
         update: Update,
         context: ContextTypes.DEFAULT_TYPE):
-    
+
     await game_list(
         update=update, context=context,
         url=game_list_prev_page
     )
 
+async def game_info(
+        update: Update,
+        context: ContextTypes.DEFAULT_TYPE):
+
+    query = update.callback_query
+
+    global game_id
+    game_id = game_id_list.get(query.data)
+
+    request_url = f"{URL_API}games/{game_id}"
+    request = requests.get(request_url)
+    request_data = request.json()
+
+    game = request_data.get("game")
+    await query.message.reply_text(
+        game.get("name")
+    )
+    screenshot_list = []
+    for screenshot in game.get("screenshot"):
+        if len(screenshot_list) == 10:
+            await query.message.reply_media_group(
+                screenshot_list
+            )
+
+        file_url = screenshot.get("file_url")
+        screenshot_list.append(
+            InputMediaPhoto(
+                open(MEDIA_DIR/file_url, "rb")
+            )
+        )
+    await query.message.reply_media_group(
+        screenshot_list
+    )
+    callback_data = "all_handbook"
+    all_handbook_button = [
+        InlineKeyboardButton(
+            f"Get all handbook for {game.get('name')}",
+            callback_data=callback_data
+        )
+    ]
+    keyboard_all_handbook = InlineKeyboardMarkup(
+        [all_handbook_button]
+    )
+    await query.message.reply_text(
+        f"All handbook for {game.get('name')}",
+        reply_markup=keyboard_all_handbook
+    )
+
 async def cancel(
         update: Update,
         context: ContextTypes.DEFAULT_TYPE):
-    
+
     user = update.message.from_user
     await update.message.reply_text(
         "Cancel this process"
@@ -174,13 +225,19 @@ def main():
     )
 
     app.add_handler(CommandHandler("start", start))
-    
+
     app.add_handler(game_search_conv_handler)
-    
+
     app.add_handler(
         CallbackQueryHandler(
             game_list_next_page,
             pattern="game_list_next_page"
+        )
+    )
+    app.add_handler(
+        CallbackQueryHandler(
+            game_info,
+            pattern=r"game_info_[0-9]{1}"
         )
     )
     
