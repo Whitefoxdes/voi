@@ -27,7 +27,7 @@ async def start(
         update: Update,
         context: ContextTypes.DEFAULT_TYPE):
 
-    await update.message.reply_text("Hello, this'xis VOI bot")
+    await update.message.reply_text("Hello, this's VOI bot")
 
 async def game_search(
         update: Update,
@@ -64,9 +64,9 @@ async def game_list(
 
     game_button = []
     
-    global game_id_list
+    global game_id_dict
     
-    game_id_list = {}
+    game_id_dict = {}
     game_button_index = 0
 
     for game in games:
@@ -79,7 +79,7 @@ async def game_list(
                 )
             ]
         )
-        game_id_list[callback_data] = game.get("id")
+        game_id_dict[callback_data] = game.get("id")
         game_button_index += 1
 
     keyboard_game = InlineKeyboardMarkup(game_button)
@@ -155,7 +155,7 @@ async def game_info(
     query = update.callback_query
 
     global game_id
-    game_id = game_id_list.get(query.data)
+    game_id = game_id_dict.get(query.data)
 
     request_url = f"{URL_API}games/{game_id}"
     request = requests.get(request_url)
@@ -165,12 +165,14 @@ async def game_info(
     await query.message.reply_text(
         game.get("name")
     )
+
     screenshot_list = []
     for screenshot in game.get("screenshot"):
         if len(screenshot_list) == 10:
             await query.message.reply_media_group(
                 screenshot_list
             )
+            screenshot_list = []
 
         file_url = screenshot.get("file_url")
         screenshot_list.append(
@@ -178,9 +180,11 @@ async def game_info(
                 open(MEDIA_DIR/file_url, "rb")
             )
         )
-    await query.message.reply_media_group(
-        screenshot_list
-    )
+    if screenshot_list:
+        await query.message.reply_media_group(
+            screenshot_list
+        )
+
     callback_data = "handbook_list"
     all_handbook_button = [
         InlineKeyboardButton(
@@ -214,10 +218,54 @@ async def handbook_list(
     handbooks = request_data.get("results")
     prev_page = request_data.get("previous")
     next_page = request_data.get("next")
+    
+    handbook_types_url = f"{URL_API}handbook/handbook-type-list"
+    handbook_types_request = requests.get(handbook_types_url)
+    handbook_type_list = handbook_types_request.json()
 
+    handbook_type_button = []
+
+    global handbook_type_page_dict
+
+    handbook_type_page_dict = {}
+    handbook_type_button_index = 0
+
+    for handbook_type in handbook_type_list:
+
+        callback_data = f"handbook_type_{handbook_type_button_index}"
+
+        handbook_type_button.append(
+            [
+                InlineKeyboardButton(
+                    handbook_type.get("type_name"),
+                    callback_data=callback_data
+                )
+            ]
+        )
+        type_id = handbook_type.get("id")
+        type_page_qs = f"?game={game_id}&type={type_id}"
+        type_page_url = f"{URL_API}handbook/handbook-list/{type_page_qs}"
+        
+        handbook_type_page_dict[callback_data] = type_page_url
+        handbook_type_button_index += 1
+    
+    keyboard_handbook_type = InlineKeyboardMarkup(handbook_type_button)
+    await query.message.reply_text(
+        "Select handbook type",
+        reply_markup=keyboard_handbook_type
+    )
+    
+    if not handbooks:
+        await query.message.reply_text(
+            "Handbooks not found, try select another handbook type"
+        )
+        return
+    
     handbook_button = []
-    global handbook_id_list
-    handbook_id_list = {}
+
+    global handbook_id_dict
+
+    handbook_id_dict = {}
     handbook_button_index = 0
     
     for handbook in handbooks:
@@ -230,7 +278,7 @@ async def handbook_list(
                 )
             ]
         )
-        handbook_id_list[callback_data] = handbook.get("id")
+        handbook_id_dict[callback_data] = handbook.get("id")
         handbook_button_index += 1
 
     keyboard_handbook = InlineKeyboardMarkup(handbook_button)
@@ -238,7 +286,9 @@ async def handbook_list(
         "Handbook list",
         reply_markup=keyboard_handbook
     )
+    
     page_button = []
+    
     if prev_page:
         global handbook_list_prev_page_url
         handbook_list_prev_page_url = prev_page
@@ -259,17 +309,28 @@ async def handbook_list(
             InlineKeyboardButton("❯", callback_data=callback_data)
         )
 
-    keyboard_page = InlineKeyboardMarkup([page_button])
+    if page_button:
+        keyboard_page = InlineKeyboardMarkup([page_button])
 
-    await query.message.reply_text(
-        "Select page",
-        reply_markup=keyboard_page
-    )
-    # return
+        await query.message.reply_text(
+            "Select page",
+            reply_markup=keyboard_page
+        )
+
+async def handbook_select_type(
+        update: Update,
+        context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+
+    handbook_type_page = handbook_type_page_dict.get(query.data)
+    await handbook_list(
+        update=update, context=context,
+        url=handbook_type_page)
 
 async def handbook_list_next_page(
         update: Update,
         context: ContextTypes.DEFAULT_TYPE):
+
     await handbook_list(
         update=update, context=context,
         url=handbook_list_next_page_url)
@@ -277,10 +338,58 @@ async def handbook_list_next_page(
 async def handbook_list_prev_page(
         update: Update,
         context: ContextTypes.DEFAULT_TYPE):
+
     await handbook_list(
         update=update, context=context,
-        url=handbook_list_prev_page_url
+        url=handbook_list_prev_page_url)
+
+async def handbook_info(
+        update: Update,
+        context: ContextTypes.DEFAULT_TYPE):
+
+    query = update.callback_query
+    handbook_id = handbook_id_dict.get(query.data)
+
+    request_url = f"{URL_API}handbook/{handbook_id}"
+    request = requests.get(request_url)
+    request_data = request.json()
+
+    handbook = request_data.get("handbook")
+    await query.message.reply_text(
+        handbook.get("title")
     )
+
+    author = handbook.get("author")
+    author_profile = author.get("profile")
+
+    await query.message.reply_text(
+        f"Author: {author_profile.get('username')}"
+    )
+
+    await query.message.reply_text(
+        handbook.get("body"),
+        parse_mode="Markdown"
+    )
+    
+    screenshot_list = []
+    for screenshot in handbook.get("screenshot"):
+        if len(screenshot_list) == 10:
+            await query.message.reply_media_group(
+                screenshot_list
+            )
+            screenshot_list = []
+
+        file_url = screenshot.get("file_url")
+        screenshot_list.append(
+            InputMediaPhoto(
+                open(MEDIA_DIR/file_url, "rb")
+            )
+        )
+
+    if screenshot_list:
+        await query.message.reply_media_group(
+            screenshot_list
+        )
 
 async def cancel(
         update: Update,
@@ -351,6 +460,18 @@ def main():
         CallbackQueryHandler(
             handbook_list_prev_page,
             pattern="^" +"handbook_list_prev_page" + "$"
+        )
+    )
+    app.add_handler(
+        CallbackQueryHandler(
+            handbook_select_type,
+            pattern=r"handbook_type_[0-9]{1}"
+        )
+    )
+    app.add_handler(
+        CallbackQueryHandler(
+            handbook_info,
+            pattern=r"handbook_info_[0-9]{1}"
         )
     )
     app.run_polling()
