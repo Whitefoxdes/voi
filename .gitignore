@@ -5,3 +5,4 @@ __pycache__
 */*/game_*
 */*/handbook_*
 .pytest_cache
+data

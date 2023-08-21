@@ -97,6 +97,8 @@ $.ajax({
             });
         },
         error: function(){
+            localStorage.removeItem("token")
+            localStorage.removeItem("refresh_token")
             top.location.href = "/user/login";
         }
 });

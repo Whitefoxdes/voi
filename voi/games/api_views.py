@@ -54,7 +54,8 @@ class AddGame(APIView):
                 {
                     "error_game_exist":"Game exist"
                 },
-                status=400)
+                status=400
+            )
         
         new_game = Games(name = data.get("name"), is_active=True)
         new_game.save()
@@ -146,7 +147,12 @@ class GameInfo(APIView):
             )
 
         serializer = GamesSerializer(game)
-        return Response({"game": serializer.data}, status=200)
+        return Response(
+            {
+                "game": serializer.data
+            },
+            status=200
+        )
     
 class GenereList(generics.ListAPIView):
     queryset = GameGenere.objects.all()

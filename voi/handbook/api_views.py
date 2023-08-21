@@ -28,7 +28,11 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 class CreateHandbook(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    def post(self, request, game_id):
+
+    def post(
+            self,
+            request,
+            game_id):
         user_id = request.user.id
 
         serializer = HandbookSerializer(data=request.data)
@@ -42,7 +46,9 @@ class CreateHandbook(APIView):
             )
 
         data = serializer.data
-        handbook_type = HandbookType.objects.filter(pk=data.get("type").get("id")).first()
+        handbook_type = HandbookType.objects.filter(
+            pk=data.get("type").get("id")
+            ).first()
 
         if not handbook_type:
             return Response(
@@ -51,7 +57,7 @@ class CreateHandbook(APIView):
                 },
                 status=400
             )
-        
+
         user = User.objects.filter(pk=user_id).first()
         game = Games.objects.filter(pk=game_id).first()
 
@@ -85,8 +91,11 @@ class ScreenshotUpload(APIView):
     parser_classes = [MultiPartParser]
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    
-    def post(self, request, handbook_id):
+
+    def post(
+            self,
+            request,
+            handbook_id):
         serializer = HandbookScreenshotSerializer(data=request.FILES)
         serializer.is_valid()
         if serializer.errors:
@@ -96,7 +105,7 @@ class ScreenshotUpload(APIView):
                 }, 
                 status=400
             )
-        
+
         data = serializer.validated_data
         handbook = Handbook.objects.filter(pk = handbook_id).first()
 
@@ -108,7 +117,7 @@ class ScreenshotUpload(APIView):
                 status=404
             )
         screenshot_list = []
-        
+
         for screenshot in data.get("file_url"):
             if screenshot.size > FILE_UPLOAD_MAX_MEMORY_SIZE:
                 return Response(
@@ -126,7 +135,7 @@ class ScreenshotUpload(APIView):
                     },
                     status=400
                 )
-            
+
             screenshot_list.append(HandbookScreenshot(
                 file_url=screenshot,
                 handbook=handbook
@@ -152,8 +161,13 @@ class AllHandbookList(generics.ListAPIView):
     pagination_class=HandbookListPagination
 
 class HandbookInfo(APIView):
-    def get(self, request, handbook_id):
-        handbook = Handbook.objects.filter(pk=handbook_id, is_delete=False).first()
+    def get(
+            self,
+            request,
+            handbook_id):
+        handbook = Handbook.objects.filter(
+            pk=handbook_id,
+            is_delete=False).first()
         
         if not handbook:
             return Response(
@@ -186,7 +200,9 @@ class EditHandbook(APIView):
 
         data = serializer.data
 
-        handbook = Handbook.objects.filter(pk=handbook_id, is_delete=False).first()
+        handbook = Handbook.objects.filter(
+            pk=handbook_id,
+            is_delete=False).first()
 
         if not handbook:
             return Response(
@@ -204,7 +220,9 @@ class EditHandbook(APIView):
                 status=403
             )
 
-        handbook_type = HandbookType.objects.filter(pk=data.get("type").get("id")).first()
+        handbook_type = HandbookType.objects.filter(
+            pk=data.get("type").get("id")
+            ).first()
 
         if not handbook_type:
             return Response(
@@ -235,7 +253,9 @@ class DeleteHandbook(APIView):
         
         user_id = request.user.id
 
-        handbook = Handbook.objects.filter(pk=handbook_id, is_delete=False).first()
+        handbook = Handbook.objects.filter(
+            pk=handbook_id,
+            is_delete=False).first()
 
         if not handbook:
             return Response(
@@ -269,13 +289,13 @@ class DeleteScreenshot(APIView):
     permission_classes = [IsAuthenticated]
     def delete(self, request):
         
-        old_screenshot_serializer = HandbookScreenshotSerializer(data=request.data)
+        old_screenshot_serializer = HandbookScreenshotSerializer(
+            data=request.data
+            )
         
         old_screenshot_serializer.is_valid()
         
         old_screenshot_data = old_screenshot_serializer.data
-
-        # import pdb;pdb.set_trace()
 
         if not old_screenshot_data.get("id"):
             return Response(
@@ -288,14 +308,18 @@ class DeleteScreenshot(APIView):
         old_screenshot_list = []
 
         for screenshot_id in old_screenshot_data.get("id"):
-            if not HandbookScreenshot.objects.filter(pk=screenshot_id).exists():
+            if not HandbookScreenshot.objects.filter(
+                pk=screenshot_id
+                ).exists():
                 return Response(
                     {
                         "error_screenshot_not_found":"Screenshot not found"
                     },
                     status=404
                 )
-            old_screenshot = HandbookScreenshot.objects.filter(pk=screenshot_id, is_delete=False).first()
+            old_screenshot = HandbookScreenshot.objects.filter(
+                pk=screenshot_id,
+                is_delete=False).first()
 
             if not old_screenshot:
                 return Response(
@@ -318,4 +342,4 @@ class DeleteScreenshot(APIView):
                 "status": "Delete"
             },
             status=200
-        ) 
+        )

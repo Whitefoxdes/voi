@@ -15,7 +15,6 @@ def test_should_register_user(
         reverse("user_api:register"),
         send_data_for_register_user
     )
-
     assert responce.status_code == 200
 
 @pytest.mark.django_db

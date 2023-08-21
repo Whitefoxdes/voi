@@ -7,8 +7,8 @@ urlpatterns = [
     re_path(
         r"^search/$",
         views.GamesSearchListView.as_view(),
-        name='games_search'),
-
+        name='games_search'
+    ),
     path(
         "add-new-game",
         views.AddNewGame.as_view(),

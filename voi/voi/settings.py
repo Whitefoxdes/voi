@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'games.apps.GamesConfig',
     'handbook.apps.HandbookConfig',
-    # 'bot.apps.BotConfig',
     'django_filters',
     'rest_framework',
     'rest_framework_simplejwt',
@@ -100,8 +99,12 @@ WSGI_APPLICATION = 'voi.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 

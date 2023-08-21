@@ -1,0 +1,33 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: 'postgres'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'superPassword_12344321'
+
+
+  backend:
+    image:  voi
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      BOT_TOKEN: '6366123953:AAFFSisey5weEEoeQSgxZEuigpEroV5f0dM'
+      EMAIL_HOST_PASSWORD: faptdjelufrbysib
+      POSTGRES_NAME: 'postgres'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'superPassword_12344321'
+    depends_on:
+      - db
+
+  bot:
+    image:  bot
+    restart: always
+    environment:
+      BOT_TOKEN: '6366123953:AAFFSisey5weEEoeQSgxZEuigpEroV5f0dM'
+      EMAIL_HOST_PASSWORD: faptdjelufrbysib
