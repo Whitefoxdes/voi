@@ -4,3 +4,5 @@ __pycache__
 */*/user_*
 */*/game_*
 */*/handbook_*
+.pytest_cache
+data

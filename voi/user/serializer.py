@@ -1,7 +1,8 @@
 from .models import (
     User,
     ImageProfile,
-    Profile)
+    Profile
+    )
 from rest_framework import serializers
 from django.contrib.auth.hashers import check_password
 
@@ -17,7 +18,10 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     username = serializers.CharField()
     date_of_birth = serializers.DateField()
-    user_avatar = serializers.URLField(source="user_avatar.file_url", required=False)
+    user_avatar = serializers.URLField(
+        source="user_avatar.file_url",
+        required=False
+        )
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -43,17 +47,23 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.filter(pk=user_id).first()
 
         if not check_password(old_password, user.password):
-            raise serializers.ValidationError({"error_old_password": "Wrong old password"})
+            raise serializers.ValidationError(
+                {"error_old_password": "Wrong old password"}
+                )
     
     def send_reset_password_letter_serializer(self, data):
         email = data.get("email")
         if not email:
-            raise serializers.ValidationError({"error_email": "Request field empty"})
+            raise serializers.ValidationError(
+                {"error_email": "Request field empty"}
+                )
     
     def reset_password_serializer(self, data):
         password = data.get("password")
         if not password:
-            raise serializers.ValidationError({"error_password": "Request field empty"})
+            raise serializers.ValidationError(
+                {"error_password": "Request field empty"}
+                )
 
 class ImageProfileSerializer(serializers.ModelSerializer):
     class Meta:

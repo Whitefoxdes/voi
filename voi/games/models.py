@@ -4,7 +4,8 @@ from uuid import uuid4
 
 def url_upload_to_for_game(instance, filename):
     name, ext = filename.split('.')
-    filepath = f'game_screenshot/game_{instance.game.id}/{name}-{uuid4()}.{ext}'
+    dir_path = f'game_screenshot/game_{instance.game.id}'
+    filepath = f'{dir_path}/{name}-{uuid4()}.{ext}'
     return filepath
 
 class Games(models.Model):
@@ -15,8 +16,13 @@ class Games(models.Model):
         return self.name
 
 class GameScreenshot(models.Model):
-    game = models.ForeignKey("Games", related_name="screenshot", on_delete=models.CASCADE)
+    game = models.ForeignKey(
+        "Games",
+        related_name="screenshot",
+        on_delete=models.CASCADE
+    )
     file_url = models.FileField(upload_to=url_upload_to_for_game)
+    is_delete = models.BooleanField(default=False)
 
 class GameGenere(models.Model):
     genere_name = models.TextField()

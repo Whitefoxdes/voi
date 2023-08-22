@@ -3,7 +3,7 @@ from .models import (
     Handbook,
     HandbookType,
     HandbookScreenshot
-    )
+)
 
 # Register your models here.
 
@@ -17,5 +17,8 @@ class HandbookAdmine(admin.ModelAdmin):
         HandbookScreenshotInline        
     ]
 
-admin.site.register(Handbook, HandbookAdmine)
+admin.site.register(
+    Handbook,
+    HandbookAdmine
+)
 admin.site.register(HandbookType)

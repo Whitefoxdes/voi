@@ -9,13 +9,11 @@ urlpatterns = [
         api_views.GamesSearchList.as_view(),
         name='games_search'
     ),
-
     path(
         "add-game",
         api_views.AddGame.as_view(),
         name="add_game"
     ),
-
     path(
         "upload-screenshot-for-game/<int:game_id>",
         api_views.ScreenshotUpload.as_view(),

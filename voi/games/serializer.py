@@ -35,7 +35,6 @@ class GameGenereSerializer(serializers.ModelSerializer):
     genere_name = serializers.CharField()
 
 class GamesSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Games
         fields = [
@@ -46,5 +45,11 @@ class GamesSerializer(serializers.ModelSerializer):
         ]
     id = serializers.IntegerField(required=False)
     name = serializers.CharField()
-    genere = GameGenereSerializer(many=True, required=False)
-    screenshot = GameScreenshotURLSerializer(many=True, required=False)
+    genere = GameGenereSerializer(
+        many=True,
+        required=False
+    )
+    screenshot = GameScreenshotURLSerializer(
+        many=True,
+        required=False
+    )

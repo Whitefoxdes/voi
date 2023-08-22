@@ -61,6 +61,9 @@ class HandbookSerializer(serializers.ModelSerializer):
     type = HandbookTypeSerializer()
     body = serializers.CharField()
     title= serializers.CharField()
-    screenshot = HandbookScreenshotURLSerializer(many=True, required=False)
+    screenshot = HandbookScreenshotURLSerializer(
+        many=True,
+        required=False
+        )
     author = UserSerializer(required=False)
     game = GamesSerializer(required=False)

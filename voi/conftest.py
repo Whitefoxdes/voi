@@ -4,15 +4,12 @@ from user.models import (
     User,
     Profile
 )
-from games.models import (
-    Games,
-    GameScreenshot
-)
 from handbook.models import (
     Handbook,
     HandbookType,
     HandbookScreenshot
 )
+from games.models import Games
 from django.urls import reverse
 from voi.settings import BASE_DIR
 from rest_framework.test import APIClient
@@ -25,7 +22,7 @@ def client():
 
 
 @pytest.fixture
-def new_user() -> None:
+def new_user():
 
     new_profile = Profile(
         username = "tester",
@@ -43,7 +40,7 @@ def new_user() -> None:
     return new_user
 
 @pytest.fixture
-def send_data_for_register_user() -> None:
+def send_data_for_register_user():
     data = {
         "email":"test@email.com",
         "password":"password",
@@ -54,7 +51,7 @@ def send_data_for_register_user() -> None:
     return data
 
 @pytest.fixture
-def send_data_for_user_serializer_error() -> None:
+def send_data_for_user_serializer_error():
     data = {
         "email":"",
         "password":"",
@@ -418,7 +415,10 @@ def send_data_for_login_new_user2(new_user2):
 
     return data
 @pytest.fixture
-def send_new_user_obtain_token2(client, send_data_for_login_new_user2):
+def send_new_user_obtain_token2(
+    client,
+    send_data_for_login_new_user2):
+    
     responce = client.post(
         reverse("user_api:login"),
         send_data_for_login_new_user2
@@ -454,13 +454,22 @@ def upload_screenshot(
                 "file_url" : send_data_for_screenshot_upload
         }
     )
-    return {"id": [1, 2, 3]}
+    all_handbook_screenshot = HandbookScreenshot.objects.all()
+    all_handbook_screenshot_id = []
+
+    for handbook_screenshot in all_handbook_screenshot:
+        all_handbook_screenshot_id.append(
+            handbook_screenshot.id
+        )
+    return {"id": all_handbook_screenshot_id}
 
 @pytest.fixture
 def send_deleted_screenshot(
     upload_screenshot
 ):
-        deleted_screenshot = HandbookScreenshot.objects.filter(pk=upload_screenshot["id"][0]).first()
+        deleted_screenshot = HandbookScreenshot.objects.filter(
+            pk=upload_screenshot["id"][0]
+        ).first()
         deleted_screenshot.is_delete = True
         deleted_screenshot.save()
         return {"id" : [deleted_screenshot.id]}

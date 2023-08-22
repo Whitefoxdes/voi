@@ -49,7 +49,7 @@ $.ajax({
                 `<button class="previousButton">&#10094</button><br>`
             );
             $(".previousButton").click(function(){
-                top,location.href = `/games/search/?${previousPage}`;
+                top.location.href = `/games/search/?${previousPage}`;
             });
         }
         if(result.next){
@@ -58,7 +58,7 @@ $.ajax({
                 `<button class="nextButton">&#10095</button><br>`
             );
             $(".nextButton").click(function(){
-                top,location.href = `/games/search/?${nextPage}`;
+                top.location.href = `/games/search/?${nextPage}`;
             });
         }
     }
